@@ -39,7 +39,9 @@ dependencies:
   pointer_interceptor: ^0.10.1
   flutter_form_builder: ^9.0.0
   form_builder_validators: ^9.0.0
-  form_builder_asset_picker: ^1.1.1
+  form_builder_asset_picker: #^1.1.1 Error: The getter 'caption' isn't defined for the class 'TextTheme'.
+    git:
+      url : https://github.com/hazem-saeed/form_builder_asset_picker
   awesome_dialog: ^3.2.0
 
   # The following adds the Cupertino Icons font to your application.
