@@ -40,16 +40,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: ListView(
         padding: const EdgeInsets.all(kDefaultPadding),
         children: [
-          Text(
-            lang.dashboard,
-            style: themeData.textTheme.headlineMedium,
+          ListTile(
+            leading: const Icon(Icons.search),
+            title: TextField(
+              controller: TextEditingController(
+                  text: 'recherche dynamique des tuiles ci-dessous'),
+            ),
           ),
+          //Text(
+          //  lang.dashboard,
+          //  style: themeData.textTheme.headlineMedium,
+          //),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final summaryCardWidth = ((constraints.maxWidth - (kDefaultPadding * (summaryCardCrossAxisCount - 1))) / summaryCardCrossAxisCount);
-
+                final summaryCardWidth = ((constraints.maxWidth -
+                        (kDefaultPadding * (summaryCardCrossAxisCount - 1))) /
+                    summaryCardCrossAxisCount);
                 return Wrap(
                   direction: Axis.horizontal,
                   spacing: kDefaultPadding,
@@ -57,16 +65,124 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     SummaryCard(
                       title: lang.newOrders(2),
-                      value: '150',
-                      icon: Icons.shopping_cart_rounded,
+                      value: 'Vente',
+                      icon: Icons.point_of_sale,
                       backgroundColor: appColorScheme.info,
                       textColor: themeData.colorScheme.onPrimary,
                       iconColor: Colors.black12,
                       width: summaryCardWidth,
                     ),
                     SummaryCard(
+                      title: lang.newOrders(2),
+                      value: 'Vente hors-catalogue',
+                      icon: Icons.point_of_sale,
+                      backgroundColor: appColorScheme.info,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Achat',
+                      icon: Icons.shopping_cart_rounded,
+                      backgroundColor: appColorScheme.error,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Achat/dépense hors catalogue',
+                      icon: Icons.shopping_cart_rounded,
+                      backgroundColor: appColorScheme.error,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Mouvement de stock',
+                      icon: Icons.warehouse,
+                      backgroundColor: appColorScheme.error,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Faire un inventaire',
+                      icon: Icons.warehouse,
+                      backgroundColor: appColorScheme.success,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.newOrders(2),
+                      value: 'Articles',
+                      icon: Icons.widgets,
+                      backgroundColor: Colors.orange,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Articles Import/Export',
+                      icon: Icons.file_download,
+                      backgroundColor: Colors.orange,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Articles photos Import/Export',
+                      icon: Icons.image,
+                      backgroundColor: Colors.orange,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.newOrders(2),
+                      value: 'Contacts',
+                      icon: Icons.person,
+                      backgroundColor: Colors.blue,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Contacts Import/Export',
+                      icon: Icons.file_download,
+                      backgroundColor: Colors.blue,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Tickets',
+                      icon: Icons.receipt,
+                      backgroundColor: Colors.grey,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Tickets Import/Export',
+                      icon: Icons.file_download,
+                      backgroundColor: Colors.grey,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
                       title: lang.todaySales,
-                      value: '+12%',
+                      value: 'Stats',
                       icon: Icons.ssid_chart_rounded,
                       backgroundColor: appColorScheme.success,
                       textColor: themeData.colorScheme.onPrimary,
@@ -75,7 +191,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     SummaryCard(
                       title: lang.newUsers(2),
-                      value: '44',
+                      value: 'Utilisateurs',
                       icon: Icons.group_add_rounded,
                       backgroundColor: appColorScheme.warning,
                       textColor: appColorScheme.buttonTextBlack,
@@ -84,9 +200,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     SummaryCard(
                       title: lang.pendingIssues(2),
-                      value: '0',
-                      icon: Icons.report_gmailerrorred_rounded,
-                      backgroundColor: appColorScheme.error,
+                      value: 'Chaines de boutique',
+                      icon: Icons.business,
+                      backgroundColor: Colors.blue,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Boutiques',
+                      icon: Icons.store,
+                      backgroundColor: Colors.teal,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Taxes',
+                      icon: Icons.cut,
+                      backgroundColor: Colors.red[800]!,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    const Divider(),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Imprimante',
+                      icon: Icons.print,
+                      backgroundColor: Colors.lightBlue,
+                      textColor: themeData.colorScheme.onPrimary,
+                      iconColor: Colors.black12,
+                      width: summaryCardWidth,
+                    ),
+                    SummaryCard(
+                      title: lang.pendingIssues(2),
+                      value: 'Lecteur de code barre',
+                      icon: Icons.barcode_reader,
+                      backgroundColor: Colors.lightBlue,
                       textColor: themeData.colorScheme.onPrimary,
                       iconColor: Colors.black12,
                       width: summaryCardWidth,
@@ -94,97 +247,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 );
               },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: kDefaultPadding),
-            child: Card(
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CardHeader(
-                    title: lang.recentOrders(2),
-                    showDivider: false,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final double dataTableWidth = max(kScreenWidthMd, constraints.maxWidth);
-
-                        return Scrollbar(
-                          controller: _dataTableHorizontalScrollController,
-                          thumbVisibility: true,
-                          trackVisibility: true,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            controller: _dataTableHorizontalScrollController,
-                            child: SizedBox(
-                              width: dataTableWidth,
-                              child: Theme(
-                                data: themeData.copyWith(
-                                  cardTheme: appDataTableTheme.cardTheme,
-                                  dataTableTheme: appDataTableTheme.dataTableThemeData,
-                                ),
-                                child: DataTable(
-                                  showCheckboxColumn: false,
-                                  showBottomBorder: true,
-                                  columns: const [
-                                    DataColumn(label: Text('No.'), numeric: true),
-                                    DataColumn(label: Text('Date')),
-                                    DataColumn(label: Text('Item')),
-                                    DataColumn(label: Text('Price'), numeric: true),
-                                  ],
-                                  rows: List.generate(5, (index) {
-                                    return DataRow.byIndex(
-                                      index: index,
-                                      cells: [
-                                        DataCell(Text('#${index + 1}')),
-                                        const DataCell(Text('2022-06-30')),
-                                        DataCell(Text('Item ${index + 1}')),
-                                        DataCell(Text('${Random().nextInt(10000)}')),
-                                      ],
-                                    );
-                                  }),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.all(kDefaultPadding),
-                      child: SizedBox(
-                        height: 40.0,
-                        width: 120.0,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: themeData.extension<AppButtonTheme>()!.infoElevated,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: kDefaultPadding * 0.5),
-                                child: Icon(
-                                  Icons.visibility_rounded,
-                                  size: (themeData.textTheme.labelLarge!.fontSize! + 4.0),
-                                ),
-                              ),
-                              const Text('View All'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
@@ -226,7 +288,7 @@ class SummaryCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              top: kDefaultPadding * 0.5,
+              top: kDefaultPadding * 0.3,
               right: kDefaultPadding * 0.5,
               child: Icon(
                 icon,
@@ -234,28 +296,26 @@ class SummaryCard extends StatelessWidget {
                 color: iconColor,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(kDefaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: kDefaultPadding * 0.5),
-                    child: Text(
-                      value,
-                      style: textTheme.headlineMedium!.copyWith(
+            Positioned(
+              bottom: kDefaultPadding * 0.2,
+              left: kDefaultPadding * 0.5,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: kDefaultPadding * 0.5),
+                child: SizedBox(
+                  width: width / 1.5,
+                  child: Text(
+                    value,
+                    style: textTheme.headlineSmall!.copyWith(
                         color: textColor,
                         fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                        overflow: TextOverflow.clip),
+                    //Text(
+                    //title,
+                    //style: textTheme.labelLarge!.copyWith(
+                    //  color: textColor,
+                    //),
                   ),
-                  Text(
-                    title,
-                    style: textTheme.labelLarge!.copyWith(
-                      color: textColor,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ],

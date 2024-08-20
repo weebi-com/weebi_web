@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/constants/dimens.dart';
+import 'package:web_admin/fence_map.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/master_layout_config.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
@@ -95,7 +96,8 @@ class _SidebarState extends State<Sidebar> {
             child: Theme(
               data: themeData.copyWith(
                 scrollbarTheme: themeData.scrollbarTheme.copyWith(
-                  thumbColor: MaterialStateProperty.all(sidebarTheme.foregroundColor.withOpacity(0.2)),
+                  thumbColor: MaterialStateProperty.all(
+                      sidebarTheme.foregroundColor.withOpacity(0.2)),
                 ),
               ),
               child: Scrollbar(
@@ -138,43 +140,75 @@ class _SidebarState extends State<Sidebar> {
     var currentLocation = widget.selectedMenuUri ?? '';
 
     if (currentLocation.isEmpty && widget.autoSelectMenu) {
-      currentLocation = GoRouter.of(context).routerDelegate.currentConfiguration.uri.toString();
+      currentLocation = GoRouter.of(context)
+          .routerDelegate
+          .currentConfiguration
+          .uri
+          .toString();
     }
 
-    return Column(
-      children: sidebarMenuConfigs.map<Widget>((menu) {
-        if (menu.children.isEmpty) {
-          return _sidebarMenu(
-            context,
-            EdgeInsets.fromLTRB(
-              sidebarTheme.menuLeftPadding,
-              sidebarTheme.menuTopPadding,
-              sidebarTheme.menuRightPadding,
-              sidebarTheme.menuBottomPadding,
-            ),
-            menu.uri,
-            menu.icon,
-            menu.title(context),
-            (currentLocation.startsWith(menu.uri)),
-          );
-        } else {
-          return _expandableSidebarMenu(
-            context,
-            EdgeInsets.fromLTRB(
-              sidebarTheme.menuLeftPadding,
-              sidebarTheme.menuTopPadding,
-              sidebarTheme.menuRightPadding,
-              sidebarTheme.menuBottomPadding,
-            ),
-            menu.uri,
-            menu.icon,
-            menu.title(context),
-            menu.children,
-            currentLocation,
-          );
-        }
-      }).toList(growable: false),
-    );
+    return Column(children: [
+      Text(
+        '''
+Prenons exemple sur le bouton Account en haut à gauche
+Lorsque je clic sur un des éléments de la carte la vue à droite affiche le détail
+ex : je clic sur le boss, à droite je vois les infos du boss
+au niveau de la navigation, on rentre donc dans le module "Utilisateurs" et on ouvre le détail du boss
+Depuis la vue détail du boss je peux :
+
+- fermer pour afficher les modules
+- aller (revenir) à la racine du module utilisateurs (liste des utilisateurs)
+
+on déclinera aussi cette logique sur les objets Firme, Chaine, Boutique, Device
+
+Les éléments ne sont affichés sur la carte que si j'ai des permissions suffisantes
+Ci-dessous c'est le boss
+Si je m'étais connecté en tant que Manager
+  Je ne verrai que le contenu de la Chain chez Lili (Limited Access) et les vendeurs qui y travaillent
+  Je ne verrai pas non plus les utilisateurs de la chaine ice cream (filtrés par le back) absents de la réponse du rpc readUsers
+''',
+        style: TextStyle(color: Colors.white),
+      ),
+      NestedWrapExample(),
+      Text(
+        'je garde les éléments en-dessous pour naviguer facilement et continuer de s inspirer du projet web admin',
+        style: TextStyle(color: Colors.white),
+      ),
+      Column(
+        children: sidebarMenuConfigs.map<Widget>((menu) {
+          if (menu.children.isEmpty) {
+            return _sidebarMenu(
+              context,
+              EdgeInsets.fromLTRB(
+                sidebarTheme.menuLeftPadding,
+                sidebarTheme.menuTopPadding,
+                sidebarTheme.menuRightPadding,
+                sidebarTheme.menuBottomPadding,
+              ),
+              menu.uri,
+              menu.icon,
+              menu.title(context),
+              (currentLocation.startsWith(menu.uri)),
+            );
+          } else {
+            return _expandableSidebarMenu(
+              context,
+              EdgeInsets.fromLTRB(
+                sidebarTheme.menuLeftPadding,
+                sidebarTheme.menuTopPadding,
+                sidebarTheme.menuRightPadding,
+                sidebarTheme.menuBottomPadding,
+              ),
+              menu.uri,
+              menu.icon,
+              menu.title(context),
+              menu.children,
+              currentLocation,
+            );
+          }
+        }).toList(growable: false),
+      )
+    ]);
   }
 
   Widget _sidebarMenu(
@@ -186,13 +220,16 @@ class _SidebarState extends State<Sidebar> {
     bool isSelected,
   ) {
     final sidebarTheme = Theme.of(context).extension<AppSidebarTheme>()!;
-    final textColor = (isSelected ? sidebarTheme.menuSelectedFontColor : sidebarTheme.foregroundColor);
+    final textColor = (isSelected
+        ? sidebarTheme.menuSelectedFontColor
+        : sidebarTheme.foregroundColor);
 
     return Padding(
       padding: padding,
       child: Card(
         color: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(sidebarTheme.menuBorderRadius)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(sidebarTheme.menuBorderRadius)),
         elevation: 0.0,
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
@@ -218,7 +255,9 @@ class _SidebarState extends State<Sidebar> {
           onTap: () => GoRouter.of(context).go(uri),
           selected: isSelected,
           selectedTileColor: sidebarTheme.menuSelectedBackgroundColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(sidebarTheme.menuBorderRadius)),
+          shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(sidebarTheme.menuBorderRadius)),
           textColor: textColor,
           hoverColor: sidebarTheme.menuHoverColor,
         ),
@@ -237,14 +276,18 @@ class _SidebarState extends State<Sidebar> {
   ) {
     final themeData = Theme.of(context);
     final sidebarTheme = Theme.of(context).extension<AppSidebarTheme>()!;
-    final hasSelectedChild = children.any((e) => currentLocation.startsWith(e.uri));
-    final parentTextColor = (hasSelectedChild ? sidebarTheme.menuSelectedFontColor : sidebarTheme.foregroundColor);
+    final hasSelectedChild =
+        children.any((e) => currentLocation.startsWith(e.uri));
+    final parentTextColor = (hasSelectedChild
+        ? sidebarTheme.menuSelectedFontColor
+        : sidebarTheme.foregroundColor);
 
     return Padding(
       padding: padding,
       child: Card(
         color: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(sidebarTheme.menuBorderRadius)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(sidebarTheme.menuBorderRadius)),
         elevation: 0.0,
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
@@ -259,7 +302,9 @@ class _SidebarState extends State<Sidebar> {
             iconColor: parentTextColor,
             collapsedIconColor: parentTextColor,
             backgroundColor: sidebarTheme.menuExpandedBackgroundColor,
-            collapsedBackgroundColor: (hasSelectedChild ? sidebarTheme.menuExpandedBackgroundColor : Colors.transparent),
+            collapsedBackgroundColor: (hasSelectedChild
+                ? sidebarTheme.menuExpandedBackgroundColor
+                : Colors.transparent),
             initiallyExpanded: hasSelectedChild,
             childrenPadding: EdgeInsets.only(
               top: sidebarTheme.menuExpandedChildTopPadding,
@@ -355,7 +400,12 @@ class SidebarHeader extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _textButton(themeData, sidebarTheme, Icons.manage_accounts_rounded, lang.account, onAccountButtonPressed),
+                _textButton(
+                    themeData,
+                    sidebarTheme,
+                    Icons.manage_accounts_rounded,
+                    lang.account,
+                    onAccountButtonPressed),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: VerticalDivider(
@@ -366,7 +416,8 @@ class SidebarHeader extends StatelessWidget {
                     endIndent: kTextPadding,
                   ),
                 ),
-                _textButton(themeData, sidebarTheme, Icons.login_rounded, lang.logout, onLogoutButtonPressed),
+                _textButton(themeData, sidebarTheme, Icons.login_rounded,
+                    lang.logout, onLogoutButtonPressed),
               ],
             ),
           ),
@@ -375,7 +426,8 @@ class SidebarHeader extends StatelessWidget {
     );
   }
 
-  Widget _textButton(ThemeData themeData, AppSidebarTheme sidebarTheme, IconData icon, String text, void Function() onPressed) {
+  Widget _textButton(ThemeData themeData, AppSidebarTheme sidebarTheme,
+      IconData icon, String text, void Function() onPressed) {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(

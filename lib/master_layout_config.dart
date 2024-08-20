@@ -4,6 +4,8 @@ import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/sidebar.dart';
 
+//import 'dart:math' as math;
+
 final sidebarMenuConfigs = [
   SidebarMenuConfig(
     uri: RouteUri.dashboard,
@@ -17,22 +19,22 @@ final sidebarMenuConfigs = [
   ),
   SidebarMenuConfig(
     uri: '',
-    icon: Icons.interests_rounded,
+    icon: Icons.store,
     title: (context) => Lang.of(context).uiElements(2),
     children: [
       SidebarChildMenuConfig(
         uri: RouteUri.generalUi,
-        icon: Icons.circle_outlined,
+        icon: Icons.store,
         title: (context) => Lang.of(context).generalUi,
       ),
       SidebarChildMenuConfig(
         uri: RouteUri.colors,
-        icon: Icons.circle_outlined,
+        icon: Icons.store,
         title: (context) => Lang.of(context).colors(2),
       ),
       SidebarChildMenuConfig(
         uri: RouteUri.text,
-        icon: Icons.circle_outlined,
+        icon: Icons.store,
         title: (context) => Lang.of(context).text,
       ),
       SidebarChildMenuConfig(
