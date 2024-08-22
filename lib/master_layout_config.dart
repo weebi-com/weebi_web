@@ -85,6 +85,10 @@ final sidebarMenuConfigs = [
 
 const localeMenuConfigs = [
   LocaleMenuConfig(
+    languageCode: 'fr',
+    name: 'Français',
+  ),
+  LocaleMenuConfig(
     languageCode: 'en',
     name: 'English',
   ),
