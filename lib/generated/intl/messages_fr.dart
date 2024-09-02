@@ -117,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Page non trouvée"),
         "example": MessageLookupByLibrary.simpleMessage("Exemple"),
         "extensions": m4,
+        "firstName": MessageLookupByLibrary.simpleMessage("Prénom"),
         "forms": m5,
         "generalUi": MessageLookupByLibrary.simpleMessage("UI Générale"),
         "hi": MessageLookupByLibrary.simpleMessage("Salut"),
@@ -127,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ipErrorText": MessageLookupByLibrary.simpleMessage(
             "Ce champ nécessite une IP valide."),
         "language": MessageLookupByLibrary.simpleMessage("Langue"),
+        "lastName": MessageLookupByLibrary.simpleMessage("Nom"),
         "lightTheme": MessageLookupByLibrary.simpleMessage("Thème Clair"),
         "login": MessageLookupByLibrary.simpleMessage("Connexion"),
         "loginNow":
@@ -134,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("Déconnexion"),
         "loremIpsum": MessageLookupByLibrary.simpleMessage(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+        "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
         "matchErrorText": MessageLookupByLibrary.simpleMessage(
             "La valeur ne correspond pas au motif."),
         "maxErrorText": m6,
