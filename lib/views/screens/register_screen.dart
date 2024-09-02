@@ -12,6 +12,8 @@ import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/public_master_layout/public_master_layout.dart';
 
+import '../../services/auth_service.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -27,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var _isFormLoading = false;
 
   Future<void> _doRegisterAsync({
-    required UserDataProvider userDataProvider,
+    required AuthService authService,
     required void Function(String message) onSuccess,
     required void Function(String message) onError,
   }) async {
@@ -39,20 +41,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       setState(() => _isFormLoading = true);
 
-      Future.delayed(const Duration(seconds: 1), () async {
-        if (_formData.username == 'admin') {
-          onError.call('This username is already taken.');
-        } else {
-          await userDataProvider.setUserDataAsync(
-            username: 'Admin ABC',
-            userProfileImageUrl: 'https://picsum.photos/id/1005/300/300',
-          );
+      print("_formData");
+      print(_formData.firstName);
+      print(_formData.lastName);
+      print(_formData.mail);
+      print(_formData.password);
 
-          onSuccess.call('Your account has been successfully created.');
-        }
+      authService.signUp(
+          firstName: _formData.firstName, lastName: _formData.lastName,
+          mail: _formData.mail, password: _formData.password
+      );
 
-        setState(() => _isFormLoading = false);
-      });
+      // Future.delayed(const Duration(seconds: 1), () async {
+      //   if (_formData.username == 'admin') {
+      //     onError.call('This username is already taken.');
+      //   } else {
+      //     await userDataProvider.setUserDataAsync(
+      //       username: 'Admin ABC',
+      //       userProfileImageUrl: 'https://picsum.photos/id/1005/300/300',
+      //     );
+      //
+      //     onSuccess.call('Your account has been successfully created.');
+      //   }
+      //
+      //   setState(() => _isFormLoading = false);
+      // });
     }
   }
 
@@ -136,32 +149,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
                             child: FormBuilderTextField(
-                              name: 'username',
+                              name: 'lastName',
                               decoration: InputDecoration(
-                                labelText: lang.username,
-                                hintText: lang.username,
-                                helperText: '* To test registration fail: admin',
+                                labelText: lang.lastName,
+                                hintText: lang.lastName,
+                                helperText: '',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                               ),
                               enableSuggestions: false,
                               validator: FormBuilderValidators.required(),
-                              onSaved: (value) => (_formData.username = value ?? ''),
+                              onSaved: (value) => (_formData.lastName = value ?? ''),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
                             child: FormBuilderTextField(
-                              name: 'email',
+                              name: 'firstName',
                               decoration: InputDecoration(
-                                labelText: lang.email,
-                                hintText: lang.email,
+                                labelText: lang.firstName,
+                                hintText: lang.firstName,
+                                helperText: '',
+                                border: const OutlineInputBorder(),
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                              ),
+                              enableSuggestions: false,
+                              validator: FormBuilderValidators.required(),
+                              onSaved: (value) => (_formData.firstName = value ?? ''),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
+                            child: FormBuilderTextField(
+                              name: 'mail',
+                              decoration: InputDecoration(
+                                labelText: lang.mail,
+                                hintText: lang.mail,
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                               ),
                               keyboardType: TextInputType.emailAddress,
                               validator: FormBuilderValidators.required(),
-                              onSaved: (value) => (_formData.email = value ?? ''),
+                              onSaved: (value) => (_formData.mail = value ?? ''),
                             ),
                           ),
                           Padding(
@@ -180,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               controller: _passwordTextEditingController,
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(),
-                                FormBuilderValidators.minLength(6),
+                                FormBuilderValidators.minLength(4),
                                 FormBuilderValidators.maxLength(18),
                               ]),
                               onSaved: (value) => (_formData.password = value ?? ''),
@@ -220,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onPressed: (_isFormLoading
                                     ? null
                                     : () => _doRegisterAsync(
-                                          userDataProvider: context.read<UserDataProvider>(),
+                                          authService: context.read<AuthService>(),
                                           onSuccess: (message) => _onRegisterSuccess(context, message),
                                           onError: (message) => _onRegisterError(context, message),
                                         )),
@@ -252,7 +281,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 }
 
 class FormData {
-  String username = '';
-  String email = '';
+  String firstName = '';
+  String lastName = '';
+  String mail = '';
   String password = '';
 }

@@ -81,5 +81,8 @@
   "uiElements": "{count, plural, one{UI Element} other{UI Elements}}",
   "urlErrorText": "This field requires a valid URL address.",
   "username": "Username",
-  "yes": "Yes"
+  "yes": "Yes",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "mail": "E-mail"
 }

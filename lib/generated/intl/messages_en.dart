@@ -111,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "error404Title": MessageLookupByLibrary.simpleMessage("Page not found"),
         "example": MessageLookupByLibrary.simpleMessage("Example"),
         "extensions": m4,
+        "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
         "forms": m5,
         "generalUi": MessageLookupByLibrary.simpleMessage("General UI"),
         "hi": MessageLookupByLibrary.simpleMessage("Hi"),
@@ -121,12 +122,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "ipErrorText": MessageLookupByLibrary.simpleMessage(
             "This field requires a valid IP."),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
+        "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
         "lightTheme": MessageLookupByLibrary.simpleMessage("Light Theme"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loginNow": MessageLookupByLibrary.simpleMessage("Login now!"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "loremIpsum": MessageLookupByLibrary.simpleMessage(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+        "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
         "matchErrorText": MessageLookupByLibrary.simpleMessage(
             "Value does not match pattern."),
         "maxErrorText": m6,

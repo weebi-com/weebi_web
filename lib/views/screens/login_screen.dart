@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grpc/grpc_web.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/constants/dimens.dart';
@@ -39,20 +40,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
       setState(() => _isFormLoading = true);
 
-      Future.delayed(const Duration(seconds: 1), () async {
-        if (_formData.username != 'admin' || _formData.password != 'admin') {
-          onError.call('Invalid username or password.');
-        } else {
-          await userDataProvider.setUserDataAsync(
-            username: 'Admin ABC',
-            userProfileImageUrl: 'https://picsum.photos/id/1005/300/300',
-          );
+      GrpcWebClientChannel.xhr(Uri.parse('http://localhost:8082'));
 
-          onSuccess.call();
-        }
+      // Future.delayed(const Duration(seconds: 1), () async {
+      //   if (_formData.username != 'admin' || _formData.password != 'admin') {
+      //     onError.call('Invalid username or password.');
+      //   } else {
+      //     await userDataProvider.setUserDataAsync(
+      //       username: 'Admin ABC',
+      //       userProfileImageUrl: 'https://picsum.photos/id/1005/300/300',
+      //     );
+      //
+      //     onSuccess.call();
+      //   }
+      //
+      //   setState(() => _isFormLoading = false);
+      // });
 
-        setState(() => _isFormLoading = false);
-      });
+
     }
   }
 

@@ -81,5 +81,8 @@
   "uiElements": "{count, plural, one{Élément UI} other{Éléments UI}}",
   "urlErrorText": "Ce champ nécessite une adresse URL valide.",
   "username": "Nom d'Utilisateur",
-  "yes": "Oui"
+  "yes": "Oui",
+  "firstName": "Prénom",
+  "lastName": "Nom",
+  "mail": "E-mail"
 }
