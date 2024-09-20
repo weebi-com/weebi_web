@@ -49,10 +49,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   grpc: ^3.2.4
   protobuf: ^3.1.0
-  fence_service:
-    path: /Users/macbook/Codes/WEEBI/weebi_server/packages/fence_service
-  protos_weebi:
-    path: /Users/macbook/Codes/WEEBI/weebi_server/packages/protos/dartlang
+  protos_weebi: ^1.0.0
 
 dependency_overrides:
   # All these dependencies are for form_builder_asset_picker.

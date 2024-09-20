@@ -1,12 +1,9 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/theme/theme_extensions/app_data_table_theme.dart';
-import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -189,14 +186,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       iconColor: Colors.black12,
                       width: summaryCardWidth,
                     ),
-                    SummaryCard(
-                      title: lang.newUsers(2),
-                      value: 'Utilisateurs',
-                      icon: Icons.group_add_rounded,
-                      backgroundColor: appColorScheme.warning,
-                      textColor: appColorScheme.buttonTextBlack,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
+                    GestureDetector(
+                      child: SummaryCard(
+                        title: lang.newUsers(2),
+                        value: 'Utilisateurs',
+                        icon: Icons.group_add_rounded,
+                        backgroundColor: appColorScheme.warning,
+                        textColor: appColorScheme.buttonTextBlack,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      onTap: () async {
+                      },
                     ),
                     SummaryCard(
                       title: lang.pendingIssues(2),

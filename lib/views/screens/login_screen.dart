@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grpc/grpc_web.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/public_master_layout/public_master_layout.dart';
+
+import '../../providers/user_data_provider.dart';
+import '../../services/api_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,36 +29,39 @@ class _LoginScreenState extends State<LoginScreen> {
   var _isFormLoading = false;
 
   Future<void> _doLoginAsync({
-    required UserDataProvider userDataProvider,
+    required ApiService authService,
     required VoidCallback onSuccess,
     required void Function(String message) onError,
   }) async {
     AppFocusHelper.instance.requestUnfocus();
 
     if (_formKey.currentState?.validate() ?? false) {
-      // Validation passed.
       _formKey.currentState!.save();
 
       setState(() => _isFormLoading = true);
 
-      GrpcWebClientChannel.xhr(Uri.parse('http://localhost:8082'));
+      try {
+        final result = await authService.signIn(
+          mail: _formData.mail,
+          password: _formData.password,
+        );
 
-      // Future.delayed(const Duration(seconds: 1), () async {
-      //   if (_formData.username != 'admin' || _formData.password != 'admin') {
-      //     onError.call('Invalid username or password.');
-      //   } else {
-      //     await userDataProvider.setUserDataAsync(
-      //       username: 'Admin ABC',
-      //       userProfileImageUrl: 'https://picsum.photos/id/1005/300/300',
-      //     );
-      //
-      //     onSuccess.call();
-      //   }
-      //
-      //   setState(() => _isFormLoading = false);
-      // });
+        if (result.success) {
+          await context.read<UserDataProvider>().setUserDataAsync(
+            mail: _formData.mail,
+            userProfileImageUrl: 'https://www.weebi.com/images/Weebi_Logo_Full.png',
+          );
 
+          _onLoginSuccess(context);
 
+        } else {
+          onError.call(result.errorMessage ?? 'Login failed. Please try again.');
+        }
+      } catch (e) {
+        onError.call('An error occurred during login. Please try again.');
+      } finally {
+        setState(() => _isFormLoading = false);
+      }
     }
   }
 
@@ -101,19 +105,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(bottom: kDefaultPadding),
                       child: Image.asset(
                         'assets/images/app_logo.png',
-                        height: 80.0,
-                      ),
-                    ),
-                    Text(
-                      lang.appTitle,
-                      style: themeData.textTheme.headlineMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
+                        width: 150.0,
+                        height: 60.0,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
                       child: Text(
-                        lang.adminPortalLogin,
+                        lang.login,
                         style: themeData.textTheme.titleMedium,
                       ),
                     ),
@@ -125,17 +124,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
                             child: FormBuilderTextField(
-                              name: 'username',
+                              name: 'mail',
                               decoration: InputDecoration(
-                                labelText: lang.username,
-                                hintText: lang.username,
-                                helperText: '* Demo username: admin',
+                                labelText: lang.mail,
+                                hintText: lang.mail,
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                               ),
-                              enableSuggestions: false,
+                              keyboardType: TextInputType.emailAddress,
                               validator: FormBuilderValidators.required(),
-                              onSaved: (value) => (_formData.username = value ?? ''),
+                              onSaved: (value) => (_formData.mail = value ?? ''),
                             ),
                           ),
                           Padding(
@@ -145,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: InputDecoration(
                                 labelText: lang.password,
                                 hintText: lang.password,
-                                helperText: '* Demo password: admin',
+                                helperText: '* Votre mot de passe',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                               ),
@@ -165,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: (_isFormLoading
                                     ? null
                                     : () => _doLoginAsync(
-                                          userDataProvider: context.read<UserDataProvider>(),
+                                          authService: context.read<ApiService>(),
                                           onSuccess: () => _onLoginSuccess(context),
                                           onError: (message) => _onLoginError(context, message),
                                         )),
@@ -213,6 +211,6 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 class FormData {
-  String username = '';
+  String mail = '';
   String password = '';
 }

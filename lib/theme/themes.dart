@@ -41,8 +41,6 @@ class AppThemeData {
         onSecondary: Colors.white,
         error: kErrorColor,
         onError: Colors.white,
-        background: Colors.white,
-        onBackground: Colors.black,
         surface: Colors.white,
         onSurface: Colors.black,
       ),

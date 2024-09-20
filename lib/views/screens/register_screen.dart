@@ -7,12 +7,11 @@ import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/public_master_layout/public_master_layout.dart';
 
-import '../../services/auth_service.dart';
+import '../../services/api_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -29,43 +28,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var _isFormLoading = false;
 
   Future<void> _doRegisterAsync({
-    required AuthService authService,
+    required ApiService authService,
     required void Function(String message) onSuccess,
     required void Function(String message) onError,
   }) async {
     AppFocusHelper.instance.requestUnfocus();
-
+  
     if (_formKey.currentState?.validate() ?? false) {
-      // Validation passed.
       _formKey.currentState!.save();
-
+  
       setState(() => _isFormLoading = true);
+  
+      try {
+        final result = await authService.signUp(
+          firstName: _formData.firstName, 
+          lastName: _formData.lastName,
+          mail: _formData.mail, 
+          password: _formData.password
+        );
 
-      print("_formData");
-      print(_formData.firstName);
-      print(_formData.lastName);
-      print(_formData.mail);
-      print(_formData.password);
-
-      authService.signUp(
-          firstName: _formData.firstName, lastName: _formData.lastName,
-          mail: _formData.mail, password: _formData.password
-      );
-
-      // Future.delayed(const Duration(seconds: 1), () async {
-      //   if (_formData.username == 'admin') {
-      //     onError.call('This username is already taken.');
-      //   } else {
-      //     await userDataProvider.setUserDataAsync(
-      //       username: 'Admin ABC',
-      //       userProfileImageUrl: 'https://picsum.photos/id/1005/300/300',
-      //     );
-      //
-      //     onSuccess.call('Your account has been successfully created.');
-      //   }
-      //
-      //   setState(() => _isFormLoading = false);
-      // });
+        if (result.success) {
+          _onRegisterSuccess(context, 'Your account has been successfully created');
+        } else {
+          onError.call(result.errorMessage ?? 'Login failed. Please try again.');
+        }
+      } catch (e) {
+        onError.call('An error occurred during register. Please try again.');
+      } finally {
+        setState(() => _isFormLoading = false);
+      }
     }
   }
 
@@ -76,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       desc: message,
       width: kDialogWidth,
       btnOkText: Lang.of(context).loginNow,
-      btnOkOnPress: () => GoRouter.of(context).go(RouteUri.home),
+      btnOkOnPress: () => GoRouter.of(context).go(RouteUri.login),
     );
 
     dialog.show();
@@ -112,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Align(
           alignment: Alignment.topCenter,
           child: Container(
-            padding: const EdgeInsets.only(top: kDefaultPadding * 5.0),
+            padding: const EdgeInsets.only(top: kDefaultPadding),
             constraints: const BoxConstraints(maxWidth: 400.0),
             child: Card(
               clipBehavior: Clip.antiAlias,
@@ -125,19 +116,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       padding: const EdgeInsets.only(bottom: kDefaultPadding),
                       child: Image.asset(
                         'assets/images/app_logo.png',
-                        height: 80.0,
-                      ),
-                    ),
-                    Text(
-                      lang.appTitle,
-                      style: themeData.textTheme.headlineMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
+                        width: 150.0,
+                        height: 60.0,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
+                      padding: const EdgeInsets.only(bottom: kDefaultPadding),
                       child: Text(
-                        lang.registerANewAccount,
+                        lang.register,
                         style: themeData.textTheme.titleMedium,
                       ),
                     ),
@@ -147,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
+                            padding: const EdgeInsets.only(bottom: kDefaultPadding),
                             child: FormBuilderTextField(
                               name: 'lastName',
                               decoration: InputDecoration(
@@ -163,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
+                            padding: const EdgeInsets.only(bottom: kDefaultPadding),
                             child: FormBuilderTextField(
                               name: 'firstName',
                               decoration: InputDecoration(
@@ -179,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
+                            padding: const EdgeInsets.only(bottom: kDefaultPadding),
                             child: FormBuilderTextField(
                               name: 'mail',
                               decoration: InputDecoration(
@@ -194,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
+                            padding: const EdgeInsets.only(bottom: kDefaultPadding),
                             child: FormBuilderTextField(
                               name: 'password',
                               decoration: InputDecoration(
@@ -210,13 +196,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(),
                                 FormBuilderValidators.minLength(4),
-                                FormBuilderValidators.maxLength(18),
+                                FormBuilderValidators.maxLength(28),
                               ]),
                               onSaved: (value) => (_formData.password = value ?? ''),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
+                            padding: const EdgeInsets.only(bottom: kDefaultPadding),
                             child: FormBuilderTextField(
                               name: 'retypePassword',
                               decoration: InputDecoration(
@@ -249,7 +235,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onPressed: (_isFormLoading
                                     ? null
                                     : () => _doRegisterAsync(
-                                          authService: context.read<AuthService>(),
+                                          authService: context.read<ApiService>(),
                                           onSuccess: (message) => _onRegisterSuccess(context, message),
                                           onError: (message) => _onRegisterError(context, message),
                                         )),

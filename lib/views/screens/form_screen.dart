@@ -12,7 +12,7 @@ import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layou
 import 'package:web_admin/views/widgets/url_new_tab_launcher.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({Key? key}) : super(key: key);
+  const FormScreen({super.key});
 
   @override
   State<FormScreen> createState() => _FormScreenState();
