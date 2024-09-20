@@ -71,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "account": MessageLookupByLibrary.simpleMessage("Compte"),
+        "account": MessageLookupByLibrary.simpleMessage("Mon Compte"),
         "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
             "Connexion au Portail Administrateur"),
         "appTitle": MessageLookupByLibrary.simpleMessage("Admin Web"),

@@ -143,21 +143,21 @@ class ButtonsScreen extends StatelessWidget {
       ElevatedButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(const RoundedRectangleBorder()),
+          shape: WidgetStateProperty.all(const RoundedRectangleBorder()),
         ),
         child: const Text('Flat Border'),
       ),
       ElevatedButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(const StadiumBorder()),
+          shape: WidgetStateProperty.all(const StadiumBorder()),
         ),
         child: const Text('Stadium Border'),
       ),
       ElevatedButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             const BeveledRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10.0),
@@ -199,21 +199,21 @@ class ButtonsScreen extends StatelessWidget {
       OutlinedButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(const RoundedRectangleBorder()),
+          shape: WidgetStateProperty.all(const RoundedRectangleBorder()),
         ),
         child: const Text('Flat Border'),
       ),
       OutlinedButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(const StadiumBorder()),
+          shape: WidgetStateProperty.all(const StadiumBorder()),
         ),
         child: const Text('Stadium Border'),
       ),
       OutlinedButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             const BeveledRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10.0),
@@ -255,21 +255,21 @@ class ButtonsScreen extends StatelessWidget {
       TextButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(const RoundedRectangleBorder()),
+          shape: WidgetStateProperty.all(const RoundedRectangleBorder()),
         ),
         child: const Text('Flat Border'),
       ),
       TextButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(const StadiumBorder()),
+          shape: WidgetStateProperty.all(const StadiumBorder()),
         ),
         child: const Text('Stadium Border'),
       ),
       TextButton(
         onPressed: () {},
         style: buttonStyle.copyWith(
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             const BeveledRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10.0),

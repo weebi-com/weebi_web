@@ -2,12 +2,17 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
+
+import '../../constants/values.dart';
+import '../../providers/user_data_provider.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
@@ -23,11 +28,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Future<bool>? _future;
 
   Future<bool> _getDataAsync() async {
-    await Future.delayed(const Duration(seconds: 1), () {
-      _formData.userProfileImageUrl = 'https://picsum.photos/id/1005/300/300';
-      _formData.username = 'Admin ABC';
-      _formData.email = 'adminabc@email.com';
-    });
+    final sharedPref = await SharedPreferences.getInstance();
+
+    _formData.mail = sharedPref.getString(StorageKeys.mail)!;
+    _formData.userProfileImageUrl = sharedPref.getString(StorageKeys.userProfileImageUrl)!;
 
     return true;
   }
@@ -141,8 +145,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: themeData.extension<AppButtonTheme>()!.secondaryElevated.copyWith(
-                            shape: MaterialStateProperty.all(const CircleBorder()),
-                            padding: MaterialStateProperty.all(EdgeInsets.zero),
+                            shape: WidgetStateProperty.all(const CircleBorder()),
+                            padding: WidgetStateProperty.all(EdgeInsets.zero),
                           ),
                       child: const Icon(
                         Icons.edit_rounded,
@@ -155,21 +159,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
-            child: FormBuilderTextField(
-              name: 'username',
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                hintText: 'Username',
-                border: OutlineInputBorder(),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-              ),
-              initialValue: _formData.username,
-              validator: FormBuilderValidators.required(),
-              onSaved: (value) => (_formData.username = value ?? ''),
-            ),
-          ),
-          Padding(
             padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
             child: FormBuilderTextField(
               name: 'email',
@@ -179,10 +168,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 border: OutlineInputBorder(),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
-              initialValue: _formData.email,
+              initialValue: _formData.mail,
               keyboardType: TextInputType.emailAddress,
               validator: FormBuilderValidators.required(),
-              onSaved: (value) => (_formData.email = value ?? ''),
+              onSaved: (value) => (_formData.mail = value ?? ''),
             ),
           ),
           Align(
@@ -217,6 +206,5 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
 class FormData {
   String userProfileImageUrl = '';
-  String username = '';
-  String email = '';
+  String mail = '';
 }

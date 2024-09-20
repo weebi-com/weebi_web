@@ -96,7 +96,7 @@ class _SidebarState extends State<Sidebar> {
             child: Theme(
               data: themeData.copyWith(
                 scrollbarTheme: themeData.scrollbarTheme.copyWith(
-                  thumbColor: MaterialStateProperty.all(
+                  thumbColor: WidgetStateProperty.all(
                       sidebarTheme.foregroundColor.withOpacity(0.2)),
                 ),
               ),
@@ -148,7 +148,7 @@ class _SidebarState extends State<Sidebar> {
     }
 
     return Column(children: [
-      Text(
+      const Text(
         '''
 Prenons exemple sur le bouton Account en haut à gauche
 Lorsque je clic sur un des éléments de la carte la vue à droite affiche le détail
@@ -169,8 +169,8 @@ Si je m'étais connecté en tant que Manager
 ''',
         style: TextStyle(color: Colors.white),
       ),
-      NestedWrapExample(),
-      Text(
+      const NestedWrapExample(),
+      const Text(
         'je garde les éléments en-dessous pour naviguer facilement et continuer de s inspirer du projet web admin',
         style: TextStyle(color: Colors.white),
       ),
@@ -380,7 +380,7 @@ class SidebarHeader extends StatelessWidget {
             ),
             const SizedBox(width: kDefaultPadding * 0.5),
             Selector<UserDataProvider, String>(
-              selector: (context, provider) => provider.username,
+              selector: (context, provider) => provider.mail,
               builder: (context, value, child) {
                 return Text(
                   '${lang.hi}, $value',

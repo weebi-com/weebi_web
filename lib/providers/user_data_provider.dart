@@ -4,16 +4,28 @@ import 'package:web_admin/constants/values.dart';
 
 class UserDataProvider extends ChangeNotifier {
   var _userProfileImageUrl = '';
-  var _username = '';
+  var _firstname = '';
+  var _lastname = '';
+  var _mail = '';
+  var _accessToken = '';
+  var _refreshToken = '';
 
   String get userProfileImageUrl => _userProfileImageUrl;
 
-  String get username => _username;
+  String get firstname => _firstname;
+  String get lastname => _lastname;
+  String get mail => _mail;
+  String get accessToken => _accessToken;
+  String get refreshToken => _refreshToken;
 
   Future<void> loadAsync() async {
     final sharedPref = await SharedPreferences.getInstance();
 
-    _username = sharedPref.getString(StorageKeys.username) ?? '';
+    _firstname = sharedPref.getString(StorageKeys.firstname) ?? '';
+    _lastname = sharedPref.getString(StorageKeys.lastname) ?? '';
+    _mail = sharedPref.getString(StorageKeys.mail) ?? '';
+    _accessToken = sharedPref.getString(StorageKeys.accessToken) ?? '';
+    _refreshToken = sharedPref.getString(StorageKeys.refreshToken) ?? '';
     _userProfileImageUrl =
         sharedPref.getString(StorageKeys.userProfileImageUrl) ?? '';
 
@@ -22,7 +34,7 @@ class UserDataProvider extends ChangeNotifier {
 
   Future<void> setUserDataAsync({
     String? userProfileImageUrl,
-    String? username,
+    String? mail,
   }) async {
     final sharedPref = await SharedPreferences.getInstance();
     var shouldNotify = false;
@@ -37,10 +49,10 @@ class UserDataProvider extends ChangeNotifier {
       shouldNotify = true;
     }
 
-    if (username != null && username != _username) {
-      _username = username;
+    if (mail != _mail) {
+      _mail = mail!;
 
-      await sharedPref.setString(StorageKeys.username, _username);
+      await sharedPref.setString(StorageKeys.mail, _mail);
 
       shouldNotify = true;
     }
@@ -53,16 +65,16 @@ class UserDataProvider extends ChangeNotifier {
   Future<void> clearUserDataAsync() async {
     final sharedPref = await SharedPreferences.getInstance();
 
-    await sharedPref.remove(StorageKeys.username);
+    await sharedPref.remove(StorageKeys.mail);
     await sharedPref.remove(StorageKeys.userProfileImageUrl);
 
-    _username = '';
+    _mail = '';
     _userProfileImageUrl = '';
 
     notifyListeners();
   }
 
   bool isUserLoggedIn() {
-    return _username.isNotEmpty;
+    return _mail.isNotEmpty;
   }
 }
