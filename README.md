@@ -31,3 +31,49 @@ Login with demo account:\
 Username: admin
 Password: admin
 
+
+## README : Déploiement d'une application Flutter web avec Docker
+
+### Introduction
+
+Ce document explique comment utiliser Docker pour construire et exécuter une application Flutter web. Les deux commandes clés sont :
+
+* **`docker build -t flutter-web-app .`** : Construit une image Docker à partir du contexte actuel (le point "." représente le répertoire courant) et lui attribue le nom `flutter-web-app`.
+* **`docker run -d -p 8080:80 --name flutter-web-app flutter-web-app`** : Exécute l'image Docker en mode détaché (`-d`), expose le port 80 du conteneur sur le port 8080 de votre hôte (`-p 8080:80`) et donne au conteneur le nom `flutter-web-app`.
+
+### Détail des commandes
+
+#### `docker build -t flutter-web-app .`
+
+* **`docker build`** : Cette commande lance le processus de construction d'une image Docker.
+* **`-t flutter-web-app`** : Cet argument spécifie le nom de l'image Docker à créer. Vous pouvez remplacer `flutter-web-app` par un nom plus descriptif si vous le souhaitez.
+* **`.`** : Ce point indique que le contexte de construction est le répertoire courant. Docker va rechercher votre fichier `Dockerfile` dans ce répertoire pour obtenir les instructions de construction.
+
+#### `docker run -d -p 8080:80 --name flutter-web-app flutter-web-app`
+
+* **`docker run`** : Cette commande exécute un conteneur à partir d'une image Docker.
+* **`-d`** : Cet argument démarre le conteneur en mode détaché, c'est-à-dire en arrière-plan.
+* **`-p 8080:80`** : Cet argument mappe le port 80 du conteneur (celui sur lequel votre application Flutter web écoute) au port 8080 de votre machine hôte. Cela vous permet d'accéder à votre application en vous rendant sur `http://localhost:8080` dans votre navigateur.
+* **`--name flutter-web-app`** : Cet argument donne un nom au conteneur. Cela facilite sa gestion et son identification.
+* **`flutter-web-app`** : C'est le nom de l'image Docker que vous avez construite à l'étape précédente.
+
+### Prérequis
+
+* **Docker installé** : Assurez-vous que Docker est installé et en cours d'exécution sur votre machine.
+* **Un fichier Dockerfile** : Ce fichier, situé à la racine de votre projet Flutter, contient les instructions pour construire l'image Docker. Il spécifie généralement l'image de base, les dépendances à installer et le point d'entrée de votre application.
+
+### Utilisation
+
+1. **Ouvrez votre terminal** et placez-vous dans le répertoire racine de votre projet Flutter.
+2. **Exécutez la première commande** pour construire l'image Docker :
+   ```bash
+   docker build -t flutter-web-app .
+```
+3.Exécutez la deuxième commande pour démarrer le conteneur :
+
+```bash
+   docker run -d -p 8080:80 --name flutter-web-app flutter-web-app
+   ```
+Accédez à votre application en ouvrant votre navigateur et en vous rendant sur http://localhost:8080.
+
+e
