@@ -229,14 +229,15 @@ class ResponsiveAppBarTitle extends StatelessWidget {
               visible: (mediaQueryData.size.width > kScreenWidthSm),
               child: Container(
                 padding: const EdgeInsets.only(right: kDefaultPadding * 0.7),
-                height: 40.0,
+                height: 30.0,
                 child: Image.asset(
                   'assets/images/app_logo.png',
                   fit: BoxFit.contain,
+                  color: Colors.white,
                 ),
               ),
             ),
-            Text(lang.appTitle),
+            // Text(lang.appTitle),
           ],
         ),
       ),
