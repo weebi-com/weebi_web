@@ -24,7 +24,7 @@ class AppPreferencesProvider extends ChangeNotifier {
       _locale = Locale(langCode);
     }
 
-    _themeMode = ThemeMode.values.byName(sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.system.name);
+    _themeMode = ThemeMode.values.byName(sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.light.name);
 
     notifyListeners();
   }
