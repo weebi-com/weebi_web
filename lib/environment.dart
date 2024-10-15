@@ -12,7 +12,7 @@ class Environment {
   });
 
   static void init({
-    required String apiBaseUrl,
+    String apiBaseUrl = 'https://envoyproxygrpc-29758828833.us-central1.run.app',
     String defaultAppLanguageCode = 'fr',
   }) {
     _env = Environment._init(

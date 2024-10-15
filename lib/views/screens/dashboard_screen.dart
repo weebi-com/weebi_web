@@ -1,10 +1,13 @@
-
 import 'package:flutter/material.dart';
-import 'package:web_admin/constants/dimens.dart';
+import 'package:go_router/go_router.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
-import 'package:web_admin/theme/theme_extensions/app_data_table_theme.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
+
+import '../../app_router.dart';
+import '../../core/constants/dimens.dart';
+import '../../core/theme/theme_extensions/app_color_scheme.dart';
+import '../../core/theme/theme_extensions/app_data_table_theme.dart';
+
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -196,7 +199,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      onTap: () async {
+                      onTap: () {
+                        GoRouter.of(context).go(RouteUri.listUser);
                       },
                     ),
                     SummaryCard(
@@ -244,6 +248,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       textColor: themeData.colorScheme.onPrimary,
                       iconColor: Colors.black12,
                       width: summaryCardWidth,
+                    ),
+                    GestureDetector(
+                      child: SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Ma Firme',
+                        icon: Icons.home_work_outlined,
+                        backgroundColor: Colors.lightBlue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      onTap: () {
+                        GoRouter.of(context).go(RouteUri.listFirm);
+                      },
                     ),
                   ],
                 );

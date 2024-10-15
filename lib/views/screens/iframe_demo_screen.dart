@@ -4,10 +4,11 @@ import 'dart:ui_web' as ui_web;
 
 import 'package:flutter/material.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
+
+import '../../core/constants/dimens.dart';
 
 class IFrameDemoScreen extends StatefulWidget {
   const IFrameDemoScreen({super.key});

@@ -5,15 +5,15 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
-import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/public_master_layout/public_master_layout.dart';
 
-import '../../providers/user_data_provider.dart';
-import '../../services/api_service.dart';
+import '../../../core/constants/dimens.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/theme/theme_extensions/app_button_theme.dart';
+import '../../../core/theme/theme_extensions/app_color_scheme.dart';
+import '../../../providers/user_data_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,9 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formData = FormData();
 
   var _isFormLoading = false;
+  final authService = AuthService();
 
   Future<void> _doLoginAsync({
-    required ApiService authService,
     required VoidCallback onSuccess,
     required void Function(String message) onError,
   }) async {
@@ -163,7 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: (_isFormLoading
                                     ? null
                                     : () => _doLoginAsync(
-                                          authService: context.read<ApiService>(),
                                           onSuccess: () => _onLoginSuccess(context),
                                           onError: (message) => _onLoginError(context, message),
                                         )),

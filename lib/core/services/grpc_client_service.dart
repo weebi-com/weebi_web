@@ -1,10 +1,9 @@
 import 'package:grpc/grpc_web.dart';
+import '../../environment.dart';
 
-import '../environment.dart';
-
-class GrpcClient {
+class GrpcClientService {
   final GrpcWebClientChannel channel;
 
-  GrpcClient()
+  GrpcClientService()
       : channel = GrpcWebClientChannel.xhr(Uri.parse(env.apiBaseUrl));
 }
