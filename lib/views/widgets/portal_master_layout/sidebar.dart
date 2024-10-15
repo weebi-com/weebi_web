@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/fence_map.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/master_layout_config.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
-import 'package:web_admin/theme/theme_extensions/app_sidebar_theme.dart';
+
+import '../../../core/constants/dimens.dart';
+import '../../../core/theme/theme_extensions/app_sidebar_theme.dart';
 
 class SidebarMenuConfig {
   final String uri;

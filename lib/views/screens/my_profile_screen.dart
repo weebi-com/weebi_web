@@ -2,17 +2,15 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
-import '../../constants/values.dart';
-import '../../providers/user_data_provider.dart';
+import '../../core/constants/dimens.dart';
+import '../../core/constants/values.dart';
+import '../../core/theme/theme_extensions/app_button_theme.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
@@ -30,6 +28,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Future<bool> _getDataAsync() async {
     final sharedPref = await SharedPreferences.getInstance();
 
+    // _formData.firstName = sharedPref.getString(StorageKeys.firstname)!;
+    // _formData.lastName = sharedPref.getString(StorageKeys.lastname)!;
     _formData.mail = sharedPref.getString(StorageKeys.mail)!;
     _formData.userProfileImageUrl = sharedPref.getString(StorageKeys.userProfileImageUrl)!;
 
@@ -158,6 +158,42 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ],
             ),
           ),
+          // Row(
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
+          //       child: FormBuilderTextField(
+          //         name: 'firstName',
+          //         decoration: const InputDecoration(
+          //           labelText: 'Nom',
+          //           hintText: 'Nom',
+          //           border: OutlineInputBorder(),
+          //           floatingLabelBehavior: FloatingLabelBehavior.always,
+          //         ),
+          //         initialValue: _formData.firstName,
+          //         keyboardType: TextInputType.text,
+          //         validator: FormBuilderValidators.required(),
+          //         onSaved: (value) => (_formData.firstName = value ?? ''),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
+          //       child: FormBuilderTextField(
+          //         name: 'lastName',
+          //         decoration: const InputDecoration(
+          //           labelText: 'Prénom',
+          //           hintText: 'Prénom',
+          //           border: OutlineInputBorder(),
+          //           floatingLabelBehavior: FloatingLabelBehavior.always,
+          //         ),
+          //         initialValue: _formData.lastName,
+          //         keyboardType: TextInputType.text,
+          //         validator: FormBuilderValidators.required(),
+          //         onSaved: (value) => (_formData.lastName = value ?? ''),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Padding(
             padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
             child: FormBuilderTextField(
@@ -205,6 +241,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 }
 
 class FormData {
+  // String firstName = '';
+  // String lastName = '';
   String userProfileImageUrl = '';
   String mail = '';
 }

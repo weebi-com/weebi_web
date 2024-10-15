@@ -12,7 +12,7 @@ class Environment {
   });
 
   static void init({
-    required String apiBaseUrl,
+    String apiBaseUrl = 'http://localhost:8082',
     String defaultAppLanguageCode = 'fr',
   }) {
     _env = Environment._init(

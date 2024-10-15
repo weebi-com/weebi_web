@@ -7,9 +7,9 @@ import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/providers/app_preferences_provider.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
-import 'package:web_admin/services/api_service.dart';
-import 'package:web_admin/theme/themes.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
+
+import 'core/theme/themes.dart';
 
 class RootApp extends StatefulWidget {
   const RootApp({super.key});
@@ -34,7 +34,6 @@ class _RootAppState extends State<RootApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ApiService()),
         ChangeNotifierProvider(create: (context) => AppPreferencesProvider()),
         ChangeNotifierProvider(create: (context) => UserDataProvider()),
       ],

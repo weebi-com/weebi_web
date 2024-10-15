@@ -7,14 +7,18 @@ import 'package:web_admin/views/screens/crud_screen.dart';
 import 'package:web_admin/views/screens/dashboard_screen.dart';
 import 'package:web_admin/views/screens/dialogs_screen.dart';
 import 'package:web_admin/views/screens/error_screen.dart';
+import 'package:web_admin/views/screens/firm_management/create_firm_screen.dart';
+import 'package:web_admin/views/screens/firm_management/list_firm_screen.dart';
 import 'package:web_admin/views/screens/form_screen.dart';
 import 'package:web_admin/views/screens/general_ui_screen.dart';
 import 'package:web_admin/views/screens/iframe_demo_screen.dart';
-import 'package:web_admin/views/screens/login_screen.dart';
-import 'package:web_admin/views/screens/logout_screen.dart';
+import 'package:web_admin/views/screens/authentication/login_screen.dart';
+import 'package:web_admin/views/screens/authentication/logout_screen.dart';
 import 'package:web_admin/views/screens/my_profile_screen.dart';
-import 'package:web_admin/views/screens/register_screen.dart';
+import 'package:web_admin/views/screens/authentication/register_screen.dart';
 import 'package:web_admin/views/screens/text_screen.dart';
+import 'package:web_admin/views/screens/user_management/create_user_screen.dart';
+import 'package:web_admin/views/screens/user_management/list_user_screen.dart';
 
 class RouteUri {
   static const String home = '/';
@@ -33,6 +37,12 @@ class RouteUri {
   static const String crud = '/crud';
   static const String crudDetail = '/crud-detail';
   static const String iframe = '/iframe';
+
+  static const String listFirm = '/list-firm';
+  static const String createFirm = '/create-firm';
+
+  static const String listUser = '/list-user';
+  static const String createUser = '/create-user';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -163,6 +173,49 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           child: const IFrameDemoScreen(),
         ),
       ),
+
+      // =========================== FIRMS ===========================
+
+      GoRoute(
+        path: RouteUri.listFirm,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const FirmListScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.createFirm,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const CreateFirmScreen(),
+          );
+        },
+      ),
+
+      // =========================== USERS ===========================
+
+      GoRoute(
+        path: RouteUri.listUser,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const ListUserScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.createUser,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const CreateUserScreen(),
+          );
+        },
+      ),
+
     ],
     redirect: (context, state) {
       if (unrestrictedRoutes.contains(state.matchedLocation)) {

@@ -1,11 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 import 'package:web_admin/views/widgets/url_new_tab_launcher.dart';
+
+import '../../core/constants/dimens.dart';
+import '../../core/theme/theme_extensions/app_button_theme.dart';
 
 class DialogsScreen extends StatelessWidget {
   const DialogsScreen({super.key});

@@ -72,7 +72,7 @@ Ce document explique comment utiliser Docker pour construire et exécuter une ap
 3.Exécutez la deuxième commande pour démarrer le conteneur :
 
 ```bash
-   docker run -d -p 8080:80 --name flutter-web-app flutter-web-app
+   docker run -d -p 8080:80 --name weebi-web-dev weebi-web-dev
    ```
 Accédez à votre application en ouvrant votre navigateur et en vous rendant sur http://localhost:8080.
 
