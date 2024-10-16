@@ -7,7 +7,7 @@ RUN apt-get install -y curl git unzip xz-utils zip libglu1-mesa
 
 # Define variables
 ARG FLUTTER_SDK=/usr/local/flutter
-ARG FLUTTER_VERSION=3.24.3
+ARG FLUTTER_VERSION=stable
 ARG APP=/app/
 
 # Clone the Flutter repository
@@ -21,13 +21,11 @@ ENV PATH="$FLUTTER_SDK/bin:$FLUTTER_SDK/bin/cache/dart-sdk/bin:${PATH}"
 
 # Run Flutter commands
 RUN flutter doctor -v
-RUN flutter channel master
+RUN flutter channel stable
 RUN flutter upgrade
 
 # Enable web support and disable mobile platforms
 RUN flutter config --enable-web
-RUN flutter config --no-enable-android
-RUN flutter config --no-enable-ios
 
 # Create a folder for the app and copy the source code
 RUN mkdir $APP
@@ -37,7 +35,7 @@ WORKDIR $APP
 # Build the Flutter web application
 RUN flutter clean
 RUN flutter pub get
-RUN flutter build web
+RUN flutter build web --verbose
 
 # Stage 2: Create the runtime environment with Nginx
 FROM nginx:alpine
