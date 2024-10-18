@@ -30,28 +30,6 @@ class FirmService {
     }
   }
 
-  Future<StatusResponse> createOneChain({
-    required String firmId,
-  }) async {
-    final stub = FenceServiceClient(_grpcClientService.channel);
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
-      final options = CallOptions(metadata: {'authorization': '$token'});
-
-      final response = await stub.createOneChain(
-          Chain(firmId: firmId),
-          options: options,
-      );
-
-      return response;
-    } catch (e) {
-      print('Erreur lors de la création de la chaine: $e');
-      rethrow;
-    }
-  }
-
   Future<Firm> readOneFirm() async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
@@ -61,50 +39,6 @@ class FirmService {
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.readOneFirm(Empty(), options: options);
-
-      return response;
-    } catch (e) {
-      print('Erreur lors de la récuperation de la chaine: $e');
-      rethrow;
-    }
-  }
-
-  Future<StatusResponse> updateOneChain({
-    required String firmId,
-  }) async {
-    final stub = FenceServiceClient(_grpcClientService.channel);
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
-      final options = CallOptions(metadata: {'authorization': '$token'});
-
-      final response = await stub.updateOneChain(
-        Chain(firmId: firmId),
-        options: options,
-      );
-
-      return response;
-    } catch (e) {
-      print('Erreur lors de la modification de la chaine: $e');
-      rethrow;
-    }
-  }
-
-  Future<ReadAllChainsResponse> readAllChains({
-    required String firmId,
-  }) async {
-    final stub = FenceServiceClient(_grpcClientService.channel);
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
-      final options = CallOptions(metadata: {'authorization': '$token'});
-
-      final response = await stub.readAllChains(
-        Empty(),
-        options: options,
-      );
 
       return response;
     } catch (e) {

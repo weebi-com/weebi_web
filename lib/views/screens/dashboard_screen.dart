@@ -203,14 +203,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         GoRouter.of(context).go(RouteUri.listUser);
                       },
                     ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Chaines de boutique',
-                      icon: Icons.business,
-                      backgroundColor: Colors.blue,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
+                    GestureDetector(
+                      child: SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Chaines de boutique',
+                        icon: Icons.business,
+                        backgroundColor: Colors.blue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      onTap: (){
+                        GoRouter.of(context).go(RouteUri.listChain);
+                      },
                     ),
                     SummaryCard(
                       title: lang.pendingIssues(2),
