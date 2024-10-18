@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/views/screens/buttons_screen.dart';
+import 'package:web_admin/views/screens/chain_management/create_chain_screen.dart';
+import 'package:web_admin/views/screens/chain_management/list_chain_screen.dart';
 import 'package:web_admin/views/screens/colors_screen.dart';
 import 'package:web_admin/views/screens/crud_detail_screen.dart';
 import 'package:web_admin/views/screens/crud_screen.dart';
@@ -43,6 +45,9 @@ class RouteUri {
 
   static const String listUser = '/list-user';
   static const String createUser = '/create-user';
+
+  static const String listChain = '/list-chain';
+  static const String createChain = '/create-chain';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -212,6 +217,27 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           return NoTransitionPage<void>(
             key: state.pageKey,
             child: const CreateUserScreen(),
+          );
+        },
+      ),
+
+      // =========================== CHAINS ===========================
+
+      GoRoute(
+        path: RouteUri.listChain,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const ListChainScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.createChain,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const CreateChainScreen(),
           );
         },
       ),
