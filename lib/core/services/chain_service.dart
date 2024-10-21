@@ -9,7 +9,12 @@ class ChainService {
   final GrpcClientService _grpcClientService = GrpcClientService();
 
   Future<StatusResponse> createOneChain({
-    required String name,
+    String? chainId,
+    String? firmId,
+    String? name,
+    List<Boutique>? boutiques,
+    Timestamp? lastUpdateTimestampUTC,
+    String? lastUpdatedByuserId,
   }) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
@@ -21,6 +26,11 @@ class ChainService {
       final response = await stub.createOneChain(
         Chain(
           name: name,
+          firmId: firmId,
+          chainId: chainId,
+          lastUpdateTimestampUTC: lastUpdateTimestampUTC,
+          boutiques: boutiques,
+          lastUpdatedByuserId: lastUpdatedByuserId,
         ),
         options: options,
       );
