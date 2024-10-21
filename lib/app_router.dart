@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
+import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/views/screens/buttons_screen.dart';
 import 'package:web_admin/views/screens/chain_management/create_chain_screen.dart';
+import 'package:web_admin/views/screens/chain_management/detail_chain_screen.dart';
 import 'package:web_admin/views/screens/chain_management/list_chain_screen.dart';
 import 'package:web_admin/views/screens/colors_screen.dart';
 import 'package:web_admin/views/screens/crud_detail_screen.dart';
@@ -21,6 +23,8 @@ import 'package:web_admin/views/screens/authentication/register_screen.dart';
 import 'package:web_admin/views/screens/text_screen.dart';
 import 'package:web_admin/views/screens/user_management/create_user_screen.dart';
 import 'package:web_admin/views/screens/user_management/list_user_screen.dart';
+import 'package:web_admin/views/screens/boutique_management/create_boutique_screen.dart';
+import 'package:web_admin/views/screens/boutique_management/list_boutique_screen.dart';
 
 class RouteUri {
   static const String home = '/';
@@ -48,6 +52,10 @@ class RouteUri {
 
   static const String listChain = '/list-chain';
   static const String createChain = '/create-chain';
+  static const String detailChain = '/detail-chain';
+
+  static const String listBoutique = '/list-boutique';
+  static const String createBoutique = '/create-boutique';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -238,6 +246,38 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           return NoTransitionPage<void>(
             key: state.pageKey,
             child: const CreateChainScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.detailChain,
+        pageBuilder: (context, state) {
+          final chain = state.extra as Chain;
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: DetailChainScreen(chain: chain),
+          );
+        },
+      ),
+
+
+      // =========================== BOUTIQUES ===========================
+
+      GoRoute(
+        path: RouteUri.listBoutique,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child:  ListBoutiqueScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.createBoutique,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child:  CreateBoutiqueScreen(),
           );
         },
       ),
