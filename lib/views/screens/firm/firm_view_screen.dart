@@ -73,7 +73,8 @@ class _FirmListScreenState extends State<FirmListScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CardHeader(
-                    title: 'Ma firme',
+                    title:
+                        "La firme représente votre entreprise, elle regroupe vos utilisateurs et vos chaînes/boutiques",
                   ),
                   CardBody(
                     child: Column(
@@ -157,6 +158,31 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                       ],
                                     ),
                                   ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: kDefaultPadding),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Date de création (UTC):',
+                                style: TextStyle(
+                                  fontSize:
+                                      themeData.textTheme.bodyLarge!.fontSize,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                currentFirm!.creationDateUTC
+                                    .toDateTime()
+                                    .toIso8601String(),
+                                style: TextStyle(
+                                  fontSize:
+                                      themeData.textTheme.bodyLarge!.fontSize,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],

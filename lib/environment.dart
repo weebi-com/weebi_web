@@ -12,6 +12,7 @@ class Environment {
   });
 
   static void init({
+    //String localBaseUrl = 'https://127.0.0.1:443',
     String apiBaseUrl =
         'https://weebi-envoyproxy-dev-29758828833.europe-west1.run.app',
     String defaultAppLanguageCode = 'fr',
