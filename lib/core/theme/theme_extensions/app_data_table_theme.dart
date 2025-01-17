@@ -11,10 +11,7 @@ class AppDataTableTheme extends ThemeExtension<AppDataTableTheme> {
 
   factory AppDataTableTheme.fromTheme(ThemeData themeData) {
     return AppDataTableTheme(
-      cardTheme: themeData.cardTheme.copyWith(
-        color: Colors.transparent,
-        elevation: 0.0,
-      ),
+      cardTheme: const CardTheme(),
       dataTableThemeData: themeData.dataTableTheme.copyWith(
         headingRowColor: WidgetStateProperty.all(themeData.colorScheme.primary),
         headingTextStyle: TextStyle(color: themeData.colorScheme.onPrimary),
@@ -34,7 +31,8 @@ class AppDataTableTheme extends ThemeExtension<AppDataTableTheme> {
   }
 
   @override
-  ThemeExtension<AppDataTableTheme> lerp(ThemeExtension<AppDataTableTheme>? other, double t) {
+  ThemeExtension<AppDataTableTheme> lerp(
+      ThemeExtension<AppDataTableTheme>? other, double t) {
     if (other is! AppDataTableTheme) {
       return this;
     }
