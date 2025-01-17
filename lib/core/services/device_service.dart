@@ -34,7 +34,7 @@ class DeviceService {
     }
   }
 
-  Future<CreatePendingDeviceResponse> createPendingDevice({
+  Future<CreateDeviceResponse> createPendingDevice({
     required int code,
     required String hardwareName,
     required String hardwareSerialNumber,
@@ -48,7 +48,7 @@ class DeviceService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
-      final response = await stub.createPendingDevice(
+      final response = await stub.createDevice(
         PendingDeviceRequest(
             code: code,
             hardwareInfo: HardwareInfo(
@@ -86,38 +86,6 @@ class DeviceService {
       return response;
     } catch (e) {
       print('Erreur lors de la lecture du device: $e');
-      rethrow;
-    }
-  }
-
-  Future<Tokens> authenticateWithDevice({
-    required String firmId,
-    required String chainId,
-    required String boutiqueId,
-    required String deviceId,
-    required String password,
-  }) async {
-    final stub = FenceServiceClient(_grpcClientService.channel);
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
-      final options = CallOptions(metadata: {'authorization': '$token'});
-
-      final response = await stub.authenticateWithDevice(
-        DeviceCredentials(
-          firmId: firmId,
-          chainId: chainId,
-          boutiqueId: boutiqueId,
-          deviceId: deviceId,
-          password: password,
-        ),
-        options: options,
-      );
-
-      return response;
-    } catch (e) {
-      print('Erreur lors de la connexion avec le device: $e');
       rethrow;
     }
   }

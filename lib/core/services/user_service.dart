@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
@@ -22,19 +23,17 @@ class UserService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
-      final response2 =
-          await stub.readUserPermissionsByToken(Empty(), options: options);
-
       int country = int.parse(countryCode);
 
       final response = await stub.createPendingUser(
         PendingUserRequest(
-            mail: mail,
-            firstname: firstname,
-            lastname: lastname,
-            phone: Phone(countryCode: country, number: phone),
-            permissions: UserPermissions(
-                firmId: response2.firmId, userId: response2.userId)),
+          mail: mail,
+          firstname: firstname,
+          lastname: lastname,
+          phone: Phone(countryCode: country, number: phone),
+          permissions: Dummy
+              .salesPersonPermissionNoId, // TODO pass user permissions dynamically here
+        ),
         options: options,
       );
 
@@ -80,24 +79,6 @@ class UserService {
       return response;
     } catch (e) {
       print('Erreur lors de la suppression de l\'utilisateur: $e');
-      rethrow;
-    }
-  }
-
-  Future<UserPermissions> readUserPermissionsByToken() async {
-    final stub = FenceServiceClient(_grpcClientService.channel);
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
-      final options = CallOptions(metadata: {'authorization': '$token'});
-
-      final response =
-          await stub.readUserPermissionsByToken(Empty(), options: options);
-
-      return response;
-    } catch (e) {
-      print('Erreur lors de la récupération des permissions: $e');
       rethrow;
     }
   }

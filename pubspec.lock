@@ -466,10 +466,10 @@ packages:
     dependency: "direct main"
     description:
       name: protos_weebi
-      sha256: "041466f5693307ed6ed71d9cbe6df9cc28d7660065fb1c719e6212e792750899"
+      sha256: a17c5c28f6233710336e5fdf6eab66dbdfff9465ac7f9cd862137548a9eb18d0
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.8"
+    version: "1.0.9+2"
   provider:
     dependency: "direct main"
     description:

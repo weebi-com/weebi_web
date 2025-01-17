@@ -1,4 +1,4 @@
-import 'package:grpc/grpc_web.dart';
+import 'package:protos_weebi/grpc.dart';
 import '../../environment.dart';
 
 class GrpcClientService {

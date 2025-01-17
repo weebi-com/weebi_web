@@ -58,23 +58,27 @@ class _DetailChainScreenState extends State<DetailChainScreen> {
                             itemCount: boutiques.length,
                             itemBuilder: (context, index) {
                               final boutique = boutiques[index];
-                              final isLoading = _loadingStatus[boutique.boutiqueId] ?? false;
+                              final isLoading =
+                                  _loadingStatus[boutique.boutiqueId] ?? false;
 
                               return Card(
                                 margin: const EdgeInsets.symmetric(vertical: 8),
                                 child: ListTile(
                                   title: Text('Boutique : ${boutique.name}'),
-                                  subtitle: Text('Adresse : ${boutique.address}'),
+                                  subtitle: Text(
+                                      'Adresse : ${boutique.boutique.addressFull.toString()}'),
                                   trailing: ElevatedButton(
                                     onPressed: isLoading
                                         ? null
                                         : () => _generatePairingCodeForBoutique(
-                                      boutique.boutiqueId,
-                                      widget.chain.firmId,
-                                    ),
+                                              boutique.boutiqueId,
+                                              widget.chain.firmId,
+                                            ),
                                     child: isLoading
-                                        ? const CircularProgressIndicator(color: Colors.white)
-                                        : const Text('Générer code de parrainage'),
+                                        ? const CircularProgressIndicator(
+                                            color: Colors.white)
+                                        : const Text(
+                                            'Générer code de parrainage'),
                                   ),
                                 ),
                               );
@@ -93,7 +97,8 @@ class _DetailChainScreenState extends State<DetailChainScreen> {
     );
   }
 
-  Future<void> _generatePairingCodeForBoutique(String boutiqueId, String chainId) async {
+  Future<void> _generatePairingCodeForBoutique(
+      String boutiqueId, String chainId) async {
     setState(() {
       _loadingStatus[boutiqueId] = true;
     });
@@ -108,7 +113,7 @@ class _DetailChainScreenState extends State<DetailChainScreen> {
         context: context,
         dialogType: DialogType.success,
         title:
-        "Code de parrainage pour la boutique ${codeForPairing.boutiqueId} généré: ${codeForPairing.code}",
+            "Code de parrainage pour la boutique ${codeForPairing.boutiqueId} généré: ${codeForPairing.code}",
         width: kDialogWidth,
         btnOkText: 'OK',
         btnOkOnPress: () {},
@@ -119,7 +124,9 @@ class _DetailChainScreenState extends State<DetailChainScreen> {
 
       // Notification d'erreur
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors de la génération du code pour la boutique $boutiqueId')),
+        SnackBar(
+            content: Text(
+                'Erreur lors de la génération du code pour la boutique $boutiqueId')),
       );
     } finally {
       setState(() {

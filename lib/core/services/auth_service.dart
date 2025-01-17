@@ -48,13 +48,6 @@ class AuthService {
 
       await _saveTokens(response.accessToken, response.refreshToken);
 
-      final options =
-          CallOptions(metadata: {'authorization': response.accessToken});
-      await stub.readUserPermissionsByToken(
-        Empty(),
-        options: options,
-      );
-
       return SignInResult(success: true, message: "");
     } catch (e) {
       return _handleSignInError(e);

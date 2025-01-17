@@ -12,7 +12,7 @@ class ChainService {
     String? chainId,
     String? firmId,
     String? name,
-    List<Boutique>? boutiques,
+    List<BoutiquePb>? boutiques,
     Timestamp? lastUpdateTimestampUTC,
     String? lastUpdatedByuserId,
   }) async {
@@ -29,7 +29,7 @@ class ChainService {
           firmId: firmId,
           chainId: chainId,
           lastUpdateTimestampUTC: lastUpdateTimestampUTC,
-          boutiques: boutiques,
+          boutiques: [], // empty
           lastUpdatedByuserId: lastUpdatedByuserId,
         ),
         options: options,
@@ -47,7 +47,7 @@ class ChainService {
       required String lastUpdatedByuserId,
       String? firmId,
       String? name,
-      List<Boutique>? boutiques,
+      List<BoutiquePb>? boutiques,
       Timestamp? lastUpdateTimestampUTC}) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
@@ -57,14 +57,7 @@ class ChainService {
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.updateOneChain(
-        Chain(
-          chainId: chainId,
-          firmId: firmId,
-          name: name,
-          boutiques: boutiques,
-          lastUpdatedByuserId: lastUpdatedByuserId,
-          lastUpdateTimestampUTC: lastUpdateTimestampUTC,
-        ),
+        ChainRequest(chainId: chainId, name: name),
         options: options,
       );
 
