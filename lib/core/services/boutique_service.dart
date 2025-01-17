@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -9,17 +9,17 @@ class BoutiqueService {
   final GrpcClientService _grpcClientService = GrpcClientService();
 
   Future<StatusResponse> createOneBoutique({
-     String? name,
-     String? boutiqueId,
-     String? chainId,
-     String? firmId,
-     String? code,
-     String? city,
-     String? code2Letters,
-     String? namel10n,
-     double? latitude,
-     double? longitude,
-     String? street,
+    String? name,
+    String? boutiqueId,
+    String? chainId,
+    String? firmId,
+    String? code,
+    String? city,
+    String? code2Letters,
+    String? namel10n,
+    double? latitude,
+    double? longitude,
+    String? street,
   }) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
@@ -28,12 +28,10 @@ class BoutiqueService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
-      Boutique maBoutique = Boutique(
+      final myBoutique = BoutiquePb(
         name: name,
         boutiqueId: boutiqueId,
-        chainId: chainId,
-        firmId: firmId,
-        address: Address(
+        addressFull: Address(
           code: code,
           city: city,
           country: Country(
@@ -47,7 +45,7 @@ class BoutiqueService {
       );
 
       final response = await stub.createOneBoutique(
-        maBoutique,
+        BoutiqueRequest(chainId: chainId, boutique: myBoutique),
         options: options,
       );
 
@@ -77,14 +75,12 @@ class BoutiqueService {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
-
-      final response = await stub.updateOneBoutique(
-        Boutique(
+      final request = BoutiqueRequest(
+        chainId: chainId,
+        boutique: BoutiquePb(
           name: name,
           boutiqueId: boutiqueId,
-          chainId: chainId,
-          firmId: firmId,
-          address: Address(
+          addressFull: Address(
             code: code,
             city: city,
             country: Country(
@@ -96,6 +92,10 @@ class BoutiqueService {
             street: street,
           ),
         ),
+      );
+
+      final response = await stub.updateOneBoutique(
+        request,
         options: options,
       );
 

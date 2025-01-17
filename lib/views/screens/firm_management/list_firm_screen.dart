@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/core/services/firm_service.dart';
@@ -112,15 +112,17 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                       Text(
                                         'Nom de la firme:',
                                         style: TextStyle(
-                                          fontSize: themeData.textTheme.bodyLarge!.fontSize,
+                                          fontSize: themeData
+                                              .textTheme.bodyLarge!.fontSize,
                                         ),
                                       ),
                                       const SizedBox(width: 10),
                                       Text(
                                         currentFirm!.name,
                                         style: TextStyle(
-                                            fontSize: themeData.textTheme.bodyLarge!.fontSize,
-                                            fontWeight: FontWeight.bold,
+                                          fontSize: themeData
+                                              .textTheme.bodyLarge!.fontSize,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
@@ -138,15 +140,16 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                         .go(RouteUri.createFirm),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: kDefaultPadding * 0.5),
                                           child: Icon(
                                             Icons.add,
-                                            size: (themeData.textTheme.labelLarge!
-                                                    .fontSize! +
+                                            size: (themeData.textTheme
+                                                    .labelLarge!.fontSize! +
                                                 4.0),
                                           ),
                                         ),
