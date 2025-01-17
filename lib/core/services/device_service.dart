@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -20,11 +20,11 @@ class DeviceService {
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.generateCodeForPairingDevice(
-          ChainIdAndboutiqueId(
-            boutiqueId: boutiqueId,
-            chainId: chainId,
-          ),
-          options: options,
+        ChainIdAndboutiqueId(
+          boutiqueId: boutiqueId,
+          chainId: chainId,
+        ),
+        options: options,
       );
 
       return response;
@@ -50,14 +50,13 @@ class DeviceService {
 
       final response = await stub.createPendingDevice(
         PendingDeviceRequest(
-          code: code,
-          hardwareInfo: HardwareInfo(
-            name: hardwareName,
-            serialNumber: hardwareSerialNumber,
-            baseOS: hardwareBaseOS,
-            brand: hardwareBrand,
-          )
-        ),
+            code: code,
+            hardwareInfo: HardwareInfo(
+              name: hardwareName,
+              serialNumber: hardwareSerialNumber,
+              baseOS: hardwareBaseOS,
+              brand: hardwareBrand,
+            )),
         options: options,
       );
 
@@ -80,9 +79,7 @@ class DeviceService {
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.readDevices(
-        ReadDevicesRequest(
-            chainId: chainId
-        ),
+        ReadDevicesRequest(chainId: chainId),
         options: options,
       );
 
@@ -124,6 +121,4 @@ class DeviceService {
       rethrow;
     }
   }
-
-
 }

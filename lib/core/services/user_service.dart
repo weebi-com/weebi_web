@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -22,7 +22,8 @@ class UserService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
-      final response2 = await stub.readUserPermissionsByToken(Empty(), options: options);
+      final response2 =
+          await stub.readUserPermissionsByToken(Empty(), options: options);
 
       int country = int.parse(countryCode);
 
@@ -33,17 +34,13 @@ class UserService {
             lastname: lastname,
             phone: Phone(countryCode: country, number: phone),
             permissions: UserPermissions(
-                firmId: response2.firmId,
-                userId: response2.userId
-            )
-        ),
+                firmId: response2.firmId, userId: response2.userId)),
         options: options,
       );
 
       return PendingUserResponse(
           statusResponse: response.statusResponse,
-          userPublic: response.userPublic
-      );
+          userPublic: response.userPublic);
     } catch (e) {
       print('Erreur lors de la création de l\'utilisateur: $e');
       rethrow;
@@ -77,7 +74,8 @@ class UserService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
-      final response = await stub.deleteOneUser(UserId(userId: userId), options: options);
+      final response =
+          await stub.deleteOneUser(UserId(userId: userId), options: options);
 
       return response;
     } catch (e) {
@@ -94,7 +92,8 @@ class UserService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
-      final response = await stub.readUserPermissionsByToken(Empty(), options: options);
+      final response =
+          await stub.readUserPermissionsByToken(Empty(), options: options);
 
       return response;
     } catch (e) {

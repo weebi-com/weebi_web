@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -42,14 +42,13 @@ class ChainService {
     }
   }
 
-  Future<StatusResponse> updateOneChain({
-    required String chainId,
-    required String lastUpdatedByuserId,
-    String? firmId,
-    String? name,
-    List<Boutique>? boutiques,
-    Timestamp? lastUpdateTimestampUTC
-  }) async {
+  Future<StatusResponse> updateOneChain(
+      {required String chainId,
+      required String lastUpdatedByuserId,
+      String? firmId,
+      String? name,
+      List<Boutique>? boutiques,
+      Timestamp? lastUpdateTimestampUTC}) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
     try {

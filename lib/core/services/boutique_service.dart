@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -9,17 +9,17 @@ class BoutiqueService {
   final GrpcClientService _grpcClientService = GrpcClientService();
 
   Future<StatusResponse> createOneBoutique({
-     String? name,
-     String? boutiqueId,
-     String? chainId,
-     String? firmId,
-     String? code,
-     String? city,
-     String? code2Letters,
-     String? namel10n,
-     double? latitude,
-     double? longitude,
-     String? street,
+    String? name,
+    String? boutiqueId,
+    String? chainId,
+    String? firmId,
+    String? code,
+    String? city,
+    String? code2Letters,
+    String? namel10n,
+    double? latitude,
+    double? longitude,
+    String? street,
   }) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 

@@ -55,8 +55,7 @@ class _CreateBoutiqueScreenState extends State<CreateBoutiqueScreen> {
         AwesomeDialog(
           context: context,
           dialogType: DialogType.success,
-          title:
-          "La boutique  ${response.message} a bien été créée.",
+          title: "La boutique  ${response.message} a bien été créée.",
           width: kDialogWidth,
           btnOkText: 'OK',
           btnOkOnPress: () => GoRouter.of(context).go(RouteUri.listBoutique),
@@ -79,7 +78,6 @@ class _CreateBoutiqueScreenState extends State<CreateBoutiqueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final lang = Lang.of(context);
     final themeData = Theme.of(context);
     const pageTitle = 'Créer une boutique';
 
@@ -125,9 +123,11 @@ class _CreateBoutiqueScreenState extends State<CreateBoutiqueScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTextField('name', 'Nom de la boutique', "Boutique"),
-          _buildTextField('boutiqueId', 'ID de la boutique', 'Identifiant boutique'),
+          _buildTextField(
+              'boutiqueId', 'ID de la boutique', 'Identifiant boutique'),
           _buildTextField('chainId', 'ID de la chaîne', 'Identifiant chaîne'),
-          _buildTextField('firmId', 'ID de l\'entreprise', 'Identifiant entreprise'),
+          _buildTextField(
+              'firmId', 'ID de l\'entreprise', 'Identifiant entreprise'),
           _buildTextField('code', 'Code postal', 'Code postal'),
           _buildTextField('city', 'Ville', 'Ville'),
           _buildTextField('code2Letters', 'Code pays', 'Code à 2 lettres'),
@@ -162,7 +162,8 @@ class _CreateBoutiqueScreenState extends State<CreateBoutiqueScreen> {
     );
   }
 
-  Widget _buildSubmitButton(BuildContext context, ThemeData themeData, Lang lang) {
+  Widget _buildSubmitButton(
+      BuildContext context, ThemeData themeData, Lang lang) {
     return ElevatedButton(
       onPressed: _isLoading ? null : () => _doSubmit(context),
       style: themeData.extension<AppButtonTheme>()!.primaryElevated,
@@ -172,7 +173,8 @@ class _CreateBoutiqueScreenState extends State<CreateBoutiqueScreen> {
     );
   }
 
-  Widget _buildBackButton(BuildContext context, ThemeData themeData, Lang lang) {
+  Widget _buildBackButton(
+      BuildContext context, ThemeData themeData, Lang lang) {
     return ElevatedButton(
       onPressed: () => GoRouter.of(context).pop(),
       style: themeData.extension<AppButtonTheme>()!.primaryElevated,
