@@ -26,7 +26,7 @@ dependencies:
       url : https://github.com/hazem-saeed/form_builder_asset_picker
   awesome_dialog: ^3.2.0
 
-  protos_weebi: ^1.0.9+2
+  protos_weebi: ^1.0.9+3
   mixins_weebi : any # target ^1.1.6+2 at least which exports weebi_models
   #cupertino_icons: ^1.0.6 not needed
   #protobuf: ^3.1.0 not needed
