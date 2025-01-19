@@ -227,7 +227,7 @@ class _ListChainScreenState extends State<ListChainScreen> {
                                               },
                                               onEditButtonPressed: (chain) {
                                                 GoRouter.of(context).go(
-                                                    RouteUri.createChain,
+                                                    RouteUri.updateChain,
                                                     extra: chain);
                                               },
                                             ),

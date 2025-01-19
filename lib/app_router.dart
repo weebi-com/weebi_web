@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
+import 'package:provider/provider.dart';
+import 'package:web_admin/contacts/view/contacts_page.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/views/screens/buttons_screen.dart';
 import 'package:web_admin/views/screens/boutiques/create_chain_screen.dart';
@@ -45,6 +47,8 @@ class RouteUri {
 
   static const String firmDetail = '/firm';
   static const String createFirm = '/create-firm';
+
+  static const String contacts = '/contacts';
 
   static const String listUser = '/list-user';
   static const String createUser = '/create-user';
@@ -230,7 +234,7 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
         },
       ),
 
-      // =========================== CHAINS ===========================
+      // =========================== CHAINS && BOUTIQUES ===========================
 
       GoRoute(
         path: RouteUri.listChain,
@@ -261,23 +265,26 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
         },
       ),
 
-      // =========================== BOUTIQUES ===========================
-
-/*       GoRoute(
-        path: RouteUri.listBoutique,
-        pageBuilder: (context, state) {
-          return NoTransitionPage<void>(
-            key: state.pageKey,
-            child: const ListBoutiqueScreen(),
-          );
-        },
-      ), */
       GoRoute(
         path: RouteUri.createBoutique,
         pageBuilder: (context, state) {
           return NoTransitionPage<void>(
             key: state.pageKey,
             child: const CreateBoutiqueScreen(),
+          );
+        },
+      ),
+
+      // =========================== CONTACTS ===========================
+
+      GoRoute(
+        path: RouteUri.contacts,
+        pageBuilder: (context, state) {
+          // TODO: this needs to be felxible depending on the chain selected
+          final chainId = state.extra as String;
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: ContactsPage(chainId),
           );
         },
       ),

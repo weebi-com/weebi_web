@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/core/constants/dimens.dart';
 import 'package:web_admin/core/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/generated/l10n.dart';
+import 'package:web_admin/providers/user_data_provider.dart';
+import 'package:web_admin/token/jwt.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 // import 'package:web_admin/core/theme/theme_extensions/app_data_table_theme.dart';
 
@@ -103,6 +106,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         GoRouter.of(context).go(RouteUri.listChain);
                       },
                     ),
+                    InkWell(
+                      child: SummaryCard(
+                        title: lang.newOrders(2),
+                        value: 'Contacts',
+                        icon: Icons.person,
+                        backgroundColor: Colors.blue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      onTap: () {
+                        final chainId = JsonWebToken.parse(
+                                context.read<UserDataProvider>().accessToken)
+                            .permissions
+                            .firmId; // first chainId == firmId
+                        GoRouter.of(context)
+                            .go(RouteUri.detailChain, extra: chainId);
+                      },
+                    ),
 /*                     GestureDetector(
                       child: SummaryCard(
                         title: lang.pendingIssues(2),
@@ -200,15 +222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      SummaryCard(
-                        title: lang.newOrders(2),
-                        value: 'Contacts',
-                        icon: Icons.person,
-                        backgroundColor: Colors.blue,
-                        textColor: themeData.colorScheme.onPrimary,
-                        iconColor: Colors.black12,
-                        width: summaryCardWidth,
-                      ),
+
                       SummaryCard(
                         title: lang.pendingIssues(2),
                         value: 'Contacts Import/Export',
