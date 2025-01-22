@@ -15,7 +15,7 @@ class ContactsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ContactsNotifier>(
       builder: (context, state, child) {
-        return ProtoMessageWidget(messages: state.contacts);
+        return ProtoMessagesTable(header: 'Contacts', messages: state.contacts);
       },
     );
   }

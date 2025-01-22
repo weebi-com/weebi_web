@@ -35,8 +35,9 @@ class ContactDataSource extends DataTableSource {
 
 class ProtoMessagesTable extends StatelessWidget {
   final List<ContactPb> messages;
-
-  const ProtoMessagesTable({required this.messages, super.key});
+  final String header;
+  const ProtoMessagesTable(
+      {required this.header, required this.messages, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class ProtoMessagesTable extends StatelessWidget {
     final descriptor = messages.isNotEmpty ? messages[0].info_ : null;
 
     return PaginatedDataTable(
-      header: Text('Proto Messages'),
+      header: Text(header),
       columns: descriptor != null
           ? descriptor.byName.values
               .map((field) => DataColumn(label: Text(field.name)))
@@ -82,7 +83,7 @@ Widget _buildFieldWidget(String fieldName, dynamic fieldValue) {
     case const (int):
       return ListTile(
         title: Text(fieldName),
-        subtitle: Text(fieldValue.toString()),
+        subtitle: Text(fieldValue == 0 ? '' : fieldValue.toString()),
       );
     case const (String):
       return ListTile(
@@ -99,29 +100,15 @@ Widget _buildFieldWidget(String fieldName, dynamic fieldValue) {
         title: Text(fieldName),
         subtitle: Text((fieldValue as List<int>).join(', ')),
       );
+    case const (List<String>):
+      return ListTile(
+        title: Text(fieldName),
+        subtitle: Text((fieldValue as List<String>).join(', ')),
+      );
     default:
       return ListTile(
         title: Text(fieldName),
         subtitle: const Text('Unsupported field type'),
       );
-  }
-}
-
-class ProtoMessageWidget extends StatelessWidget {
-  final List<dynamic> messages;
-  const ProtoMessageWidget({required this.messages, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: messages.length,
-      itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: fieldWidgets(messages[index]),
-        );
-      },
-    );
   }
 }

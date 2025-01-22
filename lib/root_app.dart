@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/environment.dart';
 import 'package:web_admin/generated/l10n.dart';
@@ -29,9 +30,10 @@ class _RootAppState extends State<RootApp> {
 
   Future<bool> _getScreenDataAsync(
       AppPreferencesProvider appPreferencesProvider,
-      UserDataProvider userDataProvider) async {
-    await appPreferencesProvider.loadAsync();
-    await userDataProvider.loadAsync();
+      UserDataProvider userDataProvider,
+      SharedPreferences sharedPrefs) async {
+    appPreferencesProvider.loadAsync(sharedPrefs);
+    await userDataProvider.loadAsync(); // TODO same thig here
 
     return true;
   }
@@ -110,7 +112,8 @@ class _RootAppState extends State<RootApp> {
               initialData: null,
               future: (_future ??= _getScreenDataAsync(
                   context.read<AppPreferencesProvider>(),
-                  context.read<UserDataProvider>())),
+                  context.read<UserDataProvider>(),
+                  context.read<SharedPreferences>())),
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data!) {
                   return Consumer<AppPreferencesProvider>(

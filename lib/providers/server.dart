@@ -1,7 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
-import 'package:protos_weebi/grpc.dart';
+import 'package:grpc/grpc_web.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/grpc/server.dart';
 import 'package:web_admin/grpc/auth_interceptor.dart';

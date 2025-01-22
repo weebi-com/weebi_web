@@ -28,6 +28,7 @@ dependencies:
 
   protos_weebi: ^1.0.9+4
   grpc: ^4.0.1 # grpc_web not exported from protos
+  models_weebi: any
   mixins_weebi : any # target ^1.1.6+2 at least which exports weebi_models
   #cupertino_icons: ^1.0.6 not needed
   #protobuf: ^3.1.0 not needed

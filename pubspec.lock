@@ -335,7 +335,7 @@ packages:
     source: hosted
     version: "2.5.0"
   models_weebi:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: models_weebi
       sha256: "8cbf61c8b095ef08699f930414af37aed06054525dcbf076e87598fef6b84496"
