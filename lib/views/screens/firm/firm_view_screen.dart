@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:web_admin/app_router.dart';
 import 'package:web_admin/core/services/firm_service.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
 import '../../../core/constants/dimens.dart';
-import '../../../core/theme/theme_extensions/app_button_theme.dart';
 import '../../../core/theme/theme_extensions/app_color_scheme.dart';
 
 class FirmListScreen extends StatefulWidget {
@@ -104,7 +101,7 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                     ),
                                   ),
                                 )
-                              else if (currentFirm != null)
+                              else if (currentFirm != null) ...[
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       top: kDefaultPadding),
@@ -129,7 +126,35 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                     ],
                                   ),
                                 ),
-                              Visibility(
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: kDefaultPadding),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Date de création (UTC):',
+                                        style: TextStyle(
+                                          fontSize: themeData
+                                              .textTheme.bodyLarge!.fontSize,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        currentFirm!.creationDateUTC
+                                            .toDateTime()
+                                            .toIso8601String(),
+                                        style: TextStyle(
+                                          fontSize: themeData
+                                              .textTheme.bodyLarge!.fontSize,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                              // * not meant to be using weebi web without a firm 
+/*                               Visibility(
                                 visible: currentFirm == null,
                                 child: SizedBox(
                                   height: 40.0,
@@ -159,32 +184,7 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: kDefaultPadding),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Date de création (UTC):',
-                                style: TextStyle(
-                                  fontSize:
-                                      themeData.textTheme.bodyLarge!.fontSize,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                currentFirm!.creationDateUTC
-                                    .toDateTime()
-                                    .toIso8601String(),
-                                style: TextStyle(
-                                  fontSize:
-                                      themeData.textTheme.bodyLarge!.fontSize,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              ), */
                             ],
                           ),
                         ),

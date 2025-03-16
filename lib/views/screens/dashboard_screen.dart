@@ -106,7 +106,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         GoRouter.of(context).go(RouteUri.listChain);
                       },
                     ),
-                    InkWell(
+                    // NOT READY YET
+/*                     InkWell(
                       child: SummaryCard(
                         title: lang.newOrders(2),
                         value: 'Contacts',
@@ -120,11 +121,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         final chainId = JsonWebToken.parse(
                                 context.read<UserDataProvider>().accessToken)
                             .permissions
-                            .firmId; // first chainId == firmId
+                            .firmId; // first chainId == firmId, making it simple
                         GoRouter.of(context)
-                            .go(RouteUri.detailChain, extra: chainId);
+                            .go(RouteUri.contacts, extra: chainId);
                       },
-                    ),
+                    ), */
 /*                     GestureDetector(
                       child: SummaryCard(
                         title: lang.pendingIssues(2),

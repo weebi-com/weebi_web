@@ -280,7 +280,7 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
       GoRoute(
         path: RouteUri.contacts,
         pageBuilder: (context, state) {
-          // TODO: this needs to be felxible depending on the chain selected
+          // TODO: this needs to be flexible depending on the chain selected
           final chainId = state.extra as String;
           return NoTransitionPage<void>(
             key: state.pageKey,
