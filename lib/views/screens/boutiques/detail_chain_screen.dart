@@ -4,7 +4,7 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 import '../../../app_router.dart';
 import '../../../core/constants/dimens.dart';
 import '../../../core/services/device_service.dart';
-import '../../../generated/l10n.dart';
+//import '../../../generated/l10n.dart';
 import '../../widgets/card_elements.dart';
 import '../../widgets/portal_master_layout/portal_master_layout.dart';
 

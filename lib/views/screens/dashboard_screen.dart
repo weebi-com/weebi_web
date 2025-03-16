@@ -80,6 +80,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     GestureDetector(
                       child: SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value:
+                            'Mes boutiques', // TODO include chaines de if + 1 chain
+                        icon: Icons.store,
+                        backgroundColor: Colors.blue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      onTap: () {
+                        GoRouter.of(context).go(RouteUri.listChain);
+                      },
+                    ),
+                    GestureDetector(
+                      child: SummaryCard(
                         title: lang.newUsers(2),
                         value: 'Utilisateurs',
                         icon: Icons.group_add_rounded,
@@ -92,20 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         GoRouter.of(context).go(RouteUri.listUser);
                       },
                     ),
-                    GestureDetector(
-                      child: SummaryCard(
-                        title: lang.pendingIssues(2),
-                        value: 'Chaines de boutique',
-                        icon: Icons.store,
-                        backgroundColor: Colors.blue,
-                        textColor: themeData.colorScheme.onPrimary,
-                        iconColor: Colors.black12,
-                        width: summaryCardWidth,
-                      ),
-                      onTap: () {
-                        GoRouter.of(context).go(RouteUri.listChain);
-                      },
-                    ),
+
                     // NOT READY YET
 /*                     InkWell(
                       child: SummaryCard(

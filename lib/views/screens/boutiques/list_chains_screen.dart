@@ -225,11 +225,13 @@ class _ListChainScreenState extends State<ListChainScreen> {
                                                     RouteUri.detailChain,
                                                     extra: chain);
                                               },
-                                              onEditButtonPressed: (chain) {
-                                                GoRouter.of(context).go(
-                                                    RouteUri.updateChain,
-                                                    extra: chain);
-                                              },
+                                              onEditButtonPressed: (chain) => {} 
+                                              //(chain) {
+                                              //  TODO add update chain
+                                              //  GoRouter.of(context).go(
+                                              //      RouteUri.updateChain,
+                                              //      extra: chain);
+                                              //},
                                             ),
                                             rowsPerPage: 10,
                                             showCheckboxColumn: false,
@@ -302,9 +304,9 @@ class ChainDataSource extends DataTableSource {
               onPressed: () => onDetailButtonPressed(chain),
               child: const Text("Détails"),
             ),
-            OutlinedButton(
-              onPressed: () => onDetailButtonPressed(chain),
-              child: const Text("Détails"),
+            const OutlinedButton(
+              onPressed: null, // TODO () => onEditButtonPressed(chain),
+              child: Text("Editer"),
             ),
           ],
         ),
