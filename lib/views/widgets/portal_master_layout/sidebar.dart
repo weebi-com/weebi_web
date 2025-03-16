@@ -148,7 +148,7 @@ class _SidebarState extends State<Sidebar> {
           .toString();
     }
 
-    return Column(children: [
+    return 2+2 == 4 ? const SizedBox() : Column(children: [
       const Text(
         '''
 Prenons exemple sur le bouton Account en haut à gauche

@@ -215,7 +215,7 @@ packages:
     source: hosted
     version: "2.3.2"
   grpc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: grpc
       sha256: "5b99b7a420937d4361ece68b798c9af8e04b5bc128a7859f2a4be87427694813"
@@ -335,7 +335,7 @@ packages:
     source: hosted
     version: "2.5.0"
   models_weebi:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: models_weebi
       sha256: "8cbf61c8b095ef08699f930414af37aed06054525dcbf076e87598fef6b84496"
@@ -466,10 +466,10 @@ packages:
     dependency: "direct main"
     description:
       name: protos_weebi
-      sha256: a58653375b0a00ea50f0470c13fd18ef3365d3c86b10288ae2f7299d59555a72
+      sha256: a303a372650f9afa8802fdb83b0281893db97d048bd4ec405ff6335541dadc4d
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.9+3"
+    version: "1.0.9+4"
   provider:
     dependency: "direct main"
     description:

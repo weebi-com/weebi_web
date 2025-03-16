@@ -12,20 +12,21 @@ class AppPreferencesProvider extends ChangeNotifier {
 
   ThemeMode get themeMode => _themeMode;
 
-  Future<void> loadAsync() async {
-    final sharedPref = await SharedPreferences.getInstance();
-
-    final langCode = (sharedPref.getString(StorageKeys.appLanguageCode) ?? env.defaultAppLanguageCode);
+  void loadAsync(SharedPreferences sharedPref) {
+    final langCode = (sharedPref.getString(StorageKeys.appLanguageCode) ??
+        env.defaultAppLanguageCode);
 
     if (langCode.contains('_')) {
       final values = langCode.split('_');
 
-      _locale = Locale.fromSubtags(languageCode: values[0], scriptCode: values[1]);
+      _locale =
+          Locale.fromSubtags(languageCode: values[0], scriptCode: values[1]);
     } else {
       _locale = Locale(langCode);
     }
 
-    _themeMode = ThemeMode.values.byName(sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.light.name);
+    _themeMode = ThemeMode.values.byName(
+        sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.light.name);
 
     notifyListeners();
   }

@@ -47,7 +47,7 @@ class _CreateFirmScreenState extends State<CreateFirmScreen> {
           title: "La firme  ${response.firm.name} à bien été crée.",
           width: kDialogWidth,
           btnOkText: 'OK',
-          btnOkOnPress: () => (GoRouter.of(context).go(RouteUri.listFirm)),
+          btnOkOnPress: () => (GoRouter.of(context).go(RouteUri.firmDetail)),
         ).show();
       } catch (e) {
         setState(() {
@@ -147,7 +147,7 @@ class _CreateFirmScreenState extends State<CreateFirmScreen> {
       height: 40.0,
       child: ElevatedButton(
         style: themeData.extension<AppButtonTheme>()!.secondaryElevated,
-        onPressed: () => GoRouter.of(context).go(RouteUri.listFirm),
+        onPressed: () => GoRouter.of(context).go(RouteUri.firmDetail),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
