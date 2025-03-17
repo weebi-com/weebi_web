@@ -1,5 +1,5 @@
-import 'package:grpc/grpc_web.dart';
 import '../../environment.dart';
+import 'package:grpc/grpc_web.dart';
 
 class GrpcClientService {
   final GrpcWebClientChannel channel;

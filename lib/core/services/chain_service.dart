@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -12,7 +12,7 @@ class ChainService {
     String? chainId,
     String? firmId,
     String? name,
-    List<Boutique>? boutiques,
+    List<BoutiquePb>? boutiques,
     Timestamp? lastUpdateTimestampUTC,
     String? lastUpdatedByuserId,
   }) async {
@@ -29,7 +29,7 @@ class ChainService {
           firmId: firmId,
           chainId: chainId,
           lastUpdateTimestampUTC: lastUpdateTimestampUTC,
-          boutiques: boutiques,
+          boutiques: [], // empty
           lastUpdatedByuserId: lastUpdatedByuserId,
         ),
         options: options,
@@ -42,14 +42,13 @@ class ChainService {
     }
   }
 
-  Future<StatusResponse> updateOneChain({
-    required String chainId,
-    required String lastUpdatedByuserId,
-    String? firmId,
-    String? name,
-    List<Boutique>? boutiques,
-    Timestamp? lastUpdateTimestampUTC
-  }) async {
+  Future<StatusResponse> updateOneChain(
+      {required String chainId,
+      required String lastUpdatedByuserId,
+      String? firmId,
+      String? name,
+      List<BoutiquePb>? boutiques,
+      Timestamp? lastUpdateTimestampUTC}) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
     try {
@@ -58,14 +57,7 @@ class ChainService {
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.updateOneChain(
-        Chain(
-          chainId: chainId,
-          firmId: firmId,
-          name: name,
-          boutiques: boutiques,
-          lastUpdatedByuserId: lastUpdatedByuserId,
-          lastUpdateTimestampUTC: lastUpdateTimestampUTC,
-        ),
+        ChainRequest(chainId: chainId, name: name),
         options: options,
       );
 

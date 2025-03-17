@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -20,11 +20,11 @@ class DeviceService {
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.generateCodeForPairingDevice(
-          ChainIdAndboutiqueId(
-            boutiqueId: boutiqueId,
-            chainId: chainId,
-          ),
-          options: options,
+        ChainIdAndboutiqueId(
+          boutiqueId: boutiqueId,
+          chainId: chainId,
+        ),
+        options: options,
       );
 
       return response;
@@ -34,7 +34,7 @@ class DeviceService {
     }
   }
 
-  Future<CreatePendingDeviceResponse> createPendingDevice({
+  Future<CreateDeviceResponse> createPendingDevice({
     required int code,
     required String hardwareName,
     required String hardwareSerialNumber,
@@ -48,16 +48,15 @@ class DeviceService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
-      final response = await stub.createPendingDevice(
+      final response = await stub.createDevice(
         PendingDeviceRequest(
-          code: code,
-          hardwareInfo: HardwareInfo(
-            name: hardwareName,
-            serialNumber: hardwareSerialNumber,
-            baseOS: hardwareBaseOS,
-            brand: hardwareBrand,
-          )
-        ),
+            code: code,
+            hardwareInfo: HardwareInfo(
+              name: hardwareName,
+              serialNumber: hardwareSerialNumber,
+              baseOS: hardwareBaseOS,
+              brand: hardwareBrand,
+            )),
         options: options,
       );
 
@@ -80,9 +79,7 @@ class DeviceService {
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.readDevices(
-        ReadDevicesRequest(
-            chainId: chainId
-        ),
+        ReadDevicesRequest(chainId: chainId),
         options: options,
       );
 
@@ -92,38 +89,4 @@ class DeviceService {
       rethrow;
     }
   }
-
-  Future<Tokens> authenticateWithDevice({
-    required String firmId,
-    required String chainId,
-    required String boutiqueId,
-    required String deviceId,
-    required String password,
-  }) async {
-    final stub = FenceServiceClient(_grpcClientService.channel);
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
-      final options = CallOptions(metadata: {'authorization': '$token'});
-
-      final response = await stub.authenticateWithDevice(
-        DeviceCredentials(
-          firmId: firmId,
-          chainId: chainId,
-          boutiqueId: boutiqueId,
-          deviceId: deviceId,
-          password: password,
-        ),
-        options: options,
-      );
-
-      return response;
-    } catch (e) {
-      print('Erreur lors de la connexion avec le device: $e');
-      rethrow;
-    }
-  }
-
-
 }

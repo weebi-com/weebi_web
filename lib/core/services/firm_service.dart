@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:grpc/grpc.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
@@ -23,7 +23,8 @@ class FirmService {
         options: options,
       );
 
-      return CreateFirmResponse(firm: response.firm, statusResponse: response.statusResponse);
+      return CreateFirmResponse(
+          firm: response.firm, statusResponse: response.statusResponse);
     } catch (e) {
       print('Erreur lors de la création de la chaine: $e');
       rethrow;

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:web_admin/app_router.dart';
+import 'package:web_admin/core/constants/dimens.dart';
+import 'package:web_admin/core/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/generated/l10n.dart';
+import 'package:web_admin/providers/user_data_provider.dart';
+import 'package:web_admin/token/jwt.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
-
-import '../../app_router.dart';
-import '../../core/constants/dimens.dart';
-import '../../core/theme/theme_extensions/app_color_scheme.dart';
-import '../../core/theme/theme_extensions/app_data_table_theme.dart';
-
+// import 'package:web_admin/core/theme/theme_extensions/app_data_table_theme.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -31,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final lang = Lang.of(context);
     final themeData = Theme.of(context);
     final appColorScheme = Theme.of(context).extension<AppColorScheme>()!;
-    final appDataTableTheme = Theme.of(context).extension<AppDataTableTheme>()!;
+    // final appDataTableTheme = Theme.of(context).extension<AppDataTableTheme>()!;
     final size = MediaQuery.of(context).size;
 
     final summaryCardCrossAxisCount = (size.width >= kScreenWidthLg ? 4 : 2);
@@ -63,131 +64,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   spacing: kDefaultPadding,
                   runSpacing: kDefaultPadding,
                   children: [
-                    SummaryCard(
-                      title: lang.newOrders(2),
-                      value: 'Vente',
-                      icon: Icons.point_of_sale,
-                      backgroundColor: appColorScheme.info,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
+                    GestureDetector(
+                      child: SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Ma Firme',
+                        icon: Icons.business,
+                        backgroundColor: Colors.lightBlue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      onTap: () {
+                        GoRouter.of(context).go(RouteUri.firmDetail);
+                      },
                     ),
-                    SummaryCard(
-                      title: lang.newOrders(2),
-                      value: 'Vente hors-catalogue',
-                      icon: Icons.point_of_sale,
-                      backgroundColor: appColorScheme.info,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Achat',
-                      icon: Icons.shopping_cart_rounded,
-                      backgroundColor: appColorScheme.error,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Achat/dépense hors catalogue',
-                      icon: Icons.shopping_cart_rounded,
-                      backgroundColor: appColorScheme.error,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Mouvement de stock',
-                      icon: Icons.warehouse,
-                      backgroundColor: appColorScheme.error,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Faire un inventaire',
-                      icon: Icons.warehouse,
-                      backgroundColor: appColorScheme.success,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.newOrders(2),
-                      value: 'Articles',
-                      icon: Icons.widgets,
-                      backgroundColor: Colors.orange,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Articles Import/Export',
-                      icon: Icons.file_download,
-                      backgroundColor: Colors.orange,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Articles photos Import/Export',
-                      icon: Icons.image,
-                      backgroundColor: Colors.orange,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.newOrders(2),
-                      value: 'Contacts',
-                      icon: Icons.person,
-                      backgroundColor: Colors.blue,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Contacts Import/Export',
-                      icon: Icons.file_download,
-                      backgroundColor: Colors.blue,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Tickets',
-                      icon: Icons.receipt,
-                      backgroundColor: Colors.grey,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Tickets Import/Export',
-                      icon: Icons.file_download,
-                      backgroundColor: Colors.grey,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.todaySales,
-                      value: 'Stats',
-                      icon: Icons.ssid_chart_rounded,
-                      backgroundColor: appColorScheme.success,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
+                    GestureDetector(
+                      child: SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value:
+                            'Mes boutiques', // TODO include chaines de if + 1 chain
+                        icon: Icons.store,
+                        backgroundColor: Colors.blue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      onTap: () {
+                        GoRouter.of(context).go(RouteUri.listChain);
+                      },
                     ),
                     GestureDetector(
                       child: SummaryCard(
@@ -203,21 +107,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         GoRouter.of(context).go(RouteUri.listUser);
                       },
                     ),
-                    GestureDetector(
+
+                    // NOT READY YET
+/*                     InkWell(
                       child: SummaryCard(
-                        title: lang.pendingIssues(2),
-                        value: 'Chaines de boutique',
-                        icon: Icons.business,
+                        title: lang.newOrders(2),
+                        value: 'Contacts',
+                        icon: Icons.person,
                         backgroundColor: Colors.blue,
                         textColor: themeData.colorScheme.onPrimary,
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      onTap: (){
-                        GoRouter.of(context).go(RouteUri.listChain);
+                      onTap: () {
+                        final chainId = JsonWebToken.parse(
+                                context.read<UserDataProvider>().accessToken)
+                            .permissions
+                            .firmId; // first chainId == firmId, making it simple
+                        GoRouter.of(context)
+                            .go(RouteUri.contacts, extra: chainId);
                       },
-                    ),
-                    GestureDetector(
+                    ), */
+/*                     GestureDetector(
                       child: SummaryCard(
                         title: lang.pendingIssues(2),
                         value: 'Boutiques',
@@ -227,52 +138,161 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      onTap: (){
+                      onTap: () {
                         GoRouter.of(context).go(RouteUri.listBoutique);
                       },
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Taxes',
-                      icon: Icons.cut,
-                      backgroundColor: Colors.red[800]!,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    const Divider(),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Imprimante',
-                      icon: Icons.print,
-                      backgroundColor: Colors.lightBlue,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    SummaryCard(
-                      title: lang.pendingIssues(2),
-                      value: 'Lecteur de code barre',
-                      icon: Icons.barcode_reader,
-                      backgroundColor: Colors.lightBlue,
-                      textColor: themeData.colorScheme.onPrimary,
-                      iconColor: Colors.black12,
-                      width: summaryCardWidth,
-                    ),
-                    GestureDetector(
-                      child: SummaryCard(
+                    ), */
+                    // mockup ok, now no point displaying until functionnal
+                    if (2 + 2 == 5) ...[
+                      SummaryCard(
+                        title: lang.newOrders(2),
+                        value: 'Vente',
+                        icon: Icons.point_of_sale,
+                        backgroundColor: appColorScheme.info,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.newOrders(2),
+                        value: 'Vente hors-catalogue',
+                        icon: Icons.point_of_sale,
+                        backgroundColor: appColorScheme.info,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
                         title: lang.pendingIssues(2),
-                        value: 'Ma Firme',
-                        icon: Icons.home_work_outlined,
+                        value: 'Achat',
+                        icon: Icons.shopping_cart_rounded,
+                        backgroundColor: appColorScheme.error,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Achat/dépense hors catalogue',
+                        icon: Icons.shopping_cart_rounded,
+                        backgroundColor: appColorScheme.error,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Mouvement de stock',
+                        icon: Icons.warehouse,
+                        backgroundColor: appColorScheme.error,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Faire un inventaire',
+                        icon: Icons.warehouse,
+                        backgroundColor: appColorScheme.success,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.newOrders(2),
+                        value: 'Articles',
+                        icon: Icons.widgets,
+                        backgroundColor: Colors.orange,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Articles Import/Export',
+                        icon: Icons.file_download,
+                        backgroundColor: Colors.orange,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Articles photos Import/Export',
+                        icon: Icons.image,
+                        backgroundColor: Colors.orange,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Contacts Import/Export',
+                        icon: Icons.file_download,
+                        backgroundColor: Colors.blue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Tickets',
+                        icon: Icons.receipt,
+                        backgroundColor: Colors.grey,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Tickets Import/Export',
+                        icon: Icons.file_download,
+                        backgroundColor: Colors.grey,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.todaySales,
+                        value: 'Stats',
+                        icon: Icons.ssid_chart_rounded,
+                        backgroundColor: appColorScheme.success,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Taxes',
+                        icon: Icons.cut,
+                        backgroundColor: Colors.red[800]!,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                      const Divider(),
+
+                      /// Accessoires
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Imprimante',
+                        icon: Icons.print,
                         backgroundColor: Colors.lightBlue,
                         textColor: themeData.colorScheme.onPrimary,
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      onTap: () {
-                        GoRouter.of(context).go(RouteUri.listFirm);
-                      },
-                    ),
+                      SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Lecteur de code barre',
+                        icon: Icons.barcode_reader,
+                        backgroundColor: Colors.lightBlue,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                    ],
                   ],
                 );
               },
