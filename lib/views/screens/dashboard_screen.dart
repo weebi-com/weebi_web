@@ -40,13 +40,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: ListView(
         padding: const EdgeInsets.all(kDefaultPadding),
         children: [
-          ListTile(
+          const SizedBox(height: 8),
+          /* ListTile(
             leading: const Icon(Icons.search),
             title: TextField(
               controller: TextEditingController(
                   text: 'recherche dynamique des tuiles ci-dessous'),
             ),
-          ),
+          ), */
           //Text(
           //  lang.dashboard,
           //  style: themeData.textTheme.headlineMedium,

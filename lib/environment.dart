@@ -13,7 +13,7 @@ class Environment {
 
   static void init({
     String apiBaseUrl =
-        'https://weebi-envoyproxy-prd-29758828833.europe-west1.run.app',
+        'https://weebi-envoyproxy-dev-29758828833.europe-west1.run.app',
     String defaultAppLanguageCode = 'fr',
   }) {
     _env = Environment._init(
