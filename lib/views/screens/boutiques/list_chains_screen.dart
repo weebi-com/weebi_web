@@ -10,41 +10,28 @@ import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layou
 
 import '../../../app_router.dart';
 import '../../../core/constants/dimens.dart';
-import '../../../core/services/user_service.dart';
+import '../../../core/services/chain_service.dart';
 import '../../../core/theme/theme_extensions/app_button_theme.dart';
 import '../../../core/theme/theme_extensions/app_color_scheme.dart';
 import '../../../core/theme/theme_extensions/app_data_table_theme.dart';
 
-class ListUserScreen extends StatefulWidget {
-  const ListUserScreen({super.key});
+class ListChainScreen extends StatefulWidget {
+  const ListChainScreen({super.key});
 
   @override
-  State<ListUserScreen> createState() => _ListUserScreenState();
+  State<ListChainScreen> createState() => _ListChainScreenState();
 }
 
-class _ListUserScreenState extends State<ListUserScreen> {
-  final UserService _userService = UserService();
-  late Future<UsersPublic> users;
+class _ListChainScreenState extends State<ListChainScreen> {
+  final ChainService _chainService = ChainService();
   String? errorMessage;
   final _scrollController = ScrollController();
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
-  void initState() {
-    super.initState();
-    _loadAllUsers();
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }
-
-  Future<void> _loadAllUsers() async {
-    setState(() {
-      users = _userService.readAllUsers();
-    });
   }
 
   @override
@@ -59,7 +46,7 @@ class _ListUserScreenState extends State<ListUserScreen> {
         padding: const EdgeInsets.all(kDefaultPadding),
         children: [
           Text(
-            'Gestions des utilisateurs',
+            'Chaines de boutiques',
             style: themeData.textTheme.headlineMedium,
           ),
           Padding(
@@ -70,7 +57,8 @@ class _ListUserScreenState extends State<ListUserScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CardHeader(
-                    title: 'Mes utilisateurs',
+                    title:
+                        "Une chaîne regroupe les boutiques qui partagent les mêmes articles et les mêmes contacts, comme une enseigne/franchise. Il est possible de gérer plusieurs chaînes de boutiques dans une même firme",
                   ),
                   CardBody(
                     child: Column(
@@ -155,7 +143,7 @@ class _ListUserScreenState extends State<ListUserScreen> {
                                               .extension<AppButtonTheme>()!
                                               .successElevated,
                                           onPressed: () => GoRouter.of(context)
-                                              .go(RouteUri.createUser),
+                                              .go(RouteUri.createChain),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
@@ -209,8 +197,9 @@ class _ListUserScreenState extends State<ListUserScreen> {
                                         dataTableTheme: appDataTableTheme
                                             .dataTableThemeData,
                                       ),
-                                      child: FutureBuilder<UsersPublic>(
-                                        future: _userService.readAllUsers(),
+                                      child:
+                                          FutureBuilder<ReadAllChainsResponse>(
+                                        future: _chainService.readAllChains(),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
                                               ConnectionState.waiting) {
@@ -221,32 +210,39 @@ class _ListUserScreenState extends State<ListUserScreen> {
                                             return Text(
                                                 'Erreur: ${snapshot.error}');
                                           } else if (!snapshot.hasData ||
-                                              snapshot.data!.users.isEmpty) {
+                                              snapshot.data!.chains.isEmpty) {
                                             return const Center(
                                                 child: Text(
-                                                    'Aucun utilisateur trouvé'));
+                                                    'Aucune chaine trouvée'));
                                           }
 
-                                          final userList = snapshot.data!;
+                                          final currentChains = snapshot.data!;
                                           return PaginatedDataTable(
-                                            source: DataSource(
-                                              users: userList,
-                                              onDetailButtonPressed: (data) {
-                                                // GoRouter.of(context).go('/user-detail?id=${data['id']}');
+                                            source: ChainDataSource(
+                                              chains: currentChains,
+                                              onDetailButtonPressed: (chain) {
+                                                GoRouter.of(context).go(
+                                                    RouteUri.detailChain,
+                                                    extra: chain);
                                               },
-                                              onDeleteButtonPressed: (data) {
-                                                _deleteUser(data['id']);
-                                              },
+                                              onEditButtonPressed: (chain) => {} 
+                                              //(chain) {
+                                              //  TODO add update chain
+                                              //  GoRouter.of(context).go(
+                                              //      RouteUri.updateChain,
+                                              //      extra: chain);
+                                              //},
                                             ),
                                             rowsPerPage: 10,
                                             showCheckboxColumn: false,
                                             showFirstLastButtons: true,
                                             columns: const [
-                                              DataColumn(label: Text('Prénom')),
                                               DataColumn(label: Text('Nom')),
                                               DataColumn(
-                                                  label: Text('Téléphone')),
-                                              DataColumn(label: Text('Email')),
+                                                  label: Text('Boutiques')),
+                                              DataColumn(
+                                                  label:
+                                                      Text('Nbre Boutiques')),
                                               DataColumn(
                                                   label: Text('Actions')),
                                             ],
@@ -271,52 +267,50 @@ class _ListUserScreenState extends State<ListUserScreen> {
       ),
     );
   }
-
-  void _deleteUser(String userId) async {
-    try {
-      await _userService.deleteOneUser(userId: userId);
-      _loadAllUsers();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Utilisateur supprimé')));
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Erreur de suppression: $e')));
-    }
-  }
 }
 
-class DataSource extends DataTableSource {
-  final UsersPublic users;
-  final void Function(Map<String, dynamic> data) onDetailButtonPressed;
-  final void Function(Map<String, dynamic> data) onDeleteButtonPressed;
+class ChainDataSource extends DataTableSource {
+  final ReadAllChainsResponse chains;
+  final void Function(Chain chain) onDetailButtonPressed;
+  final void Function(Chain chain) onEditButtonPressed;
 
-  DataSource({
-    required this.users,
+  ChainDataSource({
+    required this.chains,
     required this.onDetailButtonPressed,
-    required this.onDeleteButtonPressed,
+    required this.onEditButtonPressed,
   });
 
   @override
   DataRow? getRow(int index) {
-    final user = users.users[index];
+    final chain = chains.chains[index];
+    final List<String> boutiqueNames =
+        chain.boutiques.map((boutique) => boutique.name).toList();
 
     return DataRow.byIndex(index: index, cells: [
-      DataCell(Text(user.firstname)),
-      DataCell(Text(user.lastname)),
-      DataCell(Text("${user.phone.countryCode}${user.phone.number}")),
-      DataCell(Text(user.mail)),
-      DataCell(Row(
-        children: [
-          OutlinedButton(
-            onPressed: () => onDetailButtonPressed({'id': user.userId}),
-            child: const Text("Voir"),
+      DataCell(Text(chain.name)),
+      DataCell(
+        Expanded(
+          child: Text(
+            boutiqueNames.join(', '),
+            overflow: TextOverflow.ellipsis,
           ),
-          OutlinedButton(
-            onPressed: () => onDeleteButtonPressed({'id': user.userId}),
-            child: const Text("Supprimer"),
-          ),
-        ],
-      )),
+        ),
+      ),
+      DataCell(Text(chain.boutiques.length.toString())),
+      DataCell(
+        Row(
+          children: [
+            OutlinedButton(
+              onPressed: () => onDetailButtonPressed(chain),
+              child: const Text("Détails"),
+            ),
+            const OutlinedButton(
+              onPressed: null, // TODO () => onEditButtonPressed(chain),
+              child: Text("Editer"),
+            ),
+          ],
+        ),
+      ),
     ]);
   }
 
@@ -324,7 +318,7 @@ class DataSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => users.users.length;
+  int get rowCount => chains.chains.length;
 
   @override
   int get selectedRowCount => 0;

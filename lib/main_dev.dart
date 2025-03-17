@@ -6,7 +6,7 @@ import 'package:web_admin/shared_prefs.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Environment.init(isDev: false);
+  Environment.init(isDev: true);
 
   runApp(const SharedPrefsFetchWidget(child: RootApp()));
 }

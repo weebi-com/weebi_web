@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_admin/token/jwt.dart';
 import '../services/grpc_client_service.dart';
 import '../constants/values.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
@@ -21,25 +22,46 @@ class UserService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(StorageKeys.accessToken);
-      final options = CallOptions(metadata: {'authorization': '$token'});
+      if (token != null && token.isNotEmpty) {
+        print(JsonWebToken.parse(token).toString());
+        print(JsonWebToken.parse(token).permissions);
+        final options = CallOptions(metadata: {'authorization': token});
 
-      int country = int.parse(countryCode);
+        int country = int.parse(countryCode);
 
-      final response = await stub.createPendingUser(
-        PendingUserRequest(
-          mail: mail,
-          firstname: firstname,
-          lastname: lastname,
-          phone: Phone(countryCode: country, number: phone),
-          permissions: Dummy
-              .salesPersonPermissionNoId, // TODO pass user permissions dynamically here
-        ),
-        options: options,
-      );
+        // TODO pass user permissions dynamically here
 
-      return PendingUserResponse(
-          statusResponse: response.statusResponse,
-          userPublic: response.userPublic);
+        // TODO get actual chainId or boutiqueId here, cheating here because firmId == 1st chainId == 1st boutiqueId
+
+        final userPermissions = UserPermissions.create()
+          ..articleRights = RightSalesperson.article
+          ..boutiqueRights = RightSalesperson.boutique
+          ..contactRights = RightSalesperson.contact
+          ..ticketRights = RightSalesperson.ticket
+          ..boolRights = BoolRights()
+          ..firmId = JsonWebToken.parse(token).permissions.firmId
+          ..limitedAccess = AccessLimited(
+              boutiqueIds: BoutiqueIds(
+                  ids: [JsonWebToken.parse(token).permissions.firmId]),
+              chainIds: ChainIds(
+                  ids: [JsonWebToken.parse(token).permissions.firmId]));
+
+        final response = await stub.createPendingUser(
+          PendingUserRequest(
+              mail: mail,
+              firstname: firstname,
+              lastname: lastname,
+              phone: Phone(countryCode: country, number: phone),
+              permissions: userPermissions),
+          options: options,
+        );
+
+        return PendingUserResponse(
+            statusResponse: response.statusResponse,
+            userPublic: response.userPublic);
+      } else {
+        return PendingUserResponse.create();
+      }
     } catch (e) {
       print('Erreur lors de la création de l\'utilisateur: $e');
       rethrow;

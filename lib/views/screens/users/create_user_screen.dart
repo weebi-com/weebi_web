@@ -76,7 +76,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   Widget build(BuildContext context) {
     final lang = Lang.of(context);
     final themeData = Theme.of(context);
-    const pageTitle = 'Créer un utilisateur';
+    const pageTitle = 'Créer un utilisateur (permissions vendeur)';
 
     return PortalMasterLayout(
       selectedMenuUri: RouteUri.crud,

@@ -3,27 +3,28 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
+import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
 import '../../../app_router.dart';
 import '../../../core/constants/dimens.dart';
-import '../../../core/services/boutique_service.dart';
+import '../../../core/services/user_service.dart';
 import '../../../core/theme/theme_extensions/app_button_theme.dart';
 import '../../../core/theme/theme_extensions/app_color_scheme.dart';
 import '../../../core/theme/theme_extensions/app_data_table_theme.dart';
 
-class ListBoutiqueScreen extends StatefulWidget {
-  const ListBoutiqueScreen({super.key});
+class ListUserScreen extends StatefulWidget {
+  const ListUserScreen({super.key});
 
   @override
-  State<ListBoutiqueScreen> createState() => _ListBoutiqueScreenState();
+  State<ListUserScreen> createState() => _ListUserScreenState();
 }
 
-class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
-  final BoutiqueService _boutiqueService = BoutiqueService();
-  // late Future<Boutique> boutiques;
+class _ListUserScreenState extends State<ListUserScreen> {
+  final UserService _userService = UserService();
+  late Future<UsersPublic> users;
   String? errorMessage;
   final _scrollController = ScrollController();
   final _formKey = GlobalKey<FormBuilderState>();
@@ -31,7 +32,7 @@ class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
   @override
   void initState() {
     super.initState();
-    // _loadAllBoutiques();
+    _loadAllUsers();
   }
 
   @override
@@ -40,9 +41,9 @@ class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
     super.dispose();
   }
 
-  Future<void> _loadAllBoutiques() async {
+  Future<void> _loadAllUsers() async {
     setState(() {
-      // boutiques = _boutiqueService.getBoutiques();
+      users = _userService.readAllUsers();
     });
   }
 
@@ -58,7 +59,7 @@ class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
         padding: const EdgeInsets.all(kDefaultPadding),
         children: [
           Text(
-            'Gestions des boutiques',
+            'Gestions des utilisateurs',
             style: themeData.textTheme.headlineMedium,
           ),
           Padding(
@@ -69,7 +70,7 @@ class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CardHeader(
-                    title: 'Mes boutiques',
+                    title: 'Mes utilisateurs',
                   ),
                   CardBody(
                     child: Column(
@@ -154,7 +155,7 @@ class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
                                               .extension<AppButtonTheme>()!
                                               .successElevated,
                                           onPressed: () => GoRouter.of(context)
-                                              .go(RouteUri.createBoutique),
+                                              .go(RouteUri.createUser),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
@@ -207,47 +208,52 @@ class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
                                         cardTheme: appDataTableTheme.cardTheme,
                                         dataTableTheme: appDataTableTheme
                                             .dataTableThemeData,
-                                      ), child: Container(),
-                                      // child: FutureBuilder<ReadAllChainsResponse>(
-                                      //   future: _boutiqueService.readAllChains(),
-                                      //   builder: (context, snapshot) {
-                                      //     if (snapshot.connectionState ==
-                                      //         ConnectionState.waiting) {
-                                      //       return const Center(
-                                      //           child:
-                                      //               CircularProgressIndicator());
-                                      //     } else if (snapshot.hasError) {
-                                      //       return Text(
-                                      //           'Erreur: ${snapshot.error}');
-                                      //     } else if (!snapshot.hasData ||
-                                      //         snapshot.data!.chains.isEmpty) {
-                                      //       return const Center(
-                                      //           child: Text(
-                                      //               'Aucune boutique trouvé'));
-                                      //     }
-                                      //
-                                      //     final currentBoutiques = snapshot.data!;
-                                      //     return PaginatedDataTable(
-                                      //       source: DataSource(
-                                      //         chains: currentBoutiques,
-                                      //         onDetailButtonPressed: (data) {
-                                      //           // GoRouter.of(context).go('/user-detail?id=${data['id']}');
-                                      //         },
-                                      //       ),
-                                      //       rowsPerPage: 10,
-                                      //       showCheckboxColumn: false,
-                                      //       showFirstLastButtons: true,
-                                      //       columns: const [
-                                      //         DataColumn(label: Text('Nom')),
-                                      //         DataColumn(
-                                      //             label: Text('Boutiques')),  DataColumn(
-                                      //             label: Text('Nbre Boutiques')),
-                                      //         DataColumn(
-                                      //             label: Text('Actions')),
-                                      //       ],
-                                      //     );
-                                      //   },
-                                      // ),
+                                      ),
+                                      child: FutureBuilder<UsersPublic>(
+                                        future: _userService.readAllUsers(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                'Erreur: ${snapshot.error}');
+                                          } else if (!snapshot.hasData ||
+                                              snapshot.data!.users.isEmpty) {
+                                            return const Center(
+                                                child: Text(
+                                                    'Aucun utilisateur trouvé'));
+                                          }
+
+                                          final userList = snapshot.data!;
+                                          return PaginatedDataTable(
+                                            source: DataSource(
+                                              users: userList,
+                                              onDetailButtonPressed: (data) {
+                                                // GoRouter.of(context).go('/user-detail?id=${data['id']}');
+                                              },
+                                              onDeleteButtonPressed: (data) {
+                                                // TODO: first ask if user is really sure
+                                                _deleteUser(data['id']);
+                                              },
+                                            ),
+                                            rowsPerPage: 10,
+                                            showCheckboxColumn: false,
+                                            showFirstLastButtons: true,
+                                            columns: const [
+                                              DataColumn(label: Text('Prénom')),
+                                              DataColumn(label: Text('Nom')),
+                                              DataColumn(
+                                                  label: Text('Téléphone')),
+                                              DataColumn(label: Text('Email')),
+                                              DataColumn(
+                                                  label: Text('Actions')),
+                                            ],
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -267,48 +273,60 @@ class _ListBoutiqueScreenState extends State<ListBoutiqueScreen> {
     );
   }
 
+  Future<void> _deleteUser(String userId) async {
+    try {
+      await _userService.deleteOneUser(userId: userId);
+      _loadAllUsers();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Utilisateur supprimé')));
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Erreur de suppression: $e')));
+    }
+  }
 }
 
-// class DataSource extends DataTableSource {
-//   final ReadAllChainsResponse chains;
-//   final void Function(Map<String, dynamic> data) onDetailButtonPressed;
-//
-//   DataSource({
-//     required this.chains,
-//     required this.onDetailButtonPressed,
-//   });
-//
-//   @override
-//   DataRow? getRow(int index) {
-//     final chain = chains.chains[index];
-//     final List<String> boutiqueNames = chain.boutiques.map((boutique) => boutique.name).toList();
-//
-//     return DataRow.byIndex(index: index, cells: [
-//       DataCell(Text(chain.name)),
-//       DataCell(Expanded(
-//         child: Text(
-//           boutiqueNames.join(', '),
-//           overflow: TextOverflow.ellipsis,
-//         ),
-//       ),),
-//       DataCell(Text(chain.boutiques.length.toString())),
-//       DataCell(Row(
-//         children: [
-//           OutlinedButton(
-//             onPressed: () => onDetailButtonPressed({'id': chain.chainId}),
-//             child: const Text("Voir"),
-//           ),
-//         ],
-//       )),
-//     ]);
-//   }
-//
-//   @override
-//   bool get isRowCountApproximate => false;
-//
-//   @override
-//   int get rowCount => chains.chains.length;
-//
-//   @override
-//   int get selectedRowCount => 0;
-// }
+class DataSource extends DataTableSource {
+  final UsersPublic users;
+  final void Function(Map<String, dynamic> data) onDetailButtonPressed;
+  final void Function(Map<String, dynamic> data) onDeleteButtonPressed;
+
+  DataSource({
+    required this.users,
+    required this.onDetailButtonPressed,
+    required this.onDeleteButtonPressed,
+  });
+
+  @override
+  DataRow? getRow(int index) {
+    final user = users.users[index];
+
+    return DataRow.byIndex(index: index, cells: [
+      DataCell(Text(user.firstname)),
+      DataCell(Text(user.lastname)),
+      DataCell(Text("${user.phone.countryCode}${user.phone.number}")),
+      DataCell(Text(user.mail)),
+      DataCell(Row(
+        children: [
+          OutlinedButton(
+            onPressed: () => onDetailButtonPressed({'id': user.userId}),
+            child: const Text("Voir"),
+          ),
+          OutlinedButton(
+            onPressed: () => onDeleteButtonPressed({'id': user.userId}),
+            child: const Text("Supprimer"),
+          ),
+        ],
+      )),
+    ]);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => users.users.length;
+
+  @override
+  int get selectedRowCount => 0;
+}
