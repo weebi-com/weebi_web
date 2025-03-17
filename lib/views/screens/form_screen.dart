@@ -3,13 +3,14 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_asset_picker/form_builder_asset_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
-import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 import 'package:web_admin/views/widgets/url_new_tab_launcher.dart';
+
+import '../../core/constants/dimens.dart';
+import '../../core/theme/theme_extensions/app_button_theme.dart';
+import '../../core/theme/theme_extensions/app_color_scheme.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});

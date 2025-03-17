@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_admin/constants/values.dart';
 import 'package:web_admin/environment.dart';
+
+import '../core/constants/values.dart';
 
 class AppPreferencesProvider extends ChangeNotifier {
   var _locale = Locale(env.defaultAppLanguageCode);
@@ -24,7 +25,7 @@ class AppPreferencesProvider extends ChangeNotifier {
       _locale = Locale(langCode);
     }
 
-    _themeMode = ThemeMode.values.byName(sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.system.name);
+    _themeMode = ThemeMode.values.byName(sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.light.name);
 
     notifyListeners();
   }

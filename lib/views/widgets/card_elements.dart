@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:web_admin/constants/dimens.dart';
+
+import '../../core/constants/dimens.dart';
 
 class CardHeader extends StatelessWidget {
   final String title;

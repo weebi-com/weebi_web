@@ -2,9 +2,10 @@
 import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
+
+import '../../core/constants/dimens.dart';
+import '../../core/theme/theme_extensions/app_color_scheme.dart';
 
 class UrlNewTabLauncher extends StatelessWidget {
   final String displayText;

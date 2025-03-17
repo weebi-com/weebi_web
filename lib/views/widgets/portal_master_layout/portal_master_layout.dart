@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/master_layout_config.dart';
 import 'package:web_admin/providers/app_preferences_provider.dart';
-import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
-import 'package:web_admin/theme/theme_extensions/app_sidebar_theme.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/sidebar.dart';
+
+import '../../../core/constants/dimens.dart';
+import '../../../core/theme/theme_extensions/app_color_scheme.dart';
+import '../../../core/theme/theme_extensions/app_sidebar_theme.dart';
 
 class LocaleMenuConfig {
   final String languageCode;
@@ -229,14 +230,15 @@ class ResponsiveAppBarTitle extends StatelessWidget {
               visible: (mediaQueryData.size.width > kScreenWidthSm),
               child: Container(
                 padding: const EdgeInsets.only(right: kDefaultPadding * 0.7),
-                height: 40.0,
+                height: 30.0,
                 child: Image.asset(
                   'assets/images/app_logo.png',
                   fit: BoxFit.contain,
+                  color: Colors.white,
                 ),
               ),
             ),
-            Text(lang.appTitle),
+            // Text(lang.appTitle),
           ],
         ),
       ),

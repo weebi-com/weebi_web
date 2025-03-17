@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
-import 'package:web_admin/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/public_master_layout/public_master_layout.dart';
 
-import '../../providers/user_data_provider.dart';
-import '../../services/api_service.dart';
+import '../../../core/constants/dimens.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/theme/theme_extensions/app_button_theme.dart';
+import '../../../core/theme/theme_extensions/app_color_scheme.dart';
+import '../../../providers/user_data_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,9 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formData = FormData();
 
   var _isFormLoading = false;
+  final authService = AuthService();
 
   Future<void> _doLoginAsync({
-    required ApiService authService,
     required VoidCallback onSuccess,
     required void Function(String message) onError,
   }) async {
@@ -48,15 +49,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (result.success) {
           await context.read<UserDataProvider>().setUserDataAsync(
-            mail: _formData.mail,
-            userProfileImageUrl: 'https://www.weebi.com/images/Weebi_Logo_Full.png',
-          );
+                mail: _formData.mail,
+                userProfileImageUrl:
+                    'https://www.weebi.com/images/Weebi_Logo_Full.png',
+              );
 
           _onLoginSuccess(context);
-
         } else {
-          onError.call(result.errorMessage ?? 'Login failed. Please try again.');
+          onError
+              .call(result.errorMessage ?? 'Login failed. Please try again.');
         }
+      } on GrpcError catch (e) {
+        onError.call('${e.codeName} ${e.message}');
       } catch (e) {
         onError.call('An error occurred during login. Please try again.');
       } finally {
@@ -104,13 +108,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: kDefaultPadding),
                       child: Image.asset(
-                        'assets/images/app_logo.png',
+                        'assets/images/app_logo.png', // TODO remove
                         width: 150.0,
                         height: 60.0,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
+                      padding:
+                          const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
                       child: Text(
                         lang.login,
                         style: themeData.textTheme.titleMedium,
@@ -122,22 +127,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 1.5),
+                            padding: const EdgeInsets.only(
+                                bottom: kDefaultPadding * 1.5),
                             child: FormBuilderTextField(
                               name: 'mail',
                               decoration: InputDecoration(
                                 labelText: lang.mail,
                                 hintText: lang.mail,
                                 border: const OutlineInputBorder(),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
                               ),
                               keyboardType: TextInputType.emailAddress,
                               validator: FormBuilderValidators.required(),
-                              onSaved: (value) => (_formData.mail = value ?? ''),
+                              onSaved: (value) =>
+                                  (_formData.mail = value ?? ''),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
+                            padding: const EdgeInsets.only(
+                                bottom: kDefaultPadding * 2.0),
                             child: FormBuilderTextField(
                               name: 'password',
                               decoration: InputDecoration(
@@ -145,27 +154,33 @@ class _LoginScreenState extends State<LoginScreen> {
                                 hintText: lang.password,
                                 helperText: '* Votre mot de passe',
                                 border: const OutlineInputBorder(),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
                               ),
                               enableSuggestions: false,
                               obscureText: true,
                               validator: FormBuilderValidators.required(),
-                              onSaved: (value) => (_formData.password = value ?? ''),
+                              onSaved: (value) =>
+                                  (_formData.password = value ?? ''),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: kDefaultPadding),
+                            padding:
+                                const EdgeInsets.only(bottom: kDefaultPadding),
                             child: SizedBox(
                               height: 40.0,
                               width: double.infinity,
                               child: ElevatedButton(
-                                style: themeData.extension<AppButtonTheme>()!.primaryElevated,
+                                style: themeData
+                                    .extension<AppButtonTheme>()!
+                                    .primaryElevated,
                                 onPressed: (_isFormLoading
                                     ? null
                                     : () => _doLoginAsync(
-                                          authService: context.read<ApiService>(),
-                                          onSuccess: () => _onLoginSuccess(context),
-                                          onError: (message) => _onLoginError(context, message),
+                                          onSuccess: () =>
+                                              _onLoginSuccess(context),
+                                          onError: (message) =>
+                                              _onLoginError(context, message),
                                         )),
                                 child: Text(lang.login),
                               ),
@@ -175,8 +190,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 40.0,
                             width: double.infinity,
                             child: TextButton(
-                              style: themeData.extension<AppButtonTheme>()!.secondaryText,
-                              onPressed: () => GoRouter.of(context).go(RouteUri.register),
+                              style: themeData
+                                  .extension<AppButtonTheme>()!
+                                  .secondaryText,
+                              onPressed: () =>
+                                  GoRouter.of(context).go(RouteUri.register),
                               child: RichText(
                                 text: TextSpan(
                                   text: '${lang.dontHaveAnAccount} ',
@@ -187,7 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     TextSpan(
                                       text: lang.registerNow,
                                       style: TextStyle(
-                                        color: themeData.extension<AppColorScheme>()!.hyperlink,
+                                        color: themeData
+                                            .extension<AppColorScheme>()!
+                                            .hyperlink,
                                         decoration: TextDecoration.underline,
                                       ),
                                     ),

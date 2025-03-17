@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
-import 'package:web_admin/constants/dimens.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/theme/theme_extensions/app_button_theme.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/public_master_layout/public_master_layout.dart';
 
-import '../../services/api_service.dart';
+import '../../../core/constants/dimens.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/theme/theme_extensions/app_button_theme.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -26,9 +26,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formData = FormData();
 
   var _isFormLoading = false;
+  final authService = AuthService();
 
   Future<void> _doRegisterAsync({
-    required ApiService authService,
     required void Function(String message) onSuccess,
     required void Function(String message) onError,
   }) async {
@@ -235,7 +235,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onPressed: (_isFormLoading
                                     ? null
                                     : () => _doRegisterAsync(
-                                          authService: context.read<ApiService>(),
                                           onSuccess: (message) => _onRegisterSuccess(context, message),
                                           onError: (message) => _onRegisterError(context, message),
                                         )),
