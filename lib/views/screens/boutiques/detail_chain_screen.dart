@@ -8,6 +8,95 @@ import '../../../core/services/device_service.dart';
 import '../../widgets/card_elements.dart';
 import '../../widgets/portal_master_layout/portal_master_layout.dart';
 
+
+// dirty widget to hack generating the pairing code
+class BoutiqueDetail extends StatefulWidget {
+  final Chain chain;
+  final BoutiquePb boutique;
+  const BoutiqueDetail(this.chain, this.boutique, {super.key});
+
+  @override
+  State<BoutiqueDetail> createState() => _BoutiqueDetailState();
+}
+
+class _BoutiqueDetailState extends State<BoutiqueDetail> {
+  final DeviceService _deviceService = DeviceService();
+  bool isLoading = false;
+  final Map<String, bool> _loadingStatus = {};
+
+  Future<void> _generatePairingCodeForBoutique(
+      String boutiqueName, String boutiqueId, String chainId) async {
+    setState(() {
+      _loadingStatus[boutiqueId] = true;
+    });
+
+    try {
+      final codeForPairing = await _deviceService.generateCodeForPairingDevice(
+        boutiqueId: boutiqueId,
+        chainId: chainId,
+      );
+
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        title:
+            "Code pour relier un nouvel appareil à la boutique $boutiqueName :\n\n${codeForPairing.code}",
+        width: kDialogWidth,
+        btnOkText: 'OK',
+        btnOkOnPress: () {},
+      ).show();
+    } catch (e) {
+      // Log en cas d'erreur
+      print("Erreur: $e");
+
+      // Notification d'erreur
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Erreur lors de la génération du code pour la boutique $boutiqueId')),
+      );
+    } finally {
+      setState(() {
+        _loadingStatus[boutiqueId] = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final name = widget.boutique.name.isEmpty ? widget.chain.name : widget.boutique.name; 
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child:
+          // TODO: here we want to be able to : display boutique full detail
+          // * - to enter edit boutique view
+          // * to delete boutique
+          // to see all devices linked
+          ListTile(
+        leading: const Icon(Icons.store),
+        title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold),),
+        subtitle: widget.boutique.addressFull.city.isEmpty &&
+                widget.boutique.addressFull.street.isEmpty
+            ? null
+            : Text('Adresse : ${widget.boutique.addressFull.toString()}'),
+        trailing: ElevatedButton(
+          onPressed: isLoading
+              ? null
+              : () => _generatePairingCodeForBoutique(
+                    widget.boutique.name,
+                    widget.boutique.boutiqueId,
+                    widget.chain.chainId,
+                  ),
+          child: isLoading
+              ? const CircularProgressIndicator(color: Colors.white)
+              : const Text('Relier un nouvel appareil à cette boutique'),
+        ),
+      ),
+    );
+    ;
+  }
+}
+
 class DetailChainScreen extends StatefulWidget {
   final Chain chain;
 
@@ -81,7 +170,7 @@ class _DetailChainScreenState extends State<DetailChainScreen> {
                                         : () => _generatePairingCodeForBoutique(
                                               boutique.name,
                                               boutique.boutiqueId,
-                                              widget.chain.firmId,
+                                              widget.chain.chainId,
                                             ),
                                     child: isLoading
                                         ? const CircularProgressIndicator(
@@ -122,7 +211,7 @@ class _DetailChainScreenState extends State<DetailChainScreen> {
         context: context,
         dialogType: DialogType.success,
         title:
-            "Code pour relier un nouvel appareil à la boutique $boutiqueName :\n${codeForPairing.code}",
+            "Code pour relier un nouvel appareil à la boutique $boutiqueName :\n\n${codeForPairing.code}",
         width: kDialogWidth,
         btnOkText: 'OK',
         btnOkOnPress: () {},
