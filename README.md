@@ -6,7 +6,6 @@ open issues in weebi_server : https://github.com/weebi-com/weebi_server/issues
 With the tag [WEB]
 
 # web packages to consider
-
 - DataCell View : https://github.com/caduandrade/davi_flutter
 - Responsive : https://pub.dev/packages/responsive_builder
 
