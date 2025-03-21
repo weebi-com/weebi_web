@@ -113,14 +113,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 60.0,
                       ),
                     ),
-                    Padding(
+/*                     Padding(
                       padding:
                           const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
                       child: Text(
                         lang.login,
                         style: themeData.textTheme.titleMedium,
                       ),
-                    ),
+                    ), */
                     FormBuilder(
                       key: _formKey,
                       autovalidateMode: AutovalidateMode.disabled,
