@@ -72,9 +72,9 @@ flutter:
 
   assets:
     - assets/images/app_logo.png
-    - dotenv_lcl.txt
-    - dotenv_dev.txt
-    - dotenv_prd.txt
+    - assets/dotenv_lcl.txt
+    - assets/dotenv_dev.txt
+    - assets/dotenv_prd.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

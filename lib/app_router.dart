@@ -50,16 +50,16 @@ class RouteUri {
 
   static const String contacts = '/contacts';
 
-  static const String listUser = '/list-user';
+  static const String listUser = '/users';
   static const String createUser = '/create-user';
 
-  static const String listChain = '/list-chain';
+  static const String listChain = '/chains';
   static const String createChain = '/create-chain';
   static const String detailChain = '/detail-chain';
   static const String updateChain = '/update-chain'; // TODO
   static const String deleteChain = '/delete-chain'; // TODO
 
-  static const String listBoutique = '/list-boutique';
+  static const String listBoutique = '/boutiques';
   static const String createBoutique = '/create-boutique';
 }
 

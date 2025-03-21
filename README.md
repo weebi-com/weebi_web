@@ -1,5 +1,11 @@
 > weebi web-app
 
+``` shell
+flutter run -t lib/main_local.dart 
+flutter run --dart-define=ENVIRONMENT=development
+flutter run --dart-define=ENVIRONMENT=production
+```
+
 # issues
 FORK OF flutter-web-admin
 open issues in weebi_server : https://github.com/weebi-com/weebi_server/issues

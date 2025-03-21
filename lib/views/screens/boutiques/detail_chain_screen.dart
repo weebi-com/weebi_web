@@ -83,7 +83,7 @@ class _BoutiqueDetailState extends State<BoutiqueDetail> {
           onPressed: isLoading
               ? null
               : () => _generatePairingCodeForBoutique(
-                    widget.boutique.name,
+                    name,
                     widget.boutique.boutiqueId,
                     widget.chain.chainId,
                   ),
