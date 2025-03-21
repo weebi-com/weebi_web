@@ -1,29 +1,6 @@
-late Environment _env;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-Environment get env => _env;
-
-class Environment {
-  final String apiBaseUrl;
-  final String defaultAppLanguageCode;
-  final bool isDev;
-
-  Environment._init({
-    required this.isDev,
-    required this.apiBaseUrl,
-    required this.defaultAppLanguageCode,
-  });
-
-  static void init({
-    //String localBaseUrl = 'https://127.0.0.1:443',
-    bool isDev = true,
-    String apiBaseUrl =
-        'https://weebi-envoyproxy-dev-29758828833.europe-west1.run.app',
-    String defaultAppLanguageCode = 'fr',
-  }) {
-    _env = Environment._init(
-      isDev: isDev,
-      apiBaseUrl: apiBaseUrl,
-      defaultAppLanguageCode: defaultAppLanguageCode,
-    );
-  }
+class Config {
+  static final String apiUrl = dotenv.env['API_URL'] ?? '';
+  static final String locale = dotenv.env['LOCALE'] ?? '';
 }
