@@ -8,9 +8,9 @@ void main() async {
 
   const environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'production');
   if (environment == 'development') {
-    await dotenv.load(fileName: "dotenv_dev.txt");
+    await dotenv.load(fileName: "assets/dotenv_dev.txt");
   } else {
-    await dotenv.load(fileName: "dotenv_prd.txt");
+    await dotenv.load(fileName: "assets/dotenv_prd.txt");
   }
 
   runApp(const SharedPrefsFetchWidget(child: RootApp()));
