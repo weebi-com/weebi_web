@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:web_admin/environment.dart';
+
 import 'package:web_admin/root_app.dart';
 import 'package:web_admin/shared_prefs.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
-  Environment.init(isDev: true);
+  await dotenv.load(fileName: ".dotenv_lcl.txt");
 
   runApp(const SharedPrefsFetchWidget(child: RootApp()));
 }

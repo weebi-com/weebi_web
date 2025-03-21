@@ -118,6 +118,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
   flutter_form_builder:
     dependency: "direct main"
     description:
@@ -466,10 +474,10 @@ packages:
     dependency: "direct main"
     description:
       name: protos_weebi
-      sha256: a303a372650f9afa8802fdb83b0281893db97d048bd4ec405ff6335541dadc4d
+      sha256: "81927906e221fc8af9e6915ed9420cac685922bf0bf6a3505af0c0f4187b4701"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.9+4"
+    version: "1.0.10"
   provider:
     dependency: "direct main"
     description:
