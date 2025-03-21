@@ -52,3 +52,6 @@ linux/flutter/ephemeral/.plugin_symlinks/file_picker
 linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux
 linux/flutter/ephemeral/.plugin_symlinks/rive_common
 linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux
+
+/assets/dotenv_dev.txt
+/assets/dotenv_prd.txt
