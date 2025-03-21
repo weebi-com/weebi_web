@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/generated/l10n.dart';
+import 'package:web_admin/views/screens/boutiques/detail_chain_screen.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
@@ -46,7 +47,7 @@ class _ListChainScreenState extends State<ListChainScreen> {
         padding: const EdgeInsets.all(kDefaultPadding),
         children: [
           Text(
-            'Chaines de boutiques',
+            'Mes boutiques', // chaines de boutique prématuré
             style: themeData.textTheme.headlineMedium,
           ),
           Padding(
@@ -56,10 +57,10 @@ class _ListChainScreenState extends State<ListChainScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CardHeader(
+/*                   const CardHeader(
                     title:
                         "Une chaîne regroupe les boutiques qui partagent les mêmes articles et les mêmes contacts, comme une enseigne/franchise. Il est possible de gérer plusieurs chaînes de boutiques dans une même firme",
-                  ),
+                  ), */
                   CardBody(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,7 +215,15 @@ class _ListChainScreenState extends State<ListChainScreen> {
                                             return const Center(
                                                 child: Text(
                                                     'Aucune chaine trouvée'));
-                                          }
+                                          } else if (snapshot.hasData &&
+                                              snapshot.data!.chains.length ==1 && snapshot.data!.chains.first.boutiques.length == 1) {
+
+                                                final chain = snapshot.data!.chains.first;
+                                                final boutique = snapshot.data!.chains.first.boutiques.first.boutique;
+                                                
+                                                return BoutiqueDetail(chain, boutique );
+
+                                              }
 
                                           final currentChains = snapshot.data!;
                                           return PaginatedDataTable(

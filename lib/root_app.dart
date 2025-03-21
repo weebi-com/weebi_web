@@ -58,7 +58,7 @@ class _RootAppState extends State<RootApp> {
         //
         ChangeNotifierProxyProvider(
           create: (BuildContext context) => ArticleServiceClientProvider(
-              GrpcWebClientChannelWeebi(env).clientChannel,
+              GrpcWebClientChannelWeebi().clientChannel,
               context.read<AccessTokenProvider>().accessToken),
           update: (
             BuildContext context,
@@ -69,7 +69,7 @@ class _RootAppState extends State<RootApp> {
         ),
         ChangeNotifierProxyProvider(
           create: (BuildContext context) => ContactServiceClientProvider(
-              GrpcWebClientChannelWeebi(env).clientChannel,
+              GrpcWebClientChannelWeebi().clientChannel,
               context.read<AccessTokenProvider>().accessToken),
           update: (
             BuildContext context,
@@ -80,7 +80,7 @@ class _RootAppState extends State<RootApp> {
         ),
         ChangeNotifierProxyProvider(
           create: (BuildContext context) => FenceServiceClientProvider(
-              GrpcWebClientChannelWeebi(env).clientChannel,
+              GrpcWebClientChannelWeebi().clientChannel,
               context.read<AccessTokenProvider>().accessToken),
           update: (
             BuildContext context,
@@ -91,7 +91,7 @@ class _RootAppState extends State<RootApp> {
         ),
         ChangeNotifierProxyProvider(
           create: (BuildContext context) => TicketServiceClientProvider(
-              GrpcWebClientChannelWeebi(env).clientChannel,
+              GrpcWebClientChannelWeebi().clientChannel,
               context.read<AccessTokenProvider>().accessToken),
           update: (
             BuildContext context,

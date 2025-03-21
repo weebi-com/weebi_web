@@ -5,5 +5,5 @@ class GrpcClientService {
   final GrpcWebClientChannel channel;
 
   GrpcClientService()
-      : channel = GrpcWebClientChannel.xhr(Uri.parse(env.apiBaseUrl));
+      : channel = GrpcWebClientChannel.xhr(Uri.parse(Config.apiUrl));
 }

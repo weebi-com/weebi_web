@@ -5,7 +5,7 @@ import 'package:web_admin/environment.dart';
 import '../core/constants/values.dart';
 
 class AppPreferencesProvider extends ChangeNotifier {
-  var _locale = Locale(env.defaultAppLanguageCode);
+  var _locale = Locale(Config.locale);
   var _themeMode = ThemeMode.system;
 
   Locale get locale => _locale;
@@ -14,7 +14,7 @@ class AppPreferencesProvider extends ChangeNotifier {
 
   void loadAsync(SharedPreferences sharedPref) {
     final langCode = (sharedPref.getString(StorageKeys.appLanguageCode) ??
-        env.defaultAppLanguageCode);
+        Config.locale);
 
     if (langCode.contains('_')) {
       final values = langCode.split('_');

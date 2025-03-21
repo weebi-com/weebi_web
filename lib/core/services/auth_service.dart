@@ -55,6 +55,7 @@ class AuthService {
   }
 
   Future<SignUpResult> signUp({
+    required String firmName,
     required String firstName,
     required String lastName,
     required String mail,
@@ -71,6 +72,44 @@ class AuthService {
           password: password,
         ),
       );
+      final responseTokens = await stub.authenticateWithCredentials(
+        Credentials(mail: mail, password: password),
+      );
+
+      final stub2 = FenceServiceClient(_grpcClientService.channel,
+          options: CallOptions(
+              metadata: {'authorization': responseTokens.accessToken}));
+
+      /// user will not be able to create the firm
+      /// we exfiltrated it from signup lobby, now we also avoid them this trap
+      Firm firm = Firm.create();
+      if (response.statusResponse.type != StatusResponse_Type.UPDATED) {
+        try {
+          final statusResponse =
+              await stub2.createFirm(CreateFirmRequest(name: firmName));
+          if (statusResponse.statusResponse.type !=
+              StatusResponse_Type.CREATED) {
+            throw statusResponse.toString();
+          }
+          firm = statusResponse.firm;
+        } on FormatException catch (e) {
+          print('createFirmServer $e');
+        } on GrpcError catch (e) {
+          print('createFirmServer $e');
+        }
+      }
+
+      final responseTokens2 =
+          response.statusResponse.type == StatusResponse_Type.UPDATED
+              ? responseTokens
+              : await stub2.authenticateWithCredentials(
+                  Credentials(mail: mail, password: password),
+                );
+      ;
+      if (responseTokens2.accessToken.isEmpty) {
+        return _handleSignUpError('error responseTokens2.accessToken.isEmpty');
+      }
+
       return SignUpResult(success: true, userId: response.userId);
     } catch (e) {
       return _handleSignUpError(e);
