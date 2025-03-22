@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  const environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'production');
+  const environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'development'); // production
   if (environment == 'development') {
     await dotenv.load(fileName: "assets/dotenv_dev.txt");
   } else {
