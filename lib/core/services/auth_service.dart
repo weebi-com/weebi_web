@@ -116,6 +116,27 @@ class AuthService {
     }
   }
 
+  /// Requests a password reset email for the given address.
+  /// Returns (success, errorMessage).
+  Future<(bool success, String? errorMessage)> requestPasswordReset({
+    required String mail,
+  }) async {
+    final stub = FenceServiceClient(_grpcClientService.channel);
+
+    try {
+      final response = await stub.requestPasswordReset(
+        PasswordResetRequest(mail: mail),
+      );
+      final ok = response.type == StatusResponse_Type.SUCCESS ||
+          response.type == StatusResponse_Type.UPDATED;
+      return (ok, ok ? null : response.message);
+    } on GrpcError catch (e) {
+      return (false, e.message);
+    } catch (e) {
+      return (false, e.toString());
+    }
+  }
+
   Future<Tokens> authenticateWithRefreshToken() async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 

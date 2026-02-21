@@ -69,114 +69,134 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "account": MessageLookupByLibrary.simpleMessage("Account"),
-        "adminPortalLogin":
-            MessageLookupByLibrary.simpleMessage("Admin Portal Login"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("Web Admin"),
-        "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
-        "buttonEmphasis":
-            MessageLookupByLibrary.simpleMessage("Button Emphasis"),
-        "buttons": m0,
-        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "closeNavigationMenu":
-            MessageLookupByLibrary.simpleMessage("Close Navigation Menu"),
-        "colorPalette": MessageLookupByLibrary.simpleMessage("Color Palette"),
-        "colorScheme": MessageLookupByLibrary.simpleMessage("Color Scheme"),
-        "colors": m1,
-        "confirmDeleteRecord":
-            MessageLookupByLibrary.simpleMessage("Confirm delete this record?"),
-        "confirmSubmitRecord":
-            MessageLookupByLibrary.simpleMessage("Confirm submit this record?"),
-        "copy": MessageLookupByLibrary.simpleMessage("Copy"),
-        "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
-            "This field requires a valid credit card number."),
-        "crudBack": MessageLookupByLibrary.simpleMessage("Back"),
-        "crudDelete": MessageLookupByLibrary.simpleMessage("Delete"),
-        "crudDetail": MessageLookupByLibrary.simpleMessage("Detail"),
-        "crudNew": MessageLookupByLibrary.simpleMessage("New"),
-        "darkTheme": MessageLookupByLibrary.simpleMessage("Dark Theme"),
-        "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
-        "dateStringErrorText": MessageLookupByLibrary.simpleMessage(
-            "This field requires a valid date string."),
-        "dialogs": m2,
-        "dontHaveAnAccount":
-            MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
-        "email": MessageLookupByLibrary.simpleMessage("Email"),
-        "emailErrorText": MessageLookupByLibrary.simpleMessage(
-            "This field requires a valid email address."),
-        "equalErrorText": m3,
-        "error404": MessageLookupByLibrary.simpleMessage("Error 404"),
-        "error404Message": MessageLookupByLibrary.simpleMessage(
-            "Sorry, the page you are looking for has been removed or not exists."),
-        "error404Title": MessageLookupByLibrary.simpleMessage("Page not found"),
-        "example": MessageLookupByLibrary.simpleMessage("Example"),
-        "extensions": m4,
-        "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
-        "forms": m5,
-        "generalUi": MessageLookupByLibrary.simpleMessage("General UI"),
-        "hi": MessageLookupByLibrary.simpleMessage("Hi"),
-        "homePage": MessageLookupByLibrary.simpleMessage("Home"),
-        "iframeDemo": MessageLookupByLibrary.simpleMessage("IFrame Demo"),
-        "integerErrorText": MessageLookupByLibrary.simpleMessage(
-            "This field requires a valid integer."),
-        "ipErrorText": MessageLookupByLibrary.simpleMessage(
-            "This field requires a valid IP."),
-        "language": MessageLookupByLibrary.simpleMessage("Language"),
-        "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
-        "lightTheme": MessageLookupByLibrary.simpleMessage("Light Theme"),
-        "login": MessageLookupByLibrary.simpleMessage("Login"),
-        "loginNow": MessageLookupByLibrary.simpleMessage("Login now!"),
-        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
-        "loremIpsum": MessageLookupByLibrary.simpleMessage(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
-        "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
-        "matchErrorText": MessageLookupByLibrary.simpleMessage(
-            "Value does not match pattern."),
-        "maxErrorText": m6,
-        "maxLengthErrorText": m7,
-        "minErrorText": m8,
-        "minLengthErrorText": m9,
-        "myProfile": MessageLookupByLibrary.simpleMessage("My Profile"),
-        "newOrders": m10,
-        "newUsers": m11,
-        "notEqualErrorText": m12,
-        "numericErrorText":
-            MessageLookupByLibrary.simpleMessage("Value must be numeric."),
-        "openInNewTab": MessageLookupByLibrary.simpleMessage("Open in new tab"),
-        "pages": m13,
-        "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "passwordHelperText":
-            MessageLookupByLibrary.simpleMessage("* 6 - 18 characters"),
-        "passwordNotMatch":
-            MessageLookupByLibrary.simpleMessage("Password not match."),
-        "pendingIssues": m14,
-        "recentOrders": m15,
-        "recordDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-            "Record deleted successfully."),
-        "recordSavedSuccessfully":
-            MessageLookupByLibrary.simpleMessage("Record saved successfully."),
-        "recordSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
-            "Record submitted successfully."),
-        "register": MessageLookupByLibrary.simpleMessage("Register"),
-        "registerANewAccount":
-            MessageLookupByLibrary.simpleMessage("Register a new account"),
-        "registerNow": MessageLookupByLibrary.simpleMessage("Register now!"),
-        "requiredErrorText":
-            MessageLookupByLibrary.simpleMessage("This field cannot be empty."),
-        "retypePassword":
-            MessageLookupByLibrary.simpleMessage("Retype Password"),
-        "save": MessageLookupByLibrary.simpleMessage("Save"),
-        "search": MessageLookupByLibrary.simpleMessage("Search"),
-        "submit": MessageLookupByLibrary.simpleMessage("Submit"),
-        "text": MessageLookupByLibrary.simpleMessage("Text"),
-        "textEmphasis": MessageLookupByLibrary.simpleMessage("Text Emphasis"),
-        "textTheme": MessageLookupByLibrary.simpleMessage("Text Theme"),
-        "todaySales": MessageLookupByLibrary.simpleMessage("Today Sales"),
-        "typography": MessageLookupByLibrary.simpleMessage("Typography"),
-        "uiElements": m16,
-        "urlErrorText": MessageLookupByLibrary.simpleMessage(
-            "This field requires a valid URL address."),
-        "username": MessageLookupByLibrary.simpleMessage("Username"),
-        "yes": MessageLookupByLibrary.simpleMessage("Yes")
-      };
+    "account": MessageLookupByLibrary.simpleMessage("Account"),
+    "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
+      "Admin Portal Login",
+    ),
+    "appTitle": MessageLookupByLibrary.simpleMessage("Web Admin"),
+    "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
+    "buttonEmphasis": MessageLookupByLibrary.simpleMessage("Button Emphasis"),
+    "buttons": m0,
+    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "closeNavigationMenu": MessageLookupByLibrary.simpleMessage(
+      "Close Navigation Menu",
+    ),
+    "colorPalette": MessageLookupByLibrary.simpleMessage("Color Palette"),
+    "colorScheme": MessageLookupByLibrary.simpleMessage("Color Scheme"),
+    "colors": m1,
+    "confirmDeleteRecord": MessageLookupByLibrary.simpleMessage(
+      "Confirm delete this record?",
+    ),
+    "confirmSubmitRecord": MessageLookupByLibrary.simpleMessage(
+      "Confirm submit this record?",
+    ),
+    "copy": MessageLookupByLibrary.simpleMessage("Copy"),
+    "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
+      "This field requires a valid credit card number.",
+    ),
+    "crudBack": MessageLookupByLibrary.simpleMessage("Back"),
+    "crudDelete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "crudDetail": MessageLookupByLibrary.simpleMessage("Detail"),
+    "crudNew": MessageLookupByLibrary.simpleMessage("New"),
+    "darkTheme": MessageLookupByLibrary.simpleMessage("Dark Theme"),
+    "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
+    "dateStringErrorText": MessageLookupByLibrary.simpleMessage(
+      "This field requires a valid date string.",
+    ),
+    "dialogs": m2,
+    "dontHaveAnAccount": MessageLookupByLibrary.simpleMessage(
+      "Don\'t have an account?",
+    ),
+    "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "emailErrorText": MessageLookupByLibrary.simpleMessage(
+      "This field requires a valid email address.",
+    ),
+    "equalErrorText": m3,
+    "error404": MessageLookupByLibrary.simpleMessage("Error 404"),
+    "error404Message": MessageLookupByLibrary.simpleMessage(
+      "Sorry, the page you are looking for has been removed or not exists.",
+    ),
+    "error404Title": MessageLookupByLibrary.simpleMessage("Page not found"),
+    "example": MessageLookupByLibrary.simpleMessage("Example"),
+    "extensions": m4,
+    "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
+    "forms": m5,
+    "generalUi": MessageLookupByLibrary.simpleMessage("General UI"),
+    "hi": MessageLookupByLibrary.simpleMessage("Hi"),
+    "homePage": MessageLookupByLibrary.simpleMessage("Home"),
+    "iframeDemo": MessageLookupByLibrary.simpleMessage("IFrame Demo"),
+    "integerErrorText": MessageLookupByLibrary.simpleMessage(
+      "This field requires a valid integer.",
+    ),
+    "ipErrorText": MessageLookupByLibrary.simpleMessage(
+      "This field requires a valid IP.",
+    ),
+    "language": MessageLookupByLibrary.simpleMessage("Language"),
+    "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
+    "lightTheme": MessageLookupByLibrary.simpleMessage("Light Theme"),
+    "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "loginNow": MessageLookupByLibrary.simpleMessage("Login now!"),
+    "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "loremIpsum": MessageLookupByLibrary.simpleMessage(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    ),
+    "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
+    "matchErrorText": MessageLookupByLibrary.simpleMessage(
+      "Value does not match pattern.",
+    ),
+    "maxErrorText": m6,
+    "maxLengthErrorText": m7,
+    "minErrorText": m8,
+    "minLengthErrorText": m9,
+    "myProfile": MessageLookupByLibrary.simpleMessage("My Profile"),
+    "newOrders": m10,
+    "newUsers": m11,
+    "notEqualErrorText": m12,
+    "numericErrorText": MessageLookupByLibrary.simpleMessage(
+      "Value must be numeric.",
+    ),
+    "openInNewTab": MessageLookupByLibrary.simpleMessage("Open in new tab"),
+    "pages": m13,
+    "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "passwordHelperText": MessageLookupByLibrary.simpleMessage(
+      "* 6 - 18 characters",
+    ),
+    "passwordNotMatch": MessageLookupByLibrary.simpleMessage(
+      "Password not match.",
+    ),
+    "pendingIssues": m14,
+    "recentOrders": m15,
+    "recordDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Record deleted successfully.",
+    ),
+    "recordSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Record saved successfully.",
+    ),
+    "recordSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Record submitted successfully.",
+    ),
+    "register": MessageLookupByLibrary.simpleMessage("Register"),
+    "registerANewAccount": MessageLookupByLibrary.simpleMessage(
+      "Register a new account",
+    ),
+    "registerNow": MessageLookupByLibrary.simpleMessage("Register now!"),
+    "requiredErrorText": MessageLookupByLibrary.simpleMessage(
+      "This field cannot be empty.",
+    ),
+    "retypePassword": MessageLookupByLibrary.simpleMessage("Retype Password"),
+    "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "search": MessageLookupByLibrary.simpleMessage("Search"),
+    "submit": MessageLookupByLibrary.simpleMessage("Submit"),
+    "text": MessageLookupByLibrary.simpleMessage("Text"),
+    "textEmphasis": MessageLookupByLibrary.simpleMessage("Text Emphasis"),
+    "textTheme": MessageLookupByLibrary.simpleMessage("Text Theme"),
+    "todaySales": MessageLookupByLibrary.simpleMessage("Today Sales"),
+    "typography": MessageLookupByLibrary.simpleMessage("Typography"),
+    "uiElements": m16,
+    "urlErrorText": MessageLookupByLibrary.simpleMessage(
+      "This field requires a valid URL address.",
+    ),
+    "username": MessageLookupByLibrary.simpleMessage("Username"),
+    "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+  };
 }

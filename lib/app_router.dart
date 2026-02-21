@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:provider/provider.dart';
 import 'package:web_admin/contacts/view/contacts_page.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/views/screens/buttons_screen.dart';
