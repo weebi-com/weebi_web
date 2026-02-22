@@ -48,7 +48,11 @@ class AuthService {
 
       await _saveTokens(response.accessToken, response.refreshToken);
 
-      return SignInResult(success: true, message: "");
+      return SignInResult(
+        success: true,
+        message: "",
+        accessToken: response.accessToken,
+      );
     } catch (e) {
       return _handleSignInError(e);
     }

@@ -125,7 +125,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "openInNewTab": MessageLookupByLibrary.simpleMessage("在新標籤打開"),
     "pages": m13,
     "password": MessageLookupByLibrary.simpleMessage("密碼"),
-    "passwordHelperText": MessageLookupByLibrary.simpleMessage("* 6 - 18 個字"),
     "passwordNotMatch": MessageLookupByLibrary.simpleMessage("密碼不匹配。"),
     "pendingIssues": m14,
     "recentOrders": m15,

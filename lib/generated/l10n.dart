@@ -530,16 +530,6 @@ class Lang {
     return Intl.message('Password', name: 'password', desc: '', args: []);
   }
 
-  /// `* 6 - 18 characters`
-  String get passwordHelperText {
-    return Intl.message(
-      '* 6 - 18 characters',
-      name: 'passwordHelperText',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Password not match.`
   String get passwordNotMatch {
     return Intl.message(

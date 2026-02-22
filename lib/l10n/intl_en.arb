@@ -58,7 +58,6 @@
   "openInNewTab": "Open in new tab",
   "pages": "{count, plural, one{Page} other{Pages}}",
   "password": "Password",
-  "passwordHelperText": "* 6 - 18 characters",
   "passwordNotMatch": "Password not match.",
   "pendingIssues": "{count, plural, one{Pending Issue} other{Pending Issues}}",
   "recentOrders": "{count, plural, one{Recent Order} other{Recent Orders}}",

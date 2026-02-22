@@ -158,9 +158,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "openInNewTab": MessageLookupByLibrary.simpleMessage("Open in new tab"),
     "pages": m13,
     "password": MessageLookupByLibrary.simpleMessage("Password"),
-    "passwordHelperText": MessageLookupByLibrary.simpleMessage(
-      "* 6 - 18 characters",
-    ),
     "passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "Password not match.",
     ),

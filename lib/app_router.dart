@@ -1,11 +1,8 @@
 import 'package:go_router/go_router.dart';
-import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/contacts/view/contacts_page.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/views/screens/buttons_screen.dart';
-import 'package:web_admin/views/screens/boutiques/create_chain_screen.dart';
-import 'package:web_admin/views/screens/boutiques/detail_chain_screen.dart';
-import 'package:web_admin/views/screens/boutiques/list_chains_screen.dart';
+import 'package:web_admin/views/screens/boutiques/boutiques_package_screen.dart';
 import 'package:web_admin/views/screens/colors_screen.dart';
 import 'package:web_admin/views/screens/crud_detail_screen.dart';
 import 'package:web_admin/views/screens/crud_screen.dart';
@@ -22,9 +19,9 @@ import 'package:web_admin/views/screens/authentication/logout_screen.dart';
 import 'package:web_admin/views/screens/my_profile_screen.dart';
 import 'package:web_admin/views/screens/authentication/register_screen.dart';
 import 'package:web_admin/views/screens/text_screen.dart';
-import 'package:web_admin/views/screens/users/create_user_screen.dart';
-import 'package:web_admin/views/screens/users/list_users_screen.dart';
-import 'package:web_admin/views/screens/boutiques/create_boutique_screen.dart';
+import 'package:web_admin/views/screens/accesses/accesses_package_screen.dart';
+import 'package:web_admin/views/screens/devices/devices_package_screen.dart';
+import 'package:web_admin/views/screens/users/users_package_screen.dart';
 
 class RouteUri {
   static const String home = '/';
@@ -52,14 +49,10 @@ class RouteUri {
   static const String listUser = '/users';
   static const String createUser = '/create-user';
 
-  static const String listChain = '/chains';
-  static const String createChain = '/create-chain';
-  static const String detailChain = '/detail-chain';
-  static const String updateChain = '/update-chain'; // TODO
-  static const String deleteChain = '/delete-chain'; // TODO
-
   static const String listBoutique = '/boutiques';
-  static const String createBoutique = '/create-boutique';
+
+  static const String listAccess = '/accesses';
+  static const String listDevice = '/devices';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -212,64 +205,50 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
         },
       ),
 
-      // =========================== USERS ===========================
+      // =========================== USERS (package) ===========================
 
       GoRoute(
         path: RouteUri.listUser,
         pageBuilder: (context, state) {
           return NoTransitionPage<void>(
             key: state.pageKey,
-            child: const ListUserScreen(),
-          );
-        },
-      ),
-      GoRoute(
-        path: RouteUri.createUser,
-        pageBuilder: (context, state) {
-          return NoTransitionPage<void>(
-            key: state.pageKey,
-            child: const CreateUserScreen(),
+            child: const UsersPackageScreen(),
           );
         },
       ),
 
-      // =========================== CHAINS && BOUTIQUES ===========================
+      // =========================== BOUTIQUES (package) ===========================
 
       GoRoute(
-        path: RouteUri.listChain,
+        path: RouteUri.listBoutique,
         pageBuilder: (context, state) {
           return NoTransitionPage<void>(
             key: state.pageKey,
-            child: const ListChainScreen(),
-          );
-        },
-      ),
-      GoRoute(
-        path: RouteUri.createChain,
-        pageBuilder: (context, state) {
-          return NoTransitionPage<void>(
-            key: state.pageKey,
-            child: const CreateChainScreen(),
-          );
-        },
-      ),
-      GoRoute(
-        path: RouteUri.detailChain,
-        pageBuilder: (context, state) {
-          final chain = state.extra as Chain;
-          return NoTransitionPage<void>(
-            key: state.pageKey,
-            child: DetailChainScreen(chain: chain),
+            child: const BoutiquesPackageScreen(),
           );
         },
       ),
 
+      // =========================== ACCESSES (package) ===========================
+
       GoRoute(
-        path: RouteUri.createBoutique,
+        path: RouteUri.listAccess,
         pageBuilder: (context, state) {
           return NoTransitionPage<void>(
             key: state.pageKey,
-            child: const CreateBoutiqueScreen(),
+            child: const AccessesPackageScreen(),
+          );
+        },
+      ),
+
+      // =========================== DEVICES (package) ===========================
+
+      GoRoute(
+        path: RouteUri.listDevice,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const DevicesPackageScreen(),
           );
         },
       ),

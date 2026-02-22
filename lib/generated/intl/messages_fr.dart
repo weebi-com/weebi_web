@@ -168,9 +168,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pages": m13,
     "password": MessageLookupByLibrary.simpleMessage("Mot de Passe"),
-    "passwordHelperText": MessageLookupByLibrary.simpleMessage(
-      "* 6 - 18 caractères",
-    ),
     "passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "Les mots de passe ne correspondent pas.",
     ),

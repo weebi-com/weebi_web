@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/core/constants/dimens.dart';
 import 'package:web_admin/core/theme/theme_extensions/app_color_scheme.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/providers/user_data_provider.dart';
-import 'package:web_admin/token/jwt.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 // import 'package:web_admin/core/theme/theme_extensions/app_data_table_theme.dart';
 
@@ -65,7 +62,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   spacing: kDefaultPadding,
                   runSpacing: kDefaultPadding,
                   children: [
-                    GestureDetector(
+                    _HoverableTile(
+                      onTap: () => GoRouter.of(context).go(RouteUri.firmDetail),
                       child: SummaryCard(
                         title: lang.pendingIssues(2),
                         value: 'Ma Firme',
@@ -75,26 +73,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      onTap: () {
-                        GoRouter.of(context).go(RouteUri.firmDetail);
-                      },
                     ),
-                    GestureDetector(
+                    _HoverableTile(
+                      onTap: () =>
+                          GoRouter.of(context).go(RouteUri.listBoutique),
                       child: SummaryCard(
                         title: lang.pendingIssues(2),
-                        value:
-                            'Mes boutiques', // TODO include chaines de if + 1 chain
+                        value: 'Mes boutiques',
                         icon: Icons.store,
                         backgroundColor: Colors.blue,
                         textColor: themeData.colorScheme.onPrimary,
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      onTap: () {
-                        GoRouter.of(context).go(RouteUri.listChain);
-                      },
                     ),
-                    GestureDetector(
+                    _HoverableTile(
+                      onTap: () => GoRouter.of(context).go(RouteUri.listUser),
                       child: SummaryCard(
                         title: lang.newUsers(2),
                         value: 'Utilisateurs',
@@ -104,9 +98,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
                       ),
-                      onTap: () {
-                        GoRouter.of(context).go(RouteUri.listUser);
-                      },
+                    ),
+                    _HoverableTile(
+                      onTap: () =>
+                          GoRouter.of(context).go(RouteUri.listAccess),
+                      child: SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Users accesses',
+                        icon: Icons.admin_panel_settings_rounded,
+                        backgroundColor: Colors.purple,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                    ),
+                    _HoverableTile(
+                      onTap: () =>
+                          GoRouter.of(context).go(RouteUri.listDevice),
+                      child: SummaryCard(
+                        title: lang.pendingIssues(2),
+                        value: 'Devices',
+                        icon: Icons.devices_rounded,
+                        backgroundColor: Colors.teal,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
                     ),
 
                     // NOT READY YET
@@ -300,6 +317,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Wraps a tile with hover feedback: pointer cursor and subtle scale on hover.
+class _HoverableTile extends StatefulWidget {
+  final VoidCallback onTap;
+  final Widget child;
+
+  const _HoverableTile({
+    required this.onTap,
+    required this.child,
+  });
+
+  @override
+  State<_HoverableTile> createState() => _HoverableTileState();
+}
+
+class _HoverableTileState extends State<_HoverableTile> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: _isHovered ? 1.02 : 1.0,
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeInOut,
+          child: widget.child,
+        ),
       ),
     );
   }

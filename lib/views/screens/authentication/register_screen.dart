@@ -151,7 +151,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 icon: Icon(Icons.business),
                                 labelText: 'Firme',
                                 hintText: 'Nom de la firme',
-                                helperText: '',
                                 border: OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -229,8 +228,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               name: 'password',
                               decoration: InputDecoration(
                                 labelText: lang.password,
-                                hintText: lang.password,
-                                helperText: lang.passwordHelperText,
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -240,9 +237,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         ? Icons.visibility_off
                                         : Icons.visibility,
                                   ),
-                                  onPressed: () => setState(
-                                      () => _obscurePassword =
-                                          !_obscurePassword),
+                                  onPressed: () => setState(() =>
+                                      _obscurePassword = !_obscurePassword),
                                 ),
                               ),
                               enableSuggestions: false,
@@ -265,7 +261,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               name: 'retypePassword',
                               decoration: InputDecoration(
                                 labelText: lang.retypePassword,
-                                hintText: lang.retypePassword,
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -275,8 +270,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         ? Icons.visibility_off
                                         : Icons.visibility,
                                   ),
-                                  onPressed: () => setState(
-                                      () => _obscureRetypePassword =
+                                  onPressed: () => setState(() =>
+                                      _obscureRetypePassword =
                                           !_obscureRetypePassword),
                                 ),
                               ),

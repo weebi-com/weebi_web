@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:protos_weebi/grpc.dart';
+import 'package:auth_weebi/auth_weebi.dart' show AccessTokenProvider;
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
@@ -56,6 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         if (result.success) {
+          if (result.accessToken != null && result.accessToken!.isNotEmpty) {
+            context.read<AccessTokenProvider>().accessToken = result.accessToken!;
+          }
           await context.read<UserDataProvider>().setUserDataAsync(
                 mail: _formData.mail,
                 userProfileImageUrl:
