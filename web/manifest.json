@@ -1,6 +1,6 @@
 {
-    "name": "weebi_web",
-    "short_name": "weebi_web",
+    "name": "Weebi",
+    "short_name": "Weebi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

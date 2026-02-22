@@ -232,7 +232,7 @@ class _RootAppState extends State<RootApp> {
                           FormBuilderLocalizations.delegate,
                         ],
                         locale: provider.locale,
-                        onGenerateTitle: (context) => Lang.of(context).appTitle,
+                        onGenerateTitle: (context) => 'Weebi',
                         theme: AppThemeData.instance.light(),
                         darkTheme: AppThemeData.instance.dark(),
                         themeMode: provider.themeMode,

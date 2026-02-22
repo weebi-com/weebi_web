@@ -2,7 +2,6 @@
   "@@locale": "zh_Hant",
   "account": "賬戶",
   "adminPortalLogin": "管理後台登錄",
-  "appTitle": "Web 管理後台",
   "backToLogin": "返回登入頁面",
   "buttonEmphasis": "按鈕強調",
   "buttons": "{count, plural, one{按鈕} other{按鈕}}",

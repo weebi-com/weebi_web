@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "account": MessageLookupByLibrary.simpleMessage("賬戶"),
     "adminPortalLogin": MessageLookupByLibrary.simpleMessage("管理後台登錄"),
-    "appTitle": MessageLookupByLibrary.simpleMessage("Web 管理後台"),
+    "appTitle": MessageLookupByLibrary.simpleMessage("Weebi"),
     "backToLogin": MessageLookupByLibrary.simpleMessage("返回登入頁面"),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("按鈕強調"),
     "buttons": m0,

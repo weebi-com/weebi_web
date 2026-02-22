@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppDataTableTheme extends ThemeExtension<AppDataTableTheme> {
-  final CardTheme cardTheme;
+  final CardThemeData cardTheme;
   final DataTableThemeData dataTableThemeData;
 
   const AppDataTableTheme({
@@ -11,7 +11,7 @@ class AppDataTableTheme extends ThemeExtension<AppDataTableTheme> {
 
   factory AppDataTableTheme.fromTheme(ThemeData themeData) {
     return AppDataTableTheme(
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.transparent,
         elevation: 0.0,
         clipBehavior: themeData.cardTheme.clipBehavior,
@@ -29,7 +29,7 @@ class AppDataTableTheme extends ThemeExtension<AppDataTableTheme> {
 
   @override
   ThemeExtension<AppDataTableTheme> copyWith({
-    CardTheme? cardTheme,
+    CardThemeData? cardTheme,
     DataTableThemeData? dataTableThemeData,
   }) {
     return AppDataTableTheme(

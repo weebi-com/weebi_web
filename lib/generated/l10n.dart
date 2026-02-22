@@ -69,9 +69,9 @@ class Lang {
     );
   }
 
-  /// `Web Admin`
+  /// `Weebi`
   String get appTitle {
-    return Intl.message('Web Admin', name: 'appTitle', desc: '', args: []);
+    return Intl.message('Weebi', name: 'appTitle', desc: '', args: []);
   }
 
   /// `Back to Login`
@@ -121,6 +121,16 @@ class Lang {
     );
   }
 
+  /// `Color Palette`
+  String get colorPalette {
+    return Intl.message(
+      'Color Palette',
+      name: 'colorPalette',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{count, plural, one{Color} other{Colors}}`
   String colors(num count) {
     return Intl.plural(
@@ -130,16 +140,6 @@ class Lang {
       name: 'colors',
       desc: '',
       args: [count],
-    );
-  }
-
-  /// `Color Palette`
-  String get colorPalette {
-    return Intl.message(
-      'Color Palette',
-      name: 'colorPalette',
-      desc: '',
-      args: [],
     );
   }
 
@@ -317,6 +317,11 @@ class Lang {
     );
   }
 
+  /// `First Name`
+  String get firstName {
+    return Intl.message('First Name', name: 'firstName', desc: '', args: []);
+  }
+
   /// `{count, plural, one{Form} other{Forms}}`
   String forms(num count) {
     return Intl.plural(
@@ -374,6 +379,11 @@ class Lang {
     return Intl.message('Language', name: 'language', desc: '', args: []);
   }
 
+  /// `Last Name`
+  String get lastName {
+    return Intl.message('Last Name', name: 'lastName', desc: '', args: []);
+  }
+
   /// `Light Theme`
   String get lightTheme {
     return Intl.message('Light Theme', name: 'lightTheme', desc: '', args: []);
@@ -402,6 +412,11 @@ class Lang {
       desc: '',
       args: [],
     );
+  }
+
+  /// `E-mail`
+  String get mail {
+    return Intl.message('E-mail', name: 'mail', desc: '', args: []);
   }
 
   /// `Value does not match pattern.`
@@ -714,21 +729,6 @@ class Lang {
   /// `Yes`
   String get yes {
     return Intl.message('Yes', name: 'yes', desc: '', args: []);
-  }
-
-  /// `First Name`
-  String get firstName {
-    return Intl.message('First Name', name: 'firstName', desc: '', args: []);
-  }
-
-  /// `Last Name`
-  String get lastName {
-    return Intl.message('Last Name', name: 'lastName', desc: '', args: []);
-  }
-
-  /// `E-mail`
-  String get mail {
-    return Intl.message('E-mail', name: 'mail', desc: '', args: []);
   }
 }
 
