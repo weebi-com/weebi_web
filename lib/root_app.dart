@@ -3,16 +3,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:protos_weebi/protos_weebi_io.dart' show FenceServiceClient;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:users_weebi/users_weebi.dart' show FenceServiceClientProviderV2;
 import 'package:web_admin/app_router.dart';
-import 'package:web_admin/environment.dart';
 import 'package:web_admin/generated/l10n.dart';
+import 'package:web_admin/grpc/auth_interceptor.dart';
+import 'package:web_admin/grpc/log_interceptor.dart';
 import 'package:web_admin/grpc/server.dart';
 import 'package:web_admin/providers/app_preferences_provider.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
-import 'package:web_admin/token/token.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
+
+import 'package:accesses_weebi/accesses_weebi.dart' show AccessProvider;
+import 'package:auth_weebi/auth_weebi.dart' show AccessTokenObject, AccessTokenProvider, PermissionProvider;
+import 'package:boutiques_weebi/boutiques_weebi.dart' show BoutiqueProvider;
+import 'package:devices_weebi/devices_weebi.dart' show DeviceProvider;
+import 'package:users_weebi/users_weebi.dart' show FenceServiceClientProviderV2, UserProvider;
 
 import 'core/theme/themes.dart';
 
@@ -21,6 +29,17 @@ class RootApp extends StatefulWidget {
 
   @override
   State<RootApp> createState() => _RootAppState();
+}
+
+void _setDeviceProviderPermissions(
+    BuildContext context, DeviceProvider deviceProvider) {
+  try {
+    final permissions =
+        context.read<AccessTokenProvider>().permissions;
+    deviceProvider.setUserPermissions(permissions);
+  } catch (_) {
+    // Token empty or invalid - permissions will stay unset
+  }
 }
 
 class _RootAppState extends State<RootApp> {
@@ -56,49 +75,114 @@ class _RootAppState extends State<RootApp> {
                 accessProvider!..accessToken = access.value),
 
         //
-        ChangeNotifierProxyProvider(
+        ChangeNotifierProxyProvider<AccessTokenProvider,
+            ArticleServiceClientProvider>(
           create: (BuildContext context) => ArticleServiceClientProvider(
               GrpcWebClientChannelWeebi().clientChannel,
               context.read<AccessTokenProvider>().accessToken),
           update: (
             BuildContext context,
-            AccessTokenObject accessToken,
+            AccessTokenProvider accessTokenProvider,
             ArticleServiceClientProvider? provider2,
           ) =>
-              provider2!..serviceClient = accessToken.value,
+              provider2!..serviceClient = accessTokenProvider.accessToken,
         ),
-        ChangeNotifierProxyProvider(
+        ChangeNotifierProxyProvider<AccessTokenProvider,
+            ContactServiceClientProvider>(
           create: (BuildContext context) => ContactServiceClientProvider(
               GrpcWebClientChannelWeebi().clientChannel,
               context.read<AccessTokenProvider>().accessToken),
           update: (
             BuildContext context,
-            AccessTokenObject accessToken,
+            AccessTokenProvider accessTokenProvider,
             ContactServiceClientProvider? provider2,
           ) =>
-              provider2!..serviceClient = accessToken.value,
+              provider2!..serviceClient = accessTokenProvider.accessToken,
         ),
-        ChangeNotifierProxyProvider(
-          create: (BuildContext context) => FenceServiceClientProvider(
-              GrpcWebClientChannelWeebi().clientChannel,
-              context.read<AccessTokenProvider>().accessToken),
+        ChangeNotifierProxyProvider<AccessTokenProvider,
+            FenceServiceClientProviderV2>(
+          create: (BuildContext context) {
+            final channel = GrpcWebClientChannelWeebi().clientChannel;
+            FenceServiceClient createFenceClient(String token) =>
+                FenceServiceClient(
+                  channel,
+                  options: callOptions,
+                  interceptors: [
+                    AuthInterceptor(token),
+                    RequestLogInterceptor(),
+                  ],
+                );
+            return FenceServiceClientProviderV2(
+              createFenceClient,
+              context.read<AccessTokenProvider>().accessToken,
+            );
+          },
           update: (
             BuildContext context,
-            AccessTokenObject accessToken,
-            FenceServiceClientProvider? provider2,
+            AccessTokenProvider accessTokenProvider,
+            FenceServiceClientProviderV2? provider2,
           ) =>
-              provider2!..serviceClient = accessToken.value,
+              provider2!..updateToken(accessTokenProvider.accessToken),
         ),
-        ChangeNotifierProxyProvider(
+        ChangeNotifierProxyProvider<AccessTokenProvider,
+            TicketServiceClientProvider>(
           create: (BuildContext context) => TicketServiceClientProvider(
               GrpcWebClientChannelWeebi().clientChannel,
               context.read<AccessTokenProvider>().accessToken),
           update: (
             BuildContext context,
-            AccessTokenObject accessToken,
+            AccessTokenProvider accessTokenProvider,
             TicketServiceClientProvider? provider2,
           ) =>
-              provider2!..serviceClient = accessToken.value,
+              provider2!..serviceClient = accessTokenProvider.accessToken,
+        ),
+        ChangeNotifierProvider<PermissionProvider>(
+          create: (context) => PermissionProvider(
+            context.read<AccessTokenProvider>(),
+          ),
+        ),
+        ChangeNotifierProxyProvider<FenceServiceClientProviderV2,
+            BoutiqueProvider>(
+          create: (context) => BoutiqueProvider(
+            context.read<FenceServiceClientProviderV2>().fenceServiceClient,
+          ),
+          update: (context, fenceProvider, previous) =>
+              BoutiqueProvider(fenceProvider.fenceServiceClient),
+        ),
+        ChangeNotifierProxyProvider<FenceServiceClientProviderV2,
+            UserProvider>(
+          create: (context) => UserProvider(
+            context.read<FenceServiceClientProviderV2>().fenceServiceClient,
+          ),
+          update: (context, fenceProvider, previous) =>
+              UserProvider(fenceProvider.fenceServiceClient),
+        ),
+        ChangeNotifierProxyProvider2<UserProvider, BoutiqueProvider,
+            AccessProvider>(
+          create: (context) => AccessProvider(
+            userProvider: context.read<UserProvider>(),
+            boutiqueProvider: context.read<BoutiqueProvider>(),
+          ),
+          update: (context, userProvider, boutiqueProvider, previous) =>
+              AccessProvider(
+                userProvider: userProvider,
+                boutiqueProvider: boutiqueProvider,
+              ),
+        ),
+        ChangeNotifierProxyProvider<FenceServiceClientProviderV2,
+            DeviceProvider>(
+          create: (context) {
+            final dp = DeviceProvider(
+              context.read<FenceServiceClientProviderV2>().fenceServiceClient,
+            );
+            _setDeviceProviderPermissions(context, dp);
+            return dp;
+          },
+          update: (context, fenceProvider, previous) {
+            final dp = DeviceProvider(fenceProvider.fenceServiceClient);
+            _setDeviceProviderPermissions(context, dp);
+            return dp;
+          },
         ),
       ],
       child: Builder(
@@ -116,6 +200,17 @@ class _RootAppState extends State<RootApp> {
                   context.read<SharedPreferences>())),
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data!) {
+                  // Sync token from SharedPreferences (UserDataProvider) to AccessTokenProvider
+                  // so the boutiques/users packages use it for gRPC calls.
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (context.mounted) {
+                      final token =
+                          context.read<UserDataProvider>().accessToken;
+                      if (token.isNotEmpty) {
+                        context.read<AccessTokenProvider>().accessToken = token;
+                      }
+                    }
+                  });
                   return Consumer<AppPreferencesProvider>(
                     builder: (context, provider, child) {
                       _appRouter ??=

@@ -5,7 +5,7 @@ import 'package:web_admin/environment.dart';
 import '../core/constants/values.dart';
 
 class AppPreferencesProvider extends ChangeNotifier {
-  var _locale = Locale(Config.locale);
+  var _locale = Locale(Config.locale.isNotEmpty ? Config.locale : 'fr');
   var _themeMode = ThemeMode.system;
 
   Locale get locale => _locale;
@@ -14,21 +14,25 @@ class AppPreferencesProvider extends ChangeNotifier {
 
   void loadAsync(SharedPreferences sharedPref) {
     final langCode = (sharedPref.getString(StorageKeys.appLanguageCode) ??
-        Config.locale);
+            Config.locale)
+        .trim();
+    final effectiveLangCode = langCode.isNotEmpty ? langCode : 'fr';
 
-    if (langCode.contains('_')) {
-      final values = langCode.split('_');
-
-      _locale =
-          Locale.fromSubtags(languageCode: values[0], scriptCode: values[1]);
+    if (effectiveLangCode.contains('_')) {
+      final values = effectiveLangCode.split('_');
+      final lang = values[0].isNotEmpty ? values[0] : 'fr';
+      final script = values.length > 1 && values[1].isNotEmpty ? values[1] : null;
+      _locale = Locale.fromSubtags(languageCode: lang, scriptCode: script);
     } else {
-      _locale = Locale(langCode);
+      _locale = Locale(effectiveLangCode);
     }
 
     _themeMode = ThemeMode.values.byName(
         sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.light.name);
 
-    notifyListeners();
+    // Defer to avoid "setState during build" - loadAsync can be called from a
+    // Future that completes during the build phase (e.g. in RootApp)
+    WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
   Future<void> setLocaleAsync({

@@ -1,12 +1,30 @@
 # weebi web-app
 
 ``` shell
-flutter run -t lib/main_local.dart 
+# main_local: uses dotenv_lcl.txt (localhost) – no setup
+flutter run -t lib/main_local.dart
+flutter run -d web-server -t lib/main_local.dart
+
+# main.dart with ENVIRONMENT: first-time setup required
+cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt
+cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
+# Then add API_URL to each (obtain from team)
 flutter run --dart-define=ENVIRONMENT=development
 flutter run --dart-define=ENVIRONMENT=production
 ```
 
-!!! DEV == PRD until fixed env
+## Configuration
+
+The webapp calls the **Envoy proxy** (gRPC-Web), which forwards to weebi_server.
+
+**Two separate config paths** (no mixing):
+
+| Context | Source | See |
+|---------|--------|-----|
+| **Production** (Cloud Run) | Env vars → `/config.json` at startup | [SECRETS.md](SECRETS.md) |
+| **Local dev** | `assets/dotenv_*.txt` (gitignored) | [SECRETS.md](SECRETS.md) |
+
+Envoy URLs must **never** be committed. Use GitHub Secrets and Cloud Run Secret Manager.
 
 ## issues
 
@@ -75,6 +93,6 @@ Ce document explique comment utiliser Docker pour construire et exécuter une ap
 1. **Ouvrez votre terminal** et placez-vous dans le répertoire racine de votre projet Flutter.
 2. **Exécutez la première commande** pour construire l'image Docker :
    - `docker build -t flutter-web-app . --dart-define=ENVIRONMENT=development`
-3. Exécutez la deuxième commande pour démarrer le conteneur :
-   - `docker run -d -p 8080:80 --name weebi-web-dev weebi-web-dev`
+3. Exécutez la deuxième commande pour démarrer le conteneur (API_URL from env/secret):
+   - `docker run -d -p 8080:8080 -e API_URL=$ENVOY_URL --name weebi-web-dev weebi-web-dev`
 4. Accédez à votre application en ouvrant votre navigateur et en vous rendant sur http://localhost:8080.

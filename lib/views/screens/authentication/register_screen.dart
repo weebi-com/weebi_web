@@ -25,7 +25,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formData = FormData();
 
   var _isFormLoading = false;
+  var _obscurePassword = true;
+  var _obscureRetypePassword = true;
   final authService = AuthService();
+
+  void _submitForm() {
+    _doRegisterAsync(
+      onSuccess: (message) => _onRegisterSuccess(context, message),
+      onError: (message) => _onRegisterError(context, message),
+    );
+  }
 
   Future<void> _doRegisterAsync({
     required void Function(String message) onSuccess,
@@ -142,12 +151,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 icon: Icon(Icons.business),
                                 labelText: 'Firme',
                                 hintText: 'Nom de la firme',
-                                helperText: '',
                                 border: OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                               ),
                               enableSuggestions: false,
+                              textInputAction: TextInputAction.next,
                               validator: FormBuilderValidators.required(),
                               onSaved: (value) =>
                                   (_formData.firmName = value ?? ''),
@@ -167,6 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     FloatingLabelBehavior.always,
                               ),
                               enableSuggestions: false,
+                              textInputAction: TextInputAction.next,
                               validator: FormBuilderValidators.required(),
                               onSaved: (value) =>
                                   (_formData.firstName = value ?? ''),
@@ -186,6 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     FloatingLabelBehavior.always,
                               ),
                               enableSuggestions: false,
+                              textInputAction: TextInputAction.next,
                               validator: FormBuilderValidators.required(),
                               onSaved: (value) =>
                                   (_formData.lastName = value ?? ''),
@@ -204,6 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     FloatingLabelBehavior.always,
                               ),
                               keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
                               validator: FormBuilderValidators.required(),
                               onSaved: (value) =>
                                   (_formData.mail = value ?? ''),
@@ -216,14 +228,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               name: 'password',
                               decoration: InputDecoration(
                                 labelText: lang.password,
-                                hintText: lang.password,
-                                helperText: lang.passwordHelperText,
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () => setState(() =>
+                                      _obscurePassword = !_obscurePassword),
+                                ),
                               ),
                               enableSuggestions: false,
-                              obscureText: true,
+                              obscureText: _obscurePassword,
+                              textInputAction: TextInputAction.next,
                               controller: _passwordTextEditingController,
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(),
@@ -241,13 +261,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               name: 'retypePassword',
                               decoration: InputDecoration(
                                 labelText: lang.retypePassword,
-                                hintText: lang.retypePassword,
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscureRetypePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () => setState(() =>
+                                      _obscureRetypePassword =
+                                          !_obscureRetypePassword),
+                                ),
                               ),
                               enableSuggestions: false,
-                              obscureText: true,
+                              obscureText: _obscureRetypePassword,
+                              textInputAction: TextInputAction.done,
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(),
                                 (value) {
@@ -260,6 +290,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   return null;
                                 },
                               ]),
+                              onSubmitted: (_) => _submitForm(),
                             ),
                           ),
                           Padding(
@@ -272,16 +303,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 style: themeData
                                     .extension<AppButtonTheme>()!
                                     .primaryElevated,
-                                onPressed: (_isFormLoading
-                                    ? null
-                                    : () => _doRegisterAsync(
-                                          onSuccess: (message) =>
-                                              _onRegisterSuccess(
-                                                  context, message),
-                                          onError: (message) =>
-                                              _onRegisterError(
-                                                  context, message),
-                                        )),
+                                onPressed: _isFormLoading ? null : _submitForm,
                                 child: Text(lang.register),
                               ),
                             ),
