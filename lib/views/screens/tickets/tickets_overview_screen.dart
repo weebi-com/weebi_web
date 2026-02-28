@@ -70,6 +70,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
     }
   }
 
+  /// Uses firmId as chainId (single-chain setup: first chainId == firmId).
   String? _getChainId() {
     try {
       return context.read<AccessTokenProvider>().permissions.firmId;

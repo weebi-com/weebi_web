@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// How to filter soft-deleted tickets.
 enum DeletedFilter {
   exclude, // only non-deleted (default)
-  include, // both non-deleted and deleted
+  include, // both non-deleted and deleted (kept for backward compat, no longer in UI)
   only, // only deleted (auditing)
 }
 
