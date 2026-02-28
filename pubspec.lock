@@ -105,6 +105,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  design_weebi:
+    dependency: "direct main"
+    description:
+      path: "../weebi/packages/design"
+      relative: true
+    source: path
+    version: "0.1.0"
   devices_weebi:
     dependency: "direct main"
     description:
@@ -269,6 +276,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: transitive
+    description:
+      name: font_awesome_flutter
+      sha256: b738e35f8bb4957896c34957baf922f99c5d415b38ddc8b070d14b7fa95715d4
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.9.1"
   form_builder_asset_picker:
     dependency: "direct main"
     description:
@@ -446,22 +461,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.16.0"
-  mixins_weebi:
-    dependency: "direct main"
-    description:
-      name: mixins_weebi
-      sha256: "160875ea9c4b9a8505bc2874f6b73aa17bd2c93fc319765e86f666631d1da1b6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.9+1"
-  mobx:
-    dependency: transitive
-    description:
-      name: mobx
-      sha256: bf1a90e5bcfd2851fc6984e20eef69557c65d9e4d0a88f5be4cf72c9819ce6b0
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.0"
   models_weebi:
     dependency: "direct main"
     description:
@@ -599,7 +598,7 @@ packages:
     source: hosted
     version: "0.10.2+1"
   protobuf:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: protobuf
       sha256: de9c9eb2c33f8e933a42932fe1dc504800ca45ebc3d673e6ed7f39754ee4053e
@@ -791,10 +790,10 @@ packages:
     dependency: "direct main"
     description:
       name: users_weebi
-      sha256: "80e040cf59cc16cc0c9633b3bb63e7ca2a6994e40233e60fe021d91bbb38dd5f"
+      sha256: "2772b7e0b86ac0b9752f54a5e3e40718c35065058b923b7322b1873f56e5362e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.6+1"
   vector_graphics:
     dependency: transitive
     description:

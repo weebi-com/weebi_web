@@ -1,8 +1,8 @@
+import 'package:boutiques_weebi/boutiques_weebi.dart' show BoutiqueDynamicBody;
 import 'package:flutter/material.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/core/services/firm_service.dart';
-import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
@@ -50,7 +50,6 @@ class _FirmListScreenState extends State<FirmListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final lang = Lang.of(context);
     final themeData = Theme.of(context);
     final appColorScheme = themeData.extension<AppColorScheme>()!;
 
@@ -79,9 +78,8 @@ class _FirmListScreenState extends State<FirmListScreen> {
                         Padding(
                           padding: const EdgeInsets.only(
                               bottom: kDefaultPadding * 2.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (errorMessage != null)
                                 Padding(
@@ -101,90 +99,9 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                     ),
                                   ),
                                 )
-                              else if (currentFirm != null) ...[
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: kDefaultPadding),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'Nom de la firme:',
-                                        style: TextStyle(
-                                          fontSize: themeData
-                                              .textTheme.bodyLarge!.fontSize,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        currentFirm!.name,
-                                        style: TextStyle(
-                                          fontSize: themeData
-                                              .textTheme.bodyLarge!.fontSize,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: kDefaultPadding),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'Date de création (UTC):',
-                                        style: TextStyle(
-                                          fontSize: themeData
-                                              .textTheme.bodyLarge!.fontSize,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        currentFirm!.creationDateUTC
-                                            .toDateTime()
-                                            .toIso8601String(),
-                                        style: TextStyle(
-                                          fontSize: themeData
-                                              .textTheme.bodyLarge!.fontSize,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                              // * not meant to be using weebi web without a firm 
-/*                               Visibility(
-                                visible: currentFirm == null,
-                                child: SizedBox(
-                                  height: 40.0,
-                                  child: ElevatedButton(
-                                    style: themeData
-                                        .extension<AppButtonTheme>()!
-                                        .successElevated,
-                                    onPressed: () => GoRouter.of(context)
-                                        .go(RouteUri.createFirm),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: kDefaultPadding * 0.5),
-                                          child: Icon(
-                                            Icons.add,
-                                            size: (themeData.textTheme
-                                                    .labelLarge!.fontSize! +
-                                                4.0),
-                                          ),
-                                        ),
-                                        const Text("Ajouter une firme"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ), */
+                              else if (currentFirm != null)
+                                BoutiqueDynamicBody<Firm>(
+                                    pbObject: currentFirm!),
                             ],
                           ),
                         ),

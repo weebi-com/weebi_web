@@ -73,7 +73,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
       "Admin Portal Login",
     ),
-    "appTitle": MessageLookupByLibrary.simpleMessage("Weebi"),
     "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("Button Emphasis"),
     "buttons": m0,

@@ -69,11 +69,6 @@ class Lang {
     );
   }
 
-  /// `Weebi`
-  String get appTitle {
-    return Intl.message('Weebi', name: 'appTitle', desc: '', args: []);
-  }
-
   /// `Back to Login`
   String get backToLogin {
     return Intl.message(

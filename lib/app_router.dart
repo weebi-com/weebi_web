@@ -20,7 +20,10 @@ import 'package:web_admin/views/screens/my_profile_screen.dart';
 import 'package:web_admin/views/screens/authentication/register_screen.dart';
 import 'package:web_admin/views/screens/text_screen.dart';
 import 'package:web_admin/views/screens/accesses/accesses_package_screen.dart';
+import 'package:protos_weebi/protos_weebi_io.dart' show TicketPb;
 import 'package:web_admin/views/screens/devices/devices_package_screen.dart';
+import 'package:web_admin/views/screens/tickets/ticket_detail_screen.dart';
+import 'package:web_admin/views/screens/tickets/tickets_overview_screen.dart';
 import 'package:web_admin/views/screens/users/users_package_screen.dart';
 
 class RouteUri {
@@ -53,6 +56,9 @@ class RouteUri {
 
   static const String listAccess = '/accesses';
   static const String listDevice = '/devices';
+
+  static const String ticketsOverview = '/tickets';
+  static const String ticketDetail = '/tickets/detail';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -249,6 +255,28 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           return NoTransitionPage<void>(
             key: state.pageKey,
             child: const DevicesPackageScreen(),
+          );
+        },
+      ),
+
+      // =========================== TICKETS ===========================
+
+      GoRoute(
+        path: RouteUri.ticketsOverview,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const TicketsOverviewScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.ticketDetail,
+        pageBuilder: (context, state) {
+          final ticket = state.extra as TicketPb?;
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: TicketDetailScreen(ticket: ticket),
           );
         },
       ),

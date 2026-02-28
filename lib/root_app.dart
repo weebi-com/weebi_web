@@ -13,6 +13,7 @@ import 'package:web_admin/grpc/log_interceptor.dart';
 import 'package:web_admin/grpc/server.dart';
 import 'package:web_admin/providers/app_preferences_provider.dart';
 import 'package:web_admin/providers/server.dart';
+import 'package:web_admin/providers/tickets_boutique_cache.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 
@@ -148,6 +149,14 @@ class _RootAppState extends State<RootApp> {
           ),
           update: (context, fenceProvider, previous) =>
               BoutiqueProvider(fenceProvider.fenceServiceClient),
+        ),
+        ChangeNotifierProxyProvider<FenceServiceClientProviderV2,
+            TicketsBoutiqueCache>(
+          create: (context) => TicketsBoutiqueCache(
+            context.read<FenceServiceClientProviderV2>().fenceServiceClient,
+          ),
+          update: (context, fenceProvider, previous) =>
+              TicketsBoutiqueCache(fenceProvider.fenceServiceClient),
         ),
         ChangeNotifierProxyProvider<FenceServiceClientProviderV2,
             UserProvider>(

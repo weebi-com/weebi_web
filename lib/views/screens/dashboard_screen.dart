@@ -103,8 +103,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () =>
                           GoRouter.of(context).go(RouteUri.listAccess),
                       child: SummaryCard(
-                        title: lang.pendingIssues(2),
-                        value: 'Users accesses',
+                        title: 'Accès utilisateurs',
+                        value: 'Accès utilisateurs',
                         icon: Icons.admin_panel_settings_rounded,
                         backgroundColor: Colors.purple,
                         textColor: themeData.colorScheme.onPrimary,
@@ -116,10 +116,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () =>
                           GoRouter.of(context).go(RouteUri.listDevice),
                       child: SummaryCard(
-                        title: lang.pendingIssues(2),
-                        value: 'Devices',
+                        title: 'Appareils',
+                        value: 'Appareils',
                         icon: Icons.devices_rounded,
                         backgroundColor: Colors.teal,
+                        textColor: themeData.colorScheme.onPrimary,
+                        iconColor: Colors.black12,
+                        width: summaryCardWidth,
+                      ),
+                    ),
+                    _HoverableTile(
+                      onTap: () =>
+                          GoRouter.of(context).go(RouteUri.ticketsOverview),
+                      child: SummaryCard(
+                        title: 'Tickets du jour',
+                        value: 'Tickets',
+                        icon: Icons.receipt,
+                        backgroundColor: Colors.grey,
                         textColor: themeData.colorScheme.onPrimary,
                         iconColor: Colors.black12,
                         width: summaryCardWidth,
