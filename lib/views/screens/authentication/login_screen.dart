@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:protos_weebi/grpc.dart';
+import 'package:auth_weebi/auth_weebi.dart' show AccessTokenProvider;
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
@@ -28,7 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formData = FormData();
 
   var _isFormLoading = false;
+  var _obscurePassword = true;
   final authService = AuthService();
+
+  void _submitForm() {
+    _doLoginAsync(
+      onSuccess: () => _onLoginSuccess(context),
+      onError: (message) => _onLoginError(context, message),
+    );
+  }
 
   Future<void> _doLoginAsync({
     required VoidCallback onSuccess,
@@ -48,6 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         if (result.success) {
+          if (result.accessToken != null && result.accessToken!.isNotEmpty) {
+            context.read<AccessTokenProvider>().accessToken = result.accessToken!;
+          }
           await context.read<UserDataProvider>().setUserDataAsync(
                 mail: _formData.mail,
                 userProfileImageUrl:
@@ -86,6 +98,41 @@ class _LoginScreenState extends State<LoginScreen> {
     dialog.show();
   }
 
+  void _showForgotPasswordDialog(BuildContext context) {
+    final lang = Lang.of(context);
+    final formKey = GlobalKey<FormBuilderState>();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => _ForgotPasswordDialog(
+        formKey: formKey,
+        lang: lang,
+        authService: authService,
+        onSuccess: () {
+          Navigator.of(dialogContext).pop();
+          if (context.mounted) _onForgotPasswordSuccess(context);
+        },
+        onError: (message) {
+          Navigator.of(dialogContext).pop();
+          if (context.mounted) _onLoginError(context, message);
+        },
+      ),
+    );
+  }
+
+  void _onForgotPasswordSuccess(BuildContext context) {
+    final dialog = AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      desc: 'Password reset email sent.', 
+      width: kDialogWidth,
+      btnOkText: 'OK',
+      btnOkOnPress: () {},
+    );
+    dialog.show();
+  }
+
   @override
   Widget build(BuildContext context) {
     final lang = Lang.of(context);
@@ -113,14 +160,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 60.0,
                       ),
                     ),
-/*                     Padding(
-                      padding:
-                          const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
-                      child: Text(
-                        lang.login,
-                        style: themeData.textTheme.titleMedium,
-                      ),
-                    ), */
                     FormBuilder(
                       key: _formKey,
                       autovalidateMode: AutovalidateMode.disabled,
@@ -139,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     FloatingLabelBehavior.always,
                               ),
                               keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
                               validator: FormBuilderValidators.required(),
                               onSaved: (value) =>
                                   (_formData.mail = value ?? ''),
@@ -146,22 +186,56 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                bottom: kDefaultPadding * 2.0),
+                                bottom: kDefaultPadding),
                             child: FormBuilderTextField(
                               name: 'password',
                               decoration: InputDecoration(
                                 labelText: lang.password,
                                 hintText: lang.password,
-                                helperText: '* Votre mot de passe',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () => setState(
+                                      () => _obscurePassword =
+                                          !_obscurePassword),
+                                ),
                               ),
                               enableSuggestions: false,
-                              obscureText: true,
+                              obscureText: _obscurePassword,
+                              textInputAction: TextInputAction.done,
                               validator: FormBuilderValidators.required(),
                               onSaved: (value) =>
                                   (_formData.password = value ?? ''),
+                              onSubmitted: (_) => _submitForm(),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: kDefaultPadding * 2.0),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                style: themeData
+                                    .extension<AppButtonTheme>()!
+                                    .primaryText,
+                                onPressed: () =>
+                                    _showForgotPasswordDialog(context),
+                                child: Text(
+                                  'Forgot Password',
+                                  style: TextStyle(
+                                    color: themeData
+                                        .extension<AppColorScheme>()!
+                                        .hyperlink,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                           Padding(
@@ -174,14 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: themeData
                                     .extension<AppButtonTheme>()!
                                     .primaryElevated,
-                                onPressed: (_isFormLoading
-                                    ? null
-                                    : () => _doLoginAsync(
-                                          onSuccess: () =>
-                                              _onLoginSuccess(context),
-                                          onError: (message) =>
-                                              _onLoginError(context, message),
-                                        )),
+                                onPressed: _isFormLoading ? null : _submitForm,
                                 child: Text(lang.login),
                               ),
                             ),
@@ -226,6 +293,100 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ForgotPasswordDialog extends StatefulWidget {
+  const _ForgotPasswordDialog({
+    required this.formKey,
+    required this.lang,
+    required this.authService,
+    required this.onSuccess,
+    required this.onError,
+  });
+
+  final GlobalKey<FormBuilderState> formKey;
+  final Lang lang;
+  final AuthService authService;
+  final VoidCallback onSuccess;
+  final void Function(String message) onError;
+
+  @override
+  State<_ForgotPasswordDialog> createState() => _ForgotPasswordDialogState();
+}
+
+class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
+  var _isLoading = false;
+
+  Future<void> _submit() async {
+    if (widget.formKey.currentState?.validate() ?? false) {
+      widget.formKey.currentState!.save();
+      final email = widget.formKey.currentState!.value['email'] as String? ?? '';
+      setState(() => _isLoading = true);
+      try {
+        final (success, errorMessage) =
+            await widget.authService.requestPasswordReset(mail: email);
+        if (!mounted) return;
+        if (success) {
+          widget.onSuccess();
+        } else {
+          widget.onError(errorMessage ?? 'Failed to send reset email.');
+        }
+      } catch (e) {
+        if (mounted) widget.onError(e.toString());
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Forgot Password'),
+      content: FormBuilder(
+        key: widget.formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Enter your email to reset your password.'),
+            const SizedBox(height: kDefaultPadding),
+            FormBuilderTextField(
+              name: 'email',
+              decoration: InputDecoration(
+                labelText: widget.lang.mail,
+                hintText: widget.lang.mail,
+                border: const OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.done,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.email(),
+              ]),
+              onSubmitted: (_) => _submit(),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+          child: Text(widget.lang.cancel),
+        ),
+        FilledButton(
+          onPressed: _isLoading ? null : _submit,
+          child: _isLoading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(widget.lang.submit),
+        ),
+      ],
     );
   }
 }

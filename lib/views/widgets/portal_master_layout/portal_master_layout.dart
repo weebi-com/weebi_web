@@ -216,30 +216,46 @@ class ResponsiveAppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lang = Lang.of(context);
     final mediaQueryData = MediaQuery.of(context);
+    final lang = Lang.of(context);
+    final themeData = Theme.of(context);
 
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onAppBarTitlePressed,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Visibility(
-              visible: (mediaQueryData.size.width > kScreenWidthSm),
-              child: Container(
-                padding: const EdgeInsets.only(right: kDefaultPadding * 0.7),
-                height: 30.0,
-                child: Image.asset(
-                  'assets/images/app_logo.png',
-                  fit: BoxFit.contain,
-                  color: Colors.white,
+    return Tooltip(
+      message: lang.homePage,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: onAppBarTitlePressed,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Visibility(
+                visible: (mediaQueryData.size.width > kScreenWidthSm),
+                child: Container(
+                  padding: const EdgeInsets.only(right: kDefaultPadding * 0.7),
+                  height: 30.0,
+                  child: Image.asset(
+                    'assets/images/app_logo.png',
+                    fit: BoxFit.contain,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-            // Text(lang.appTitle),
-          ],
+              Icon(
+                Icons.home_rounded,
+                size: (themeData.textTheme.titleLarge?.fontSize ?? 20) + 2,
+                color: themeData.appBarTheme.foregroundColor,
+              ),
+              const SizedBox(width: kDefaultPadding * 0.5),
+              Text(
+                lang.homePage,
+                style: themeData.appBarTheme.titleTextStyle ??
+                    themeData.textTheme.titleLarge?.copyWith(
+                      color: themeData.appBarTheme.foregroundColor,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );

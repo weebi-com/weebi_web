@@ -45,7 +45,7 @@ class AppThemeData {
         surface: Colors.white,
         onSurface: Colors.black,
       ),
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData(
         margin: EdgeInsets.zero,
       ),
     );
@@ -112,7 +112,7 @@ class AppThemeData {
         backgroundColor: kPrimaryColor,
         foregroundColor: Colors.white,
       ),
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData(
         margin: EdgeInsets.zero,
       ),
     );

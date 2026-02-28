@@ -15,7 +15,7 @@ void main() {
   ];
   runApp(MaterialApp(
     home: Scaffold(
-      appBar: AppBar(title: Text('Proto Messages Viewer')),
+      appBar: AppBar(title: const Text('Proto Messages Viewer')),
       body: ProtoMessagesTable(header: 'Contacts', messages: myMessages),
     ),
   ));

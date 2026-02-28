@@ -53,5 +53,8 @@ linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux
 linux/flutter/ephemeral/.plugin_symlinks/rive_common
 linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux
 
+# Local overrides with Envoy URLs - never commit (use dotenv_*.txt.example as template)
 /assets/dotenv_dev.txt
 /assets/dotenv_prd.txt
+ts/generate_go.sh
+pubspec.lock

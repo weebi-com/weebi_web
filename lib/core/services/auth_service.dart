@@ -48,7 +48,11 @@ class AuthService {
 
       await _saveTokens(response.accessToken, response.refreshToken);
 
-      return SignInResult(success: true, message: "");
+      return SignInResult(
+        success: true,
+        message: "",
+        accessToken: response.accessToken,
+      );
     } catch (e) {
       return _handleSignInError(e);
     }
@@ -113,6 +117,27 @@ class AuthService {
       return SignUpResult(success: true, userId: response.userId);
     } catch (e) {
       return _handleSignUpError(e);
+    }
+  }
+
+  /// Requests a password reset email for the given address.
+  /// Returns (success, errorMessage).
+  Future<(bool success, String? errorMessage)> requestPasswordReset({
+    required String mail,
+  }) async {
+    final stub = FenceServiceClient(_grpcClientService.channel);
+
+    try {
+      final response = await stub.requestPasswordReset(
+        PasswordResetRequest(mail: mail),
+      );
+      final ok = response.type == StatusResponse_Type.SUCCESS ||
+          response.type == StatusResponse_Type.UPDATED;
+      return (ok, ok ? null : response.message);
+    } on GrpcError catch (e) {
+      return (false, e.message);
+    } catch (e) {
+      return (false, e.toString());
     }
   }
 

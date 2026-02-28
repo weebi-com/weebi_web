@@ -32,6 +32,10 @@ RUN mkdir $APP
 COPY . $APP
 WORKDIR $APP
 
+# Ensure dotenv assets exist (gitignored files may be missing in CI; use .example)
+RUN [ -f assets/dotenv_dev.txt ] || cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt
+RUN [ -f assets/dotenv_prd.txt ] || cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
+
 # Build the Flutter web application
 RUN flutter clean
 RUN flutter pub get
@@ -43,10 +47,17 @@ FROM nginx:alpine
 # Copy Nginx configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Copy entrypoint for runtime config injection
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Copy the built app to the Nginx server directory
 COPY --from=build-env /app/build/web/ /usr/share/nginx/html/
 
 # Expose port 8080
 EXPOSE 8080
 
-CMD ["nginx", "-g", "daemon off;"]
+# Env vars - set via Cloud Run / GitHub Secrets (see SECRETS.md)
+ENV API_URL="" ENVIRONMENT="" API_URL_DEV="" API_URL_PRD="" LOCALE="fr"
+
+ENTRYPOINT ["/entrypoint.sh"]

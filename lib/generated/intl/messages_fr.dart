@@ -71,123 +71,146 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "account": MessageLookupByLibrary.simpleMessage("Mon Compte"),
-        "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
-            "Connexion au Portail Administrateur"),
-        "appTitle": MessageLookupByLibrary.simpleMessage("Admin Web"),
-        "backToLogin":
-            MessageLookupByLibrary.simpleMessage("Retour à la Connexion"),
-        "buttonEmphasis":
-            MessageLookupByLibrary.simpleMessage("Accentuation du Bouton"),
-        "buttons": m0,
-        "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
-        "closeNavigationMenu": MessageLookupByLibrary.simpleMessage(
-            "Fermer le Menu de Navigation"),
-        "colorPalette":
-            MessageLookupByLibrary.simpleMessage("Palette de Couleurs"),
-        "colorScheme":
-            MessageLookupByLibrary.simpleMessage("Schéma de Couleurs"),
-        "colors": m1,
-        "confirmDeleteRecord": MessageLookupByLibrary.simpleMessage(
-            "Confirmer la suppression de cet enregistrement?"),
-        "confirmSubmitRecord": MessageLookupByLibrary.simpleMessage(
-            "Confirmer la soumission de cet enregistrement?"),
-        "copy": MessageLookupByLibrary.simpleMessage("Copier"),
-        "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
-            "Ce champ nécessite un numéro de carte de crédit valide."),
-        "crudBack": MessageLookupByLibrary.simpleMessage("Retour"),
-        "crudDelete": MessageLookupByLibrary.simpleMessage("Supprimer"),
-        "crudDetail": MessageLookupByLibrary.simpleMessage("Détail"),
-        "crudNew": MessageLookupByLibrary.simpleMessage("Nouveau"),
-        "darkTheme": MessageLookupByLibrary.simpleMessage("Thème Sombre"),
-        "dashboard": MessageLookupByLibrary.simpleMessage("Tableau de Bord"),
-        "dateStringErrorText": MessageLookupByLibrary.simpleMessage(
-            "Ce champ nécessite une chaîne de date valide."),
-        "dialogs": m2,
-        "dontHaveAnAccount":
-            MessageLookupByLibrary.simpleMessage("Vous n\'avez pas de compte?"),
-        "email": MessageLookupByLibrary.simpleMessage("E-mail"),
-        "emailErrorText": MessageLookupByLibrary.simpleMessage(
-            "Ce champ nécessite une adresse e-mail valide."),
-        "equalErrorText": m3,
-        "error404": MessageLookupByLibrary.simpleMessage("Erreur 404"),
-        "error404Message": MessageLookupByLibrary.simpleMessage(
-            "Désolé, la page que vous recherchez a été supprimée ou n\'existe pas."),
-        "error404Title":
-            MessageLookupByLibrary.simpleMessage("Page non trouvée"),
-        "example": MessageLookupByLibrary.simpleMessage("Exemple"),
-        "extensions": m4,
-        "firstName": MessageLookupByLibrary.simpleMessage("Prénom"),
-        "forms": m5,
-        "generalUi": MessageLookupByLibrary.simpleMessage("UI Générale"),
-        "hi": MessageLookupByLibrary.simpleMessage("Salut"),
-        "homePage": MessageLookupByLibrary.simpleMessage("Accueil"),
-        "iframeDemo": MessageLookupByLibrary.simpleMessage("Démo IFrame"),
-        "integerErrorText": MessageLookupByLibrary.simpleMessage(
-            "Ce champ nécessite un entier valide."),
-        "ipErrorText": MessageLookupByLibrary.simpleMessage(
-            "Ce champ nécessite une IP valide."),
-        "language": MessageLookupByLibrary.simpleMessage("Langue"),
-        "lastName": MessageLookupByLibrary.simpleMessage("Nom"),
-        "lightTheme": MessageLookupByLibrary.simpleMessage("Thème Clair"),
-        "login": MessageLookupByLibrary.simpleMessage("Connexion"),
-        "loginNow":
-            MessageLookupByLibrary.simpleMessage("Connectez-vous maintenant!"),
-        "logout": MessageLookupByLibrary.simpleMessage("Déconnexion"),
-        "loremIpsum": MessageLookupByLibrary.simpleMessage(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
-        "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
-        "matchErrorText": MessageLookupByLibrary.simpleMessage(
-            "La valeur ne correspond pas au motif."),
-        "maxErrorText": m6,
-        "maxLengthErrorText": m7,
-        "minErrorText": m8,
-        "minLengthErrorText": m9,
-        "myProfile": MessageLookupByLibrary.simpleMessage("Mon Profil"),
-        "newOrders": m10,
-        "newUsers": m11,
-        "notEqualErrorText": m12,
-        "numericErrorText": MessageLookupByLibrary.simpleMessage(
-            "La valeur doit être numérique."),
-        "openInNewTab": MessageLookupByLibrary.simpleMessage(
-            "Ouvrir dans un nouvel onglet"),
-        "pages": m13,
-        "password": MessageLookupByLibrary.simpleMessage("Mot de Passe"),
-        "passwordHelperText":
-            MessageLookupByLibrary.simpleMessage("* 6 - 18 caractères"),
-        "passwordNotMatch": MessageLookupByLibrary.simpleMessage(
-            "Les mots de passe ne correspondent pas."),
-        "pendingIssues": m14,
-        "recentOrders": m15,
-        "recordDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
-            "Enregistrement supprimé avec succès."),
-        "recordSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
-            "Enregistrement sauvegardé avec succès."),
-        "recordSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
-            "Enregistrement soumis avec succès."),
-        "register": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
-        "registerANewAccount":
-            MessageLookupByLibrary.simpleMessage("Créer un nouveau compte"),
-        "registerNow":
-            MessageLookupByLibrary.simpleMessage("Inscrivez-vous maintenant!"),
-        "requiredErrorText": MessageLookupByLibrary.simpleMessage(
-            "Ce champ ne peut pas être vide."),
-        "retypePassword":
-            MessageLookupByLibrary.simpleMessage("Retaper le Mot de Passe"),
-        "save": MessageLookupByLibrary.simpleMessage("Sauvegarder"),
-        "search": MessageLookupByLibrary.simpleMessage("Rechercher"),
-        "submit": MessageLookupByLibrary.simpleMessage("Soumettre"),
-        "text": MessageLookupByLibrary.simpleMessage("Texte"),
-        "textEmphasis":
-            MessageLookupByLibrary.simpleMessage("Accentuation du Texte"),
-        "textTheme": MessageLookupByLibrary.simpleMessage("Thème du Texte"),
-        "todaySales":
-            MessageLookupByLibrary.simpleMessage("Ventes d\'Aujourd\'hui"),
-        "typography": MessageLookupByLibrary.simpleMessage("Typographie"),
-        "uiElements": m16,
-        "urlErrorText": MessageLookupByLibrary.simpleMessage(
-            "Ce champ nécessite une adresse URL valide."),
-        "username": MessageLookupByLibrary.simpleMessage("Nom d\'Utilisateur"),
-        "yes": MessageLookupByLibrary.simpleMessage("Oui")
-      };
+    "account": MessageLookupByLibrary.simpleMessage("Mon Compte"),
+    "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
+      "Connexion au Portail Administrateur",
+    ),
+    "backToLogin": MessageLookupByLibrary.simpleMessage(
+      "Retour à la Connexion",
+    ),
+    "buttonEmphasis": MessageLookupByLibrary.simpleMessage(
+      "Accentuation du Bouton",
+    ),
+    "buttons": m0,
+    "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
+    "closeNavigationMenu": MessageLookupByLibrary.simpleMessage(
+      "Fermer le Menu de Navigation",
+    ),
+    "colorPalette": MessageLookupByLibrary.simpleMessage("Palette de Couleurs"),
+    "colorScheme": MessageLookupByLibrary.simpleMessage("Schéma de Couleurs"),
+    "colors": m1,
+    "confirmDeleteRecord": MessageLookupByLibrary.simpleMessage(
+      "Confirmer la suppression de cet enregistrement?",
+    ),
+    "confirmSubmitRecord": MessageLookupByLibrary.simpleMessage(
+      "Confirmer la soumission de cet enregistrement?",
+    ),
+    "copy": MessageLookupByLibrary.simpleMessage("Copier"),
+    "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
+      "Ce champ nécessite un numéro de carte de crédit valide.",
+    ),
+    "crudBack": MessageLookupByLibrary.simpleMessage("Retour"),
+    "crudDelete": MessageLookupByLibrary.simpleMessage("Supprimer"),
+    "crudDetail": MessageLookupByLibrary.simpleMessage("Détail"),
+    "crudNew": MessageLookupByLibrary.simpleMessage("Nouveau"),
+    "darkTheme": MessageLookupByLibrary.simpleMessage("Thème Sombre"),
+    "dashboard": MessageLookupByLibrary.simpleMessage("Tableau de Bord"),
+    "dateStringErrorText": MessageLookupByLibrary.simpleMessage(
+      "Ce champ nécessite une chaîne de date valide.",
+    ),
+    "dialogs": m2,
+    "dontHaveAnAccount": MessageLookupByLibrary.simpleMessage(
+      "Vous n\'avez pas de compte?",
+    ),
+    "email": MessageLookupByLibrary.simpleMessage("E-mail"),
+    "emailErrorText": MessageLookupByLibrary.simpleMessage(
+      "Ce champ nécessite une adresse e-mail valide.",
+    ),
+    "equalErrorText": m3,
+    "error404": MessageLookupByLibrary.simpleMessage("Erreur 404"),
+    "error404Message": MessageLookupByLibrary.simpleMessage(
+      "Désolé, la page que vous recherchez a été supprimée ou n\'existe pas.",
+    ),
+    "error404Title": MessageLookupByLibrary.simpleMessage("Page non trouvée"),
+    "example": MessageLookupByLibrary.simpleMessage("Exemple"),
+    "extensions": m4,
+    "firstName": MessageLookupByLibrary.simpleMessage("Prénom"),
+    "forms": m5,
+    "generalUi": MessageLookupByLibrary.simpleMessage("UI Générale"),
+    "hi": MessageLookupByLibrary.simpleMessage("Salut"),
+    "homePage": MessageLookupByLibrary.simpleMessage("Accueil"),
+    "iframeDemo": MessageLookupByLibrary.simpleMessage("Démo IFrame"),
+    "integerErrorText": MessageLookupByLibrary.simpleMessage(
+      "Ce champ nécessite un entier valide.",
+    ),
+    "ipErrorText": MessageLookupByLibrary.simpleMessage(
+      "Ce champ nécessite une IP valide.",
+    ),
+    "language": MessageLookupByLibrary.simpleMessage("Langue"),
+    "lastName": MessageLookupByLibrary.simpleMessage("Nom"),
+    "lightTheme": MessageLookupByLibrary.simpleMessage("Thème Clair"),
+    "login": MessageLookupByLibrary.simpleMessage("Connexion"),
+    "loginNow": MessageLookupByLibrary.simpleMessage(
+      "Connectez-vous maintenant!",
+    ),
+    "logout": MessageLookupByLibrary.simpleMessage("Déconnexion"),
+    "loremIpsum": MessageLookupByLibrary.simpleMessage(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    ),
+    "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
+    "matchErrorText": MessageLookupByLibrary.simpleMessage(
+      "La valeur ne correspond pas au motif.",
+    ),
+    "maxErrorText": m6,
+    "maxLengthErrorText": m7,
+    "minErrorText": m8,
+    "minLengthErrorText": m9,
+    "myProfile": MessageLookupByLibrary.simpleMessage("Mon Profil"),
+    "newOrders": m10,
+    "newUsers": m11,
+    "notEqualErrorText": m12,
+    "numericErrorText": MessageLookupByLibrary.simpleMessage(
+      "La valeur doit être numérique.",
+    ),
+    "openInNewTab": MessageLookupByLibrary.simpleMessage(
+      "Ouvrir dans un nouvel onglet",
+    ),
+    "pages": m13,
+    "password": MessageLookupByLibrary.simpleMessage("Mot de Passe"),
+    "passwordNotMatch": MessageLookupByLibrary.simpleMessage(
+      "Les mots de passe ne correspondent pas.",
+    ),
+    "pendingIssues": m14,
+    "recentOrders": m15,
+    "recordDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Enregistrement supprimé avec succès.",
+    ),
+    "recordSavedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Enregistrement sauvegardé avec succès.",
+    ),
+    "recordSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Enregistrement soumis avec succès.",
+    ),
+    "register": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
+    "registerANewAccount": MessageLookupByLibrary.simpleMessage(
+      "Créer un nouveau compte",
+    ),
+    "registerNow": MessageLookupByLibrary.simpleMessage(
+      "Inscrivez-vous maintenant!",
+    ),
+    "requiredErrorText": MessageLookupByLibrary.simpleMessage(
+      "Ce champ ne peut pas être vide.",
+    ),
+    "retypePassword": MessageLookupByLibrary.simpleMessage(
+      "Retaper le Mot de Passe",
+    ),
+    "save": MessageLookupByLibrary.simpleMessage("Sauvegarder"),
+    "search": MessageLookupByLibrary.simpleMessage("Rechercher"),
+    "submit": MessageLookupByLibrary.simpleMessage("Soumettre"),
+    "text": MessageLookupByLibrary.simpleMessage("Texte"),
+    "textEmphasis": MessageLookupByLibrary.simpleMessage(
+      "Accentuation du Texte",
+    ),
+    "textTheme": MessageLookupByLibrary.simpleMessage("Thème du Texte"),
+    "todaySales": MessageLookupByLibrary.simpleMessage(
+      "Ventes d\'Aujourd\'hui",
+    ),
+    "typography": MessageLookupByLibrary.simpleMessage("Typographie"),
+    "uiElements": m16,
+    "urlErrorText": MessageLookupByLibrary.simpleMessage(
+      "Ce champ nécessite une adresse URL valide.",
+    ),
+    "username": MessageLookupByLibrary.simpleMessage("Nom d\'Utilisateur"),
+    "yes": MessageLookupByLibrary.simpleMessage("Oui"),
+  };
 }

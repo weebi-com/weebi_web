@@ -36,34 +36,8 @@ class ArticleServiceClientProvider extends ChangeNotifier {
   }
 }
 
-class FenceServiceClientProvider extends ChangeNotifier {
-  final String _accessToken;
-  final GrpcWebClientChannel clientChannel;
-  FenceServiceClientProvider(this.clientChannel, this._accessToken)
-      : _fenceServiceClient = FenceServiceClient(
-          clientChannel,
-          options: callOptions,
-          interceptors: [
-            AuthInterceptor(_accessToken),
-            RequestLogInterceptor(),
-          ],
-        );
-  FenceServiceClient _fenceServiceClient;
-  FenceServiceClient get fenceServiceClient => _fenceServiceClient;
-
-  set serviceClient(String value) {
-    _fenceServiceClient = FenceServiceClient(
-      clientChannel,
-      options: callOptions,
-      interceptors: [
-        AuthInterceptor(value),
-        RequestLogInterceptor(),
-      ],
-    );
-    notifyListeners();
-    return;
-  }
-}
+/// FenceServiceClient is provided by FenceServiceClientProviderV2 from users_weebi.
+/// See root_app.dart for wiring with GrpcWebClientChannel.
 
 class ContactServiceClientProvider extends ChangeNotifier {
   final String _accessToken;

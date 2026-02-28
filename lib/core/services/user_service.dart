@@ -68,6 +68,27 @@ class UserService {
     }
   }
 
+  Future<UserPublic?> readOneUser({required String userId}) async {
+    final stub = FenceServiceClient(_grpcClientService.channel);
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(StorageKeys.accessToken);
+      if (token == null || token.isEmpty) return null;
+
+      final options = CallOptions(metadata: {'authorization': token});
+      final response = await stub.readOneUser(
+        UserId()..userId = userId,
+        options: options,
+      );
+
+      return response.user;
+    } catch (e) {
+      print('Erreur lors de la récupération de l\'utilisateur: $e');
+      rethrow;
+    }
+  }
+
   Future<UsersPublic> readAllUsers() async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
