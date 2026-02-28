@@ -75,7 +75,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
       "Connexion au Portail Administrateur",
     ),
-    "appTitle": MessageLookupByLibrary.simpleMessage("Weebi"),
     "backToLogin": MessageLookupByLibrary.simpleMessage(
       "Retour à la Connexion",
     ),
