@@ -1,8 +1,13 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:auth_weebi/auth_weebi.dart' show PermissionProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
+import 'package:protos_weebi/protos_weebi_io.dart' show UserPublic;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:users_weebi/users_weebi.dart' show DynamicBody;
+import 'package:web_admin/core/services/user_service.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
@@ -234,8 +239,34 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ),
             ),
           ),
+          const SizedBox(height: kDefaultPadding * 2),
+          _buildProfileDetails(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildProfileDetails(BuildContext context) {
+    final userId = context.read<PermissionProvider>().userId;
+    if (userId.isEmpty) return const SizedBox.shrink();
+
+    return FutureBuilder<UserPublic?>(
+      future: UserService().readOneUser(userId: userId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+          return const SizedBox.shrink();
+        }
+        return DynamicBody<UserPublic>(
+          pbObject: snapshot.data!,
+          skipFieldNames: const ['permissions'],
+        );
+      },
     );
   }
 }
