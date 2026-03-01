@@ -50,8 +50,8 @@ class UserDataProvider extends ChangeNotifier {
       shouldNotify = true;
     }
 
-    if (mail != _mail) {
-      _mail = mail!;
+    if (mail != null && mail != _mail) {
+      _mail = mail;
 
       await sharedPref.setString(StorageKeys.mail, _mail);
 

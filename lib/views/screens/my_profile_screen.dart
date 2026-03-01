@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:auth_weebi/auth_weebi.dart' show PermissionProvider;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -9,7 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:users_weebi/users_weebi.dart' show DynamicBody;
 import 'package:web_admin/core/services/user_service.dart';
 import 'package:web_admin/generated/l10n.dart';
+import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
+import 'package:web_admin/utils/profile_image_provider.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
@@ -62,6 +67,38 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     }
   }
 
+  Future<void> _pickProfileImage(BuildContext context) async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+      allowMultiple: false,
+    );
+    if (result == null ||
+        result.files.isEmpty ||
+        result.files.first.bytes == null) return;
+
+    final bytes = result.files.first.bytes!;
+    final extension = result.files.first.extension ?? 'jpeg';
+    final mimeType = switch (extension.toLowerCase()) {
+      'png' => 'image/png',
+      'gif' => 'image/gif',
+      'webp' => 'image/webp',
+      _ => 'image/jpeg',
+    };
+    final dataUrl = 'data:$mimeType;base64,${base64Encode(bytes)}';
+
+    _formData.userProfileImageUrl = dataUrl;
+
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.setString(StorageKeys.userProfileImageUrl, dataUrl);
+
+    await context.read<UserDataProvider>().setUserDataAsync(
+          userProfileImageUrl: dataUrl,
+        );
+
+    if (mounted) setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final lang = Lang.of(context);
@@ -79,13 +116,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
             child: Card(
               clipBehavior: Clip.antiAlias,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CardHeader(
-                    title: lang.myProfile,
-                  ),
-                  CardBody(
+              child: CardBody(
                     child: FutureBuilder<bool>(
                       initialData: null,
                       future: (_future ??= _getDataAsync()),
@@ -112,8 +143,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       },
                     ),
                   ),
-                ],
-              ),
             ),
           ),
         ],
@@ -138,8 +167,17 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               children: [
                 CircleAvatar(
                   backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(_formData.userProfileImageUrl),
+                  backgroundImage:
+                      profileImageProvider(_formData.userProfileImageUrl),
                   radius: 60.0,
+                  onBackgroundImageError: (_, __) {},
+                  child: _formData.userProfileImageUrl.isEmpty
+                      ? Icon(
+                          Icons.person_rounded,
+                          size: 60.0,
+                          color: themeData.colorScheme.onSurfaceVariant,
+                        )
+                      : null,
                 ),
                 Positioned(
                   top: 0.0,
@@ -147,15 +185,18 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   child: SizedBox(
                     height: 40.0,
                     width: 40.0,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: themeData.extension<AppButtonTheme>()!.secondaryElevated.copyWith(
-                            shape: WidgetStateProperty.all(const CircleBorder()),
-                            padding: WidgetStateProperty.all(EdgeInsets.zero),
-                          ),
-                      child: const Icon(
-                        Icons.edit_rounded,
-                        size: 20.0,
+                    child: Tooltip(
+                      message: lang.changeProfilePhoto,
+                      child: ElevatedButton(
+                        onPressed: () => _pickProfileImage(context),
+                        style: themeData.extension<AppButtonTheme>()!.secondaryElevated.copyWith(
+                          shape: WidgetStateProperty.all(const CircleBorder()),
+                          padding: WidgetStateProperty.all(EdgeInsets.zero),
+                        ),
+                        child: const Icon(
+                          Icons.edit_rounded,
+                          size: 20.0,
+                        ),
                       ),
                     ),
                   ),

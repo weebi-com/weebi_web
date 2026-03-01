@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:web_admin/fence_map.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/master_layout_config.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
+import 'package:web_admin/utils/profile_image_provider.dart';
 
 import '../../../core/constants/dimens.dart';
 import '../../../core/theme/theme_extensions/app_sidebar_theme.dart';
@@ -125,6 +125,25 @@ class _SidebarState extends State<Sidebar> {
                       ),
                     ),
                     _sidebarMenuList(context),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Divider(
+                        height: 2.0,
+                        thickness: 1.0,
+                        color: sidebarTheme.foregroundColor.withOpacity(0.3),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        Lang.of(context).menuScopeDisclaimer,
+                        style: TextStyle(
+                          fontSize: sidebarTheme.menuFontSize - 2,
+                          color: sidebarTheme.foregroundColor.withOpacity(0.7),
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -148,35 +167,8 @@ class _SidebarState extends State<Sidebar> {
           .toString();
     }
 
-    return 2+2 == 4 ? const SizedBox() : Column(children: [
-      const Text(
-        '''
-Prenons exemple sur le bouton Account en haut à gauche
-Lorsque je clic sur un des éléments de la carte la vue à droite affiche le détail
-ex : je clic sur le boss, à droite je vois les infos du boss
-au niveau de la navigation, on rentre donc dans le module "Utilisateurs" et on ouvre le détail du boss
-Depuis la vue détail du boss je peux :
-
-- fermer pour afficher les modules
-- aller (revenir) à la racine du module utilisateurs (liste des utilisateurs)
-
-on déclinera aussi cette logique sur les objets Firme, Chaine, Boutique, Device
-
-Les éléments ne sont affichés sur la carte que si j'ai des permissions suffisantes
-Ci-dessous c'est le boss
-Si je m'étais connecté en tant que Manager
-  Je ne verrai que le contenu de la Chain chez Lili (Limited Access) et les vendeurs qui y travaillent
-  Je ne verrai pas non plus les utilisateurs de la chaine ice cream (filtrés par le back) absents de la réponse du rpc readUsers
-''',
-        style: TextStyle(color: Colors.white),
-      ),
-      const NestedWrapExample(),
-      const Text(
-        'je garde les éléments en-dessous pour naviguer facilement et continuer de s inspirer du projet web admin',
-        style: TextStyle(color: Colors.white),
-      ),
-      Column(
-        children: sidebarMenuConfigs.map<Widget>((menu) {
+    return Column(
+      children: sidebarMenuConfigs.map<Widget>((menu) {
           if (menu.children.isEmpty) {
             return _sidebarMenu(
               context,
@@ -208,8 +200,7 @@ Si je m'étais connecté en tant que Manager
             );
           }
         }).toList(growable: false),
-      )
-    ]);
+    );
   }
 
   Widget _sidebarMenu(
@@ -369,15 +360,26 @@ class SidebarHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            Selector<UserDataProvider, String>(
-              selector: (context, provider) => provider.userProfileImageUrl,
-              builder: (context, value, child) {
-                return CircleAvatar(
-                  backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(value),
-                  radius: 20.0,
-                );
-              },
+            InkWell(
+              onTap: onAccountButtonPressed,
+              borderRadius: BorderRadius.circular(20.0),
+              child: Selector<UserDataProvider, String>(
+                selector: (context, provider) => provider.userProfileImageUrl,
+                builder: (context, value, child) {
+                  return CircleAvatar(
+                    backgroundColor: Colors.white,
+                    backgroundImage: profileImageProvider(value),
+                    radius: 20.0,
+                    child: value.isEmpty
+                        ? Icon(
+                            Icons.person_rounded,
+                            size: 20.0,
+                            color: themeData.colorScheme.onSurfaceVariant,
+                          )
+                        : null,
+                  );
+                },
+              ),
             ),
             const SizedBox(width: kDefaultPadding * 0.5),
             Selector<UserDataProvider, String>(

@@ -25,6 +25,9 @@ import 'package:web_admin/views/screens/devices/devices_package_screen.dart';
 import 'package:web_admin/views/screens/tickets/ticket_detail_screen.dart';
 import 'package:web_admin/views/screens/tickets/tickets_overview_screen.dart';
 import 'package:web_admin/views/screens/users/users_package_screen.dart';
+import 'package:web_admin/views/screens/help/help_screen.dart';
+import 'package:web_admin/views/screens/support/support_screen.dart';
+import 'package:web_admin/views/screens/about/about_screen.dart';
 
 class RouteUri {
   static const String home = '/';
@@ -59,6 +62,10 @@ class RouteUri {
 
   static const String ticketsOverview = '/tickets';
   static const String ticketDetail = '/tickets/detail';
+
+  static const String help = '/help';
+  static const String support = '/support';
+  static const String about = '/about';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -277,6 +284,36 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           return NoTransitionPage<void>(
             key: state.pageKey,
             child: TicketDetailScreen(ticket: ticket),
+          );
+        },
+      ),
+
+      // =========================== HELP / SUPPORT / ABOUT ===========================
+
+      GoRoute(
+        path: RouteUri.help,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const HelpScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.support,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const SupportScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.about,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const AboutScreen(),
           );
         },
       ),

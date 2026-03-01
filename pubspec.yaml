@@ -25,6 +25,7 @@ dependencies:
     git:
       url : https://github.com/hazem-saeed/form_builder_asset_picker
   awesome_dialog: ^3.2.0
+  file_picker: ^8.0.0
 
   grpc: ^4.0.1 # grpc_web not exported from protos
   flutter_dotenv: ^5.2.1

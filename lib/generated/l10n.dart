@@ -59,6 +59,21 @@ class Lang {
     return Intl.message('Account', name: 'account', desc: '', args: []);
   }
 
+  /// `About`
+  String get about {
+    return Intl.message('About', name: 'about', desc: '', args: []);
+  }
+
+  /// `Blog`
+  String get aboutBlog {
+    return Intl.message('Blog', name: 'aboutBlog', desc: '', args: []);
+  }
+
+  /// `Historical Partners`
+  String get aboutPartners {
+    return Intl.message('Historical Partners', name: 'aboutPartners', desc: '', args: []);
+  }
+
   /// `Admin Portal Login`
   String get adminPortalLogin {
     return Intl.message(
@@ -104,6 +119,11 @@ class Lang {
   /// `Cancel`
   String get cancel {
     return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Change photo`
+  String get changeProfilePhoto {
+    return Intl.message('Change photo', name: 'changeProfilePhoto', desc: '', args: []);
   }
 
   /// `Close Navigation Menu`
@@ -334,6 +354,41 @@ class Lang {
     return Intl.message('General UI', name: 'generalUi', desc: '', args: []);
   }
 
+  /// `Help`
+  String get help {
+    return Intl.message('Help', name: 'help', desc: '', args: []);
+  }
+
+  /// `Read the FAQ`
+  String get helpReadFaq {
+    return Intl.message('Read the FAQ', name: 'helpReadFaq', desc: '', args: []);
+  }
+
+  /// `Resources`
+  String get helpResourcesTitle {
+    return Intl.message('Resources', name: 'helpResourcesTitle', desc: '', args: []);
+  }
+
+  /// `The web console lets you manage tickets (view, filter, search). Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.`
+  String get helpScopeBody {
+    return Intl.message(
+      'The web console lets you manage tickets (view, filter, search). Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.',
+      name: 'helpScopeBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What can I do from the web console?`
+  String get helpScopeTitle {
+    return Intl.message('What can I do from the web console?', name: 'helpScopeTitle', desc: '', args: []);
+  }
+
+  /// `Watch video demos`
+  String get helpWatchDemos {
+    return Intl.message('Watch video demos', name: 'helpWatchDemos', desc: '', args: []);
+  }
+
   /// `Hi`
   String get hi {
     return Intl.message('Hi', name: 'hi', desc: '', args: []);
@@ -462,6 +517,46 @@ class Lang {
       desc: '',
       args: [minLength],
     );
+  }
+
+  /// `Accesses`
+  String get menuAccesses {
+    return Intl.message('Accesses', name: 'menuAccesses', desc: '', args: []);
+  }
+
+  /// `My Boutiques`
+  String get menuBoutiques {
+    return Intl.message('My Boutiques', name: 'menuBoutiques', desc: '', args: []);
+  }
+
+  /// `Devices`
+  String get menuDevices {
+    return Intl.message('Devices', name: 'menuDevices', desc: '', args: []);
+  }
+
+  /// `My Firm`
+  String get menuFirm {
+    return Intl.message('My Firm', name: 'menuFirm', desc: '', args: []);
+  }
+
+  /// `Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.`
+  String get menuScopeDisclaimer {
+    return Intl.message(
+      'Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.',
+      name: 'menuScopeDisclaimer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tickets`
+  String get menuTickets {
+    return Intl.message('Tickets', name: 'menuTickets', desc: '', args: []);
+  }
+
+  /// `Users`
+  String get menuUsers {
+    return Intl.message('Users', name: 'menuUsers', desc: '', args: []);
   }
 
   /// `My Profile`
@@ -657,6 +752,21 @@ class Lang {
   /// `Search`
   String get search {
     return Intl.message('Search', name: 'search', desc: '', args: []);
+  }
+
+  /// `Support`
+  String get support {
+    return Intl.message('Support', name: 'support', desc: '', args: []);
+  }
+
+  /// `Chat with Weebi support`
+  String get supportChatWhatsApp {
+    return Intl.message('Chat with Weebi support', name: 'supportChatWhatsApp', desc: '', args: []);
+  }
+
+  /// `Send us an email`
+  String get supportEmailUs {
+    return Intl.message('Send us an email', name: 'supportEmailUs', desc: '', args: []);
   }
 
   /// `Submit`

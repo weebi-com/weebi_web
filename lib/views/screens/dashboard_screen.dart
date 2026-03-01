@@ -1,3 +1,4 @@
+import 'package:design_weebi/design_weebi.dart' show IconsWeebi;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:web_admin/app_router.dart';
@@ -131,7 +132,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: SummaryCard(
                         title: 'Tickets du jour',
                         value: 'Tickets',
-                        icon: Icons.receipt,
+                        icon: IconsWeebi.ticketsIconData,
                         backgroundColor: Colors.grey,
                         textColor: themeData.colorScheme.onPrimary,
                         iconColor: Colors.black12,
@@ -269,7 +270,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SummaryCard(
                         title: lang.pendingIssues(2),
                         value: 'Tickets',
-                        icon: Icons.receipt,
+                        icon: IconsWeebi.ticketsIconData,
                         backgroundColor: Colors.grey,
                         textColor: themeData.colorScheme.onPrimary,
                         iconColor: Colors.black12,
