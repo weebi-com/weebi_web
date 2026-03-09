@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_asset_picker/form_builder_asset_picker.dart';
+// import 'package:form_builder_asset_picker/form_builder_asset_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:web_admin/generated/l10n.dart';
@@ -298,7 +298,7 @@ class _FormScreenState extends State<FormScreen> {
                               ),
                             ),
                           ),
-                          Padding(
+/*                           Padding(
                             padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
                             child: FormBuilderAssetPicker(
                               name: 'file_picker',
@@ -317,7 +317,7 @@ class _FormScreenState extends State<FormScreen> {
                                 ],
                               ),
                             ),
-                          ),
+                          ), */
                           Padding(
                             padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
                             child: FormBuilderSwitch(
