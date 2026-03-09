@@ -9,6 +9,8 @@ import 'package:web_admin/utils/profile_image_provider.dart';
 import '../../../core/constants/dimens.dart';
 import '../../../core/theme/theme_extensions/app_sidebar_theme.dart';
 
+const String kWebAdminAppVersion = '1.0.3';
+
 class SidebarMenuConfig {
   final String uri;
   final IconData icon;
@@ -98,7 +100,8 @@ class _SidebarState extends State<Sidebar> {
               data: themeData.copyWith(
                 scrollbarTheme: themeData.scrollbarTheme.copyWith(
                   thumbColor: WidgetStateProperty.all(
-                      sidebarTheme.foregroundColor.withOpacity(0.2)),
+                    sidebarTheme.foregroundColor.withOpacity(0.2),
+                  ),
                 ),
               ),
               child: Scrollbar(
@@ -145,6 +148,20 @@ class _SidebarState extends State<Sidebar> {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Web Admin v$kWebAdminAppVersion',
+                style: TextStyle(
+                  fontSize: sidebarTheme.menuFontSize - 4,
+                  color: sidebarTheme.foregroundColor.withOpacity(0.6),
+                  height: 1.2,
                 ),
               ),
             ),
