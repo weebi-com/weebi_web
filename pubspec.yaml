@@ -25,12 +25,13 @@ dependencies:
     git:
       url : https://github.com/hazem-saeed/form_builder_asset_picker
   awesome_dialog: ^3.2.0
+  file_picker: ^8.0.0
 
   grpc: ^4.0.1 # grpc_web not exported from protos
   flutter_dotenv: ^5.2.1
 
   protobuf: ^4.0.0
-  protos_weebi: ^1.0.16 # export protos
+  protos_weebi: ^1.0.18 # export protos (1.0.18+ for billing)
   models_weebi: any
 
   auth_weebi: ^1.0.6
@@ -47,6 +48,9 @@ dependency_overrides:
   # Can remove all overrides if not using form_builder_asset_picker package.
   intl: ^0.19.0
   ffi: ^2.0.1
+  # Use local protos for dev (billing); remove for release
+  protos_weebi:
+    path: ../weebi_server/packages/protos/protos_weebi
   flutter_form_builder: ^7.2.1
   form_builder_validators: ^8.1.1
   # Use local users package for DynamicBody (until next publish)

@@ -69,14 +69,32 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "about": MessageLookupByLibrary.simpleMessage("About"),
+    "aboutBlog": MessageLookupByLibrary.simpleMessage("Blog"),
+    "aboutPartners": MessageLookupByLibrary.simpleMessage(
+      "Historical Partners",
+    ),
     "account": MessageLookupByLibrary.simpleMessage("Account"),
     "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
       "Admin Portal Login",
     ),
     "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
+    "billingLifetime": MessageLookupByLibrary.simpleMessage("Lifetime"),
+    "billingMyLicenses": MessageLookupByLibrary.simpleMessage("My licenses"),
+    "billingPurchase": MessageLookupByLibrary.simpleMessage("Purchase"),
+    "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage(
+      "Purchase a license",
+    ),
+    "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
+      "Choose a plan to get started with Weebi.",
+    ),
+    "billingRetry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "billingUsers": MessageLookupByLibrary.simpleMessage("users"),
+    "billingValidUntil": MessageLookupByLibrary.simpleMessage("Valid until"),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("Button Emphasis"),
     "buttons": m0,
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "changeProfilePhoto": MessageLookupByLibrary.simpleMessage("Change photo"),
     "closeNavigationMenu": MessageLookupByLibrary.simpleMessage(
       "Close Navigation Menu",
     ),
@@ -121,6 +139,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
     "forms": m5,
     "generalUi": MessageLookupByLibrary.simpleMessage("General UI"),
+    "help": MessageLookupByLibrary.simpleMessage("Help"),
+    "helpReadFaq": MessageLookupByLibrary.simpleMessage("Read the FAQ"),
+    "helpResourcesTitle": MessageLookupByLibrary.simpleMessage("Resources"),
+    "helpScopeBody": MessageLookupByLibrary.simpleMessage(
+      "The web console lets you manage tickets (view, filter, search). Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.",
+    ),
+    "helpScopeTitle": MessageLookupByLibrary.simpleMessage(
+      "What can I do from the web console?",
+    ),
+    "helpWatchDemos": MessageLookupByLibrary.simpleMessage("Watch video demos"),
     "hi": MessageLookupByLibrary.simpleMessage("Hi"),
     "homePage": MessageLookupByLibrary.simpleMessage("Home"),
     "iframeDemo": MessageLookupByLibrary.simpleMessage("IFrame Demo"),
@@ -145,6 +173,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "maxErrorText": m6,
     "maxLengthErrorText": m7,
+    "menuAccesses": MessageLookupByLibrary.simpleMessage("Accesses"),
+    "menuBilling": MessageLookupByLibrary.simpleMessage("Billing"),
+    "menuBoutiques": MessageLookupByLibrary.simpleMessage("My Boutiques"),
+    "menuDevices": MessageLookupByLibrary.simpleMessage("Devices"),
+    "menuFirm": MessageLookupByLibrary.simpleMessage("My Firm"),
+    "menuScopeDisclaimer": MessageLookupByLibrary.simpleMessage(
+      "Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.",
+    ),
+    "menuTickets": MessageLookupByLibrary.simpleMessage("Tickets"),
+    "menuUsers": MessageLookupByLibrary.simpleMessage("Users"),
     "minErrorText": m8,
     "minLengthErrorText": m9,
     "myProfile": MessageLookupByLibrary.simpleMessage("My Profile"),
@@ -183,6 +221,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
     "submit": MessageLookupByLibrary.simpleMessage("Submit"),
+    "support": MessageLookupByLibrary.simpleMessage("Support"),
+    "supportChatWhatsApp": MessageLookupByLibrary.simpleMessage(
+      "Chat with Weebi support",
+    ),
+    "supportEmailUs": MessageLookupByLibrary.simpleMessage("Send us an email"),
     "text": MessageLookupByLibrary.simpleMessage("Text"),
     "textEmphasis": MessageLookupByLibrary.simpleMessage("Text Emphasis"),
     "textTheme": MessageLookupByLibrary.simpleMessage("Text Theme"),

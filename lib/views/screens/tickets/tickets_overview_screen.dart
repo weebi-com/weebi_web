@@ -227,54 +227,124 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
     return DateTime.tryParse(s);
   }
 
+  /// Groups tickets by boutique key (id for grouping, display name for UI).
+  Map<String, List<_TicketWithMeta>> _groupTicketsByBoutique(
+    List<_TicketWithMeta> filtered,
+    TicketsBoutiqueCache cache,
+  ) {
+    final groups = <String, List<_TicketWithMeta>>{};
+    for (final meta in filtered) {
+      final name = meta.ticket.counterfoil.boutiqueName.trim();
+      final id = meta.ticket.counterfoil.boutiqueId.trim();
+      final displayName = name.isNotEmpty ? name : cache.getName(id);
+      final boutiqueKey = displayName.isNotEmpty ? displayName : (id.isNotEmpty ? id : '—');
+      groups.putIfAbsent(boutiqueKey, () => []).add(meta);
+    }
+    return groups;
+  }
+
   Widget _buildGroupedList(
     List<_TicketWithMeta> filtered,
     TicketsBoutiqueCache cache,
   ) {
     if (filtered.isEmpty) return const SizedBox.shrink();
     final themeData = Theme.of(context);
-    String? lastBoutique;
-    final children = <Widget>[];
-    for (final meta in filtered) {
-      final name = meta.ticket.counterfoil.boutiqueName.trim();
-      final id = meta.ticket.counterfoil.boutiqueId.trim();
-      final boutiqueKey = name.isNotEmpty ? name : (id.isNotEmpty ? id : '—');
-      if (boutiqueKey != lastBoutique) {
-        lastBoutique = boutiqueKey;
-        children.add(
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              horizontal: kDefaultPadding,
-              vertical: 8,
-            ),
-            color: themeData.colorScheme.surfaceContainerHighest,
-            child: Text(
-              boutiqueKey,
-              style: themeData.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: themeData.colorScheme.primary,
+    final isLargeScreen = MediaQuery.of(context).size.width >= kScreenWidthLg;
+    final groups = _groupTicketsByBoutique(filtered, cache);
+    final sortedKeys = groups.keys.toList()..sort();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: sortedKeys.map((boutiqueKey) {
+        final tickets = groups[boutiqueKey]!;
+        return ExpansionTile(
+          initiallyExpanded: false,
+          tilePadding: const EdgeInsets.symmetric(
+            horizontal: kDefaultPadding,
+            vertical: 4,
+          ),
+          childrenPadding: EdgeInsets.zero,
+          backgroundColor: themeData.colorScheme.surfaceContainerHighest,
+          collapsedBackgroundColor: themeData.colorScheme.surfaceContainerHighest,
+          title: Row(
+            children: [
+              Text(
+                boutiqueKey,
+                style: themeData.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: themeData.colorScheme.primary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '(${tickets.length} ticket${tickets.length > 1 ? 's' : ''})',
+                style: themeData.textTheme.bodySmall?.copyWith(
+                  color: themeData.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+          children: [
+            if (isLargeScreen)
+              _buildTicketsTableForGroup(tickets, cache)
+            else
+              ...tickets.expand((meta) => [
+                    TicketGlimpseWidget(
+                      ticket: meta.ticket,
+                      onTap: () => _openTicketDetail(meta.ticket),
+                      isSoftDeleted: meta.isSoftDeleted,
+                      boutiqueCache: cache,
+                    ),
+                    const Divider(height: 1),
+                  ]).toList()
+                  ..removeLast(),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildTicketsTableForGroup(
+    List<_TicketWithMeta> tickets,
+    TicketsBoutiqueCache cache,
+  ) {
+    final themeData = Theme.of(context);
+    final appDataTableTheme = themeData.extension<AppDataTableTheme>()!;
+    final source = _TicketsTableSource(
+      tickets: tickets,
+      cache: cache,
+      onTap: _openTicketDetail,
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final dataTableWidth = max(kScreenWidthMd, constraints.maxWidth);
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: dataTableWidth,
+            child: Theme(
+              data: themeData.copyWith(
+                cardTheme: appDataTableTheme.cardTheme,
+                dataTableTheme: appDataTableTheme.dataTableThemeData,
+              ),
+              child: PaginatedDataTable(
+                source: source,
+                rowsPerPage: tickets.length <= 20 ? tickets.length : 20,
+                showCheckboxColumn: false,
+                showFirstLastButtons: tickets.length > 20,
+                columns: const [
+                  DataColumn(label: Text('Boutique')),
+                  DataColumn(label: Text('Type')),
+                  DataColumn(label: Text('Montant'), numeric: true),
+                  DataColumn(label: Text('Contact')),
+                  DataColumn(label: Text('Date · n°')),
+                ],
               ),
             ),
           ),
         );
-      }
-      children.add(
-        TicketGlimpseWidget(
-          ticket: meta.ticket,
-          onTap: () => _openTicketDetail(meta.ticket),
-          isSoftDeleted: meta.isSoftDeleted,
-          boutiqueCache: cache,
-        ),
-      );
-      children.add(const Divider(height: 1));
-    }
-    if (children.isNotEmpty && children.last is Divider) {
-      children.removeLast();
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: children,
+      },
     );
   }
 
