@@ -589,11 +589,31 @@ class Lang {
     );
   }
 
-  /// `Choose a plan to get started with Weebi.`
+  /// `Choose a license to use the advanced features of Weebi.`
   String get billingPurchaseLicenseDescription {
     return Intl.message(
-      'Choose a plan to get started with Weebi.',
+      'Choose a license to use the advanced features of Weebi.',
       name: 'billingPurchaseLicenseDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment received. We're confirming with Stripe — your license will appear shortly. If it doesn't, check your webhook configuration.`
+  String get billingPaymentProcessing {
+    return Intl.message(
+      'Payment received. We\'re confirming with Stripe — your license will appear shortly. If it doesn\'t, check your webhook configuration.',
+      name: 'billingPaymentProcessing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your payment was accepted. You now have an active license.`
+  String get billingPaymentSuccess {
+    return Intl.message(
+      'Your payment was accepted. You now have an active license.',
+      name: 'billingPaymentSuccess',
       desc: '',
       args: [],
     );
@@ -965,7 +985,6 @@ class AppLocalizationDelegate extends LocalizationsDelegate<Lang> {
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'fr'),
       Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
     ];
   }
 

@@ -67,6 +67,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToLogin": MessageLookupByLibrary.simpleMessage("返回登入页面"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("终身"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("我的许可证"),
+    "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
+      "付款已收到。我们正在与 Stripe 确认 — 您的许可证将很快显示。如未显示，请检查 webhook 配置。",
+    ),
+    "billingPaymentSuccess": MessageLookupByLibrary.simpleMessage(
+      "您的付款已接受。您现已拥有有效许可证。",
+    ),
     "billingPurchase": MessageLookupByLibrary.simpleMessage("购买"),
     "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage("购买许可证"),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
