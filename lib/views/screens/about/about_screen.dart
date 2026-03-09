@@ -18,7 +18,8 @@ class AboutScreen extends StatelessWidget {
     final linkStyle = TextStyle(
       fontWeight: FontWeight.w400,
       decoration: TextDecoration.underline,
-      color: themeData.extension<AppColorScheme>()?.hyperlink ?? themeData.colorScheme.primary,
+      color: themeData.extension<AppColorScheme>()?.hyperlink ??
+          themeData.colorScheme.primary,
     );
 
     return PortalMasterLayout(
@@ -45,7 +46,8 @@ class AboutScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   GestureDetector(
-                    onTap: () => html.window.open('https://weebi.com/fr/posts/', '_blank'),
+                    onTap: () => html.window
+                        .open('https://weebi.com/fr/posts/', '_blank'),
                     child: Text(
                       'https://weebi.com/fr/posts/',
                       style: linkStyle,
@@ -58,21 +60,32 @@ class AboutScreen extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   _PartnerItem(
                     name: 'Jokkolabs Dakar',
                     url: 'https://www.facebook.com/jokkolabsDakar/',
-                    onTap: () => html.window.open('https://www.facebook.com/jokkolabsDakar/', '_blank'),
+                    onTap: () => html.window.open(
+                        'https://www.facebook.com/jokkolabsDakar/', '_blank'),
                   ),
+                  const SizedBox(height: 8),
                   _PartnerItem(
                     name: 'NTFIV Sénégal',
                     url: 'http://www.intracen.org/NTF4/Senegal-TI/',
-                    onTap: () => html.window.open('http://www.intracen.org/NTF4/Senegal-TI/', '_blank'),
+                    onTap: () => html.window.open(
+                        'http://www.intracen.org/NTF4/Senegal-TI/', '_blank'),
                   ),
                   const SizedBox(height: 8),
-                  Text('- L\'Agence Française de Développement (AFD)'),
-                  const SizedBox(height: 4),
-                  Text('- La Société Générale'),
+                  _PartnerItem(
+                      name: 'L\'Agence Française de Développement (AFD)',
+                      url: 'https://www.afd.fr/',
+                      onTap: () =>
+                          html.window.open('https://www.afd.fr/', '_blank')),
+                  const SizedBox(height: 8),
+                  _PartnerItem(
+                      name: 'La Société Générale',
+                      url: 'https://www.societe-generale.com/',
+                      onTap: () => html.window
+                          .open('https://www.societe-generale.com/', '_blank')),
                 ],
               ),
             ),
@@ -99,7 +112,8 @@ class _PartnerItem extends StatelessWidget {
     final themeData = Theme.of(context);
     final linkStyle = TextStyle(
       decoration: TextDecoration.underline,
-      color: themeData.extension<AppColorScheme>()?.hyperlink ?? themeData.colorScheme.primary,
+      color: themeData.extension<AppColorScheme>()?.hyperlink ??
+          themeData.colorScheme.primary,
     );
 
     return Padding(
@@ -107,9 +121,10 @@ class _PartnerItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('- $name'),
+          Text(name, style: themeData.textTheme.bodyMedium),
           GestureDetector(
             onTap: onTap,
+            behavior: HitTestBehavior.translucent,
             child: Text(url, style: linkStyle),
           ),
         ],

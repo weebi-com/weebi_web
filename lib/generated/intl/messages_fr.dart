@@ -85,15 +85,21 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("À vie"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("Mes licences"),
+    "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
+      "Paiement reçu. Nous confirmons avec Stripe — votre licence apparaîtra sous peu. Sinon, vérifiez la configuration du webhook.",
+    ),
+    "billingPaymentSuccess": MessageLookupByLibrary.simpleMessage(
+      "Votre paiement a été accepté. Vous avez maintenant une licence active.",
+    ),
     "billingPurchase": MessageLookupByLibrary.simpleMessage("Acheter"),
     "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage(
       "Acheter une licence",
     ),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
-      "Choisissez un forfait pour commencer avec Weebi.",
+      "Choisissez une licence pour utiliser les fonctions avancées de Weebi.",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Réessayer"),
-    "billingUsers": MessageLookupByLibrary.simpleMessage("utilisateurs"),
+    "billingUsers": MessageLookupByLibrary.simpleMessage("utilisateur(s)"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage(
       "Valide jusqu\'au",
     ),

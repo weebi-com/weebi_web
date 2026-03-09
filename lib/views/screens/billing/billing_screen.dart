@@ -129,6 +129,8 @@ class _BillingScreenState extends State<BillingScreen> {
     final themeData = Theme.of(context);
     final appColorScheme = themeData.extension<AppColorScheme>()!;
     final lang = Lang.of(context);
+    final returnedFromSuccess =
+        Uri.base.queryParameters['success'] == 'true' && !_loading;
 
     return PortalMasterLayout(
       body: ListView(
@@ -138,6 +140,49 @@ class _BillingScreenState extends State<BillingScreen> {
             lang.menuBilling,
             style: themeData.textTheme.headlineMedium,
           ),
+          if (returnedFromSuccess) ...[
+            Padding(
+              padding: const EdgeInsets.only(top: kDefaultPadding),
+              child: Material(
+                color: _licenses.isNotEmpty
+                    ? themeData.colorScheme.primaryContainer
+                    : themeData.colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultPadding,
+                    vertical: kDefaultPadding * 0.75,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _licenses.isNotEmpty
+                            ? Icons.check_circle_outline_rounded
+                            : Icons.schedule_rounded,
+                        color: _licenses.isNotEmpty
+                            ? themeData.colorScheme.onPrimaryContainer
+                            : themeData.colorScheme.onSecondaryContainer,
+                        size: 24,
+                      ),
+                      const SizedBox(width: kDefaultPadding),
+                      Expanded(
+                        child: Text(
+                          _licenses.isNotEmpty
+                              ? lang.billingPaymentSuccess
+                              : lang.billingPaymentProcessing,
+                          style: themeData.textTheme.bodyMedium!.copyWith(
+                            color: _licenses.isNotEmpty
+                                ? themeData.colorScheme.onPrimaryContainer
+                                : themeData.colorScheme.onSecondaryContainer,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
             child: Card(

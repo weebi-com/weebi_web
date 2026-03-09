@@ -116,13 +116,13 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           child: const LogoutScreen(),
         ),
       ),
-      GoRoute(
+/*       GoRoute(
         path: RouteUri.form,
         pageBuilder: (context, state) => NoTransitionPage<void>(
           key: state.pageKey,
           child: const FormScreen(),
         ),
-      ),
+      ), */
       GoRoute(
         path: RouteUri.generalUi,
         pageBuilder: (context, state) => NoTransitionPage<void>(
