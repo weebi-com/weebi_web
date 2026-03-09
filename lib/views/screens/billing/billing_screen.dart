@@ -32,10 +32,23 @@ class _BillingScreenState extends State<BillingScreen> {
   void initState() {
     super.initState();
     _loadData();
-    // If returning from Stripe success/cancel, refresh to show updated licenses
+    // If returning from Stripe success with session_id, sync license (webhook may have failed)
     final uri = Uri.base;
-    if (uri.queryParameters['success'] == 'true' ||
-        uri.queryParameters['canceled'] == 'true') {
+    final sessionId = uri.queryParameters['session_id'];
+    if (uri.queryParameters['success'] == 'true' && sessionId != null && sessionId.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        final provider = context.read<BillingServiceClientProvider>();
+        try {
+          await provider.billingServiceClient.fulfillFromStripeCheckoutSession(
+            FulfillFromStripeCheckoutSessionRequest(checkoutSessionId: sessionId),
+          );
+        } catch (_) {
+          // Idempotent: already fulfilled or not paid yet; loadData will show current state
+        }
+        if (mounted) _loadData();
+      });
+    } else if (uri.queryParameters['canceled'] == 'true') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _loadData();
       });
@@ -97,7 +110,7 @@ class _BillingScreenState extends State<BillingScreen> {
       final baseUrl = '${html.window.location.origin}${RouteUri.billing}';
       final request = CreateCheckoutSessionRequest(
         priceId: stripePriceId,
-        successUrl: '$baseUrl?success=true',
+        successUrl: '$baseUrl?success=true&session_id={CHECKOUT_SESSION_ID}',
         cancelUrl: '$baseUrl?canceled=true',
       );
 
