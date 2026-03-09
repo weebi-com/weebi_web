@@ -137,6 +137,18 @@ class _RootAppState extends State<RootApp> {
           ) =>
               provider2!..serviceClient = accessTokenProvider.accessToken,
         ),
+        ChangeNotifierProxyProvider<AccessTokenProvider,
+            BillingServiceClientProvider>(
+          create: (BuildContext context) => BillingServiceClientProvider(
+              GrpcWebClientChannelWeebi().clientChannel,
+              context.read<AccessTokenProvider>().accessToken),
+          update: (
+            BuildContext context,
+            AccessTokenProvider accessTokenProvider,
+            BillingServiceClientProvider? provider2,
+          ) =>
+              provider2!..serviceClient = accessTokenProvider.accessToken,
+        ),
         ChangeNotifierProvider<PermissionProvider>(
           create: (context) => PermissionProvider(
             context.read<AccessTokenProvider>(),

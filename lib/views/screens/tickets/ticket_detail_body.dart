@@ -65,7 +65,7 @@ class TicketDetailBody extends StatelessWidget {
           ),
         // Ticket ID
         _InfoRow(
-          icon: Icons.receipt,
+          icon: IconsWeebi.ticketsIconData,
           iconColor: ticketW.ticketType.iconColor,
           child: Text('#${ticket.nonUniqueId}'),
         ),

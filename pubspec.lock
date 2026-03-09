@@ -111,7 +111,7 @@ packages:
       path: "../weebi/packages/design"
       relative: true
     source: path
-    version: "0.1.0"
+    version: "0.1.1"
   devices_weebi:
     dependency: "direct main"
     description:
@@ -145,7 +145,7 @@ packages:
     source: hosted
     version: "7.0.1"
   file_picker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: file_picker
       sha256: c904b4ab56d53385563c7c39d8e9fa9af086f91495dfc48717ad84a42c3cf204
@@ -608,10 +608,9 @@ packages:
   protos_weebi:
     dependency: "direct main"
     description:
-      name: protos_weebi
-      sha256: ec1675393462ca6c0a46c0201890b97396476a3adbea1d8759036b24503534f8
-      url: "https://pub.dev"
-    source: hosted
+      path: "../weebi_server/packages/protos/protos_weebi"
+      relative: true
+    source: path
     version: "1.0.18"
   provider:
     dependency: "direct main"

@@ -58,3 +58,7 @@ linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux
 /assets/dotenv_prd.txt
 ts/generate_go.sh
 pubspec.lock
+pubspec.lock
+s/docs/IMPLEMENTATION_STATUS.md
+/STRIPE_INTEGRATION.md
+/doc/STRIPE_INTEGRATION.md
