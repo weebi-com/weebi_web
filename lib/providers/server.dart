@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc_web.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:web_admin/grpc/server.dart';
 import 'package:web_admin/grpc/auth_interceptor.dart';
 import 'package:web_admin/grpc/log_interceptor.dart';
+import 'package:web_admin/grpc/server.dart';
 
 class ArticleServiceClientProvider extends ChangeNotifier {
   final String accessToken;
@@ -94,5 +94,35 @@ class TicketServiceClientProvider extends ChangeNotifier {
     );
     notifyListeners();
     return;
+  }
+}
+
+class BillingServiceClientProvider extends ChangeNotifier {
+  final String _accessToken;
+  final GrpcWebClientChannel clientChannel;
+  BillingServiceClient _billingServiceClient;
+
+  BillingServiceClient get billingServiceClient => _billingServiceClient;
+
+  BillingServiceClientProvider(this.clientChannel, this._accessToken)
+      : _billingServiceClient = BillingServiceClient(
+          clientChannel,
+          options: callOptions,
+          interceptors: [
+            AuthInterceptor(_accessToken),
+            RequestLogInterceptor(),
+          ],
+        );
+
+  set serviceClient(String value) {
+    _billingServiceClient = BillingServiceClient(
+      clientChannel,
+      options: callOptions,
+      interceptors: [
+        AuthInterceptor(value),
+        RequestLogInterceptor(),
+      ],
+    );
+    notifyListeners();
   }
 }

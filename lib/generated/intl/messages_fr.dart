@@ -71,22 +71,40 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "account": MessageLookupByLibrary.simpleMessage("Mon Compte"),
     "about": MessageLookupByLibrary.simpleMessage("À propos"),
     "aboutBlog": MessageLookupByLibrary.simpleMessage("Blog"),
-    "aboutPartners": MessageLookupByLibrary.simpleMessage("Partenaires historiques"),
+    "aboutPartners": MessageLookupByLibrary.simpleMessage(
+      "Partenaires historiques",
+    ),
+    "account": MessageLookupByLibrary.simpleMessage("Mon Compte"),
     "adminPortalLogin": MessageLookupByLibrary.simpleMessage(
       "Connexion au Portail Administrateur",
     ),
     "backToLogin": MessageLookupByLibrary.simpleMessage(
       "Retour à la Connexion",
     ),
+    "billingLifetime": MessageLookupByLibrary.simpleMessage("À vie"),
+    "billingMyLicenses": MessageLookupByLibrary.simpleMessage("Mes licences"),
+    "billingPurchase": MessageLookupByLibrary.simpleMessage("Acheter"),
+    "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage(
+      "Acheter une licence",
+    ),
+    "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
+      "Choisissez un forfait pour commencer avec Weebi.",
+    ),
+    "billingRetry": MessageLookupByLibrary.simpleMessage("Réessayer"),
+    "billingUsers": MessageLookupByLibrary.simpleMessage("utilisateurs"),
+    "billingValidUntil": MessageLookupByLibrary.simpleMessage(
+      "Valide jusqu\'au",
+    ),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage(
       "Accentuation du Bouton",
     ),
     "buttons": m0,
     "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
-    "changeProfilePhoto": MessageLookupByLibrary.simpleMessage("Changer la photo"),
+    "changeProfilePhoto": MessageLookupByLibrary.simpleMessage(
+      "Changer la photo",
+    ),
     "closeNavigationMenu": MessageLookupByLibrary.simpleMessage(
       "Fermer le Menu de Navigation",
     ),
@@ -135,12 +153,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "helpReadFaq": MessageLookupByLibrary.simpleMessage("Lire la FAQ"),
     "helpResourcesTitle": MessageLookupByLibrary.simpleMessage("Ressources"),
     "helpScopeBody": MessageLookupByLibrary.simpleMessage(
-      "La console web permet de gérer les tickets (consultation, filtres, recherche). Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l'application mobile pour l'instant.",
+      "La console web permet de gérer les tickets (consultation, filtres, recherche). Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l\'application mobile pour l\'instant.",
     ),
     "helpScopeTitle": MessageLookupByLibrary.simpleMessage(
       "Que puis-je faire depuis la console web ?",
     ),
-    "helpWatchDemos": MessageLookupByLibrary.simpleMessage("Voir les démos vidéo"),
+    "helpWatchDemos": MessageLookupByLibrary.simpleMessage(
+      "Voir les démos vidéo",
+    ),
     "hi": MessageLookupByLibrary.simpleMessage("Salut"),
     "homePage": MessageLookupByLibrary.simpleMessage("Accueil"),
     "iframeDemo": MessageLookupByLibrary.simpleMessage("Démo IFrame"),
@@ -167,17 +187,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "maxErrorText": m6,
     "maxLengthErrorText": m7,
-    "minErrorText": m8,
-    "minLengthErrorText": m9,
     "menuAccesses": MessageLookupByLibrary.simpleMessage("Accès"),
+    "menuBilling": MessageLookupByLibrary.simpleMessage("Facturation"),
     "menuBoutiques": MessageLookupByLibrary.simpleMessage("Mes Boutiques"),
     "menuDevices": MessageLookupByLibrary.simpleMessage("Appareils"),
     "menuFirm": MessageLookupByLibrary.simpleMessage("Ma Firme"),
     "menuScopeDisclaimer": MessageLookupByLibrary.simpleMessage(
-      "Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l'application mobile pour l'instant.",
+      "Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l\'application mobile pour l\'instant.",
     ),
     "menuTickets": MessageLookupByLibrary.simpleMessage("Tickets"),
     "menuUsers": MessageLookupByLibrary.simpleMessage("Utilisateurs"),
+    "minErrorText": m8,
+    "minLengthErrorText": m9,
     "myProfile": MessageLookupByLibrary.simpleMessage("Mon Profil"),
     "newOrders": m10,
     "newUsers": m11,
@@ -219,12 +240,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("Sauvegarder"),
     "search": MessageLookupByLibrary.simpleMessage("Rechercher"),
+    "submit": MessageLookupByLibrary.simpleMessage("Soumettre"),
     "support": MessageLookupByLibrary.simpleMessage("Support"),
     "supportChatWhatsApp": MessageLookupByLibrary.simpleMessage(
       "Discuter avec le support Weebi",
     ),
-    "supportEmailUs": MessageLookupByLibrary.simpleMessage("Nous envoyer un e-mail"),
-    "submit": MessageLookupByLibrary.simpleMessage("Soumettre"),
+    "supportEmailUs": MessageLookupByLibrary.simpleMessage(
+      "Nous envoyer un e-mail",
+    ),
     "text": MessageLookupByLibrary.simpleMessage("Texte"),
     "textEmphasis": MessageLookupByLibrary.simpleMessage(
       "Accentuation du Texte",

@@ -44,6 +44,11 @@ final sidebarMenuConfigs = [
     title: (context) => Lang.of(context).menuTickets,
   ),
   SidebarMenuConfig(
+    uri: RouteUri.billing,
+    icon: Icons.credit_card_rounded,
+    title: (context) => Lang.of(context).menuBilling,
+  ),
+  SidebarMenuConfig(
     uri: RouteUri.help,
     icon: Icons.help_outline_rounded,
     title: (context) => Lang.of(context).help,

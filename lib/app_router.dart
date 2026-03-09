@@ -28,6 +28,7 @@ import 'package:web_admin/views/screens/users/users_package_screen.dart';
 import 'package:web_admin/views/screens/help/help_screen.dart';
 import 'package:web_admin/views/screens/support/support_screen.dart';
 import 'package:web_admin/views/screens/about/about_screen.dart';
+import 'package:web_admin/views/screens/billing/billing_screen.dart';
 
 class RouteUri {
   static const String home = '/';
@@ -66,6 +67,8 @@ class RouteUri {
   static const String help = '/help';
   static const String support = '/support';
   static const String about = '/about';
+
+  static const String billing = '/billing';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -314,6 +317,18 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           return NoTransitionPage<void>(
             key: state.pageKey,
             child: const AboutScreen(),
+          );
+        },
+      ),
+
+      // =========================== BILLING ===========================
+
+      GoRoute(
+        path: RouteUri.billing,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const BillingScreen(),
           );
         },
       ),

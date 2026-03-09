@@ -71,7 +71,12 @@ class Lang {
 
   /// `Historical Partners`
   String get aboutPartners {
-    return Intl.message('Historical Partners', name: 'aboutPartners', desc: '', args: []);
+    return Intl.message(
+      'Historical Partners',
+      name: 'aboutPartners',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Admin Portal Login`
@@ -123,7 +128,12 @@ class Lang {
 
   /// `Change photo`
   String get changeProfilePhoto {
-    return Intl.message('Change photo', name: 'changeProfilePhoto', desc: '', args: []);
+    return Intl.message(
+      'Change photo',
+      name: 'changeProfilePhoto',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Close Navigation Menu`
@@ -361,12 +371,22 @@ class Lang {
 
   /// `Read the FAQ`
   String get helpReadFaq {
-    return Intl.message('Read the FAQ', name: 'helpReadFaq', desc: '', args: []);
+    return Intl.message(
+      'Read the FAQ',
+      name: 'helpReadFaq',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Resources`
   String get helpResourcesTitle {
-    return Intl.message('Resources', name: 'helpResourcesTitle', desc: '', args: []);
+    return Intl.message(
+      'Resources',
+      name: 'helpResourcesTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `The web console lets you manage tickets (view, filter, search). Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.`
@@ -381,12 +401,22 @@ class Lang {
 
   /// `What can I do from the web console?`
   String get helpScopeTitle {
-    return Intl.message('What can I do from the web console?', name: 'helpScopeTitle', desc: '', args: []);
+    return Intl.message(
+      'What can I do from the web console?',
+      name: 'helpScopeTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Watch video demos`
   String get helpWatchDemos {
-    return Intl.message('Watch video demos', name: 'helpWatchDemos', desc: '', args: []);
+    return Intl.message(
+      'Watch video demos',
+      name: 'helpWatchDemos',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Hi`
@@ -519,14 +549,94 @@ class Lang {
     );
   }
 
+  /// `Lifetime`
+  String get billingLifetime {
+    return Intl.message(
+      'Lifetime',
+      name: 'billingLifetime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My licenses`
+  String get billingMyLicenses {
+    return Intl.message(
+      'My licenses',
+      name: 'billingMyLicenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase`
+  String get billingPurchase {
+    return Intl.message(
+      'Purchase',
+      name: 'billingPurchase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase a license`
+  String get billingPurchaseLicense {
+    return Intl.message(
+      'Purchase a license',
+      name: 'billingPurchaseLicense',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a plan to get started with Weebi.`
+  String get billingPurchaseLicenseDescription {
+    return Intl.message(
+      'Choose a plan to get started with Weebi.',
+      name: 'billingPurchaseLicenseDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get billingRetry {
+    return Intl.message('Retry', name: 'billingRetry', desc: '', args: []);
+  }
+
+  /// `users`
+  String get billingUsers {
+    return Intl.message('users', name: 'billingUsers', desc: '', args: []);
+  }
+
+  /// `Valid until`
+  String get billingValidUntil {
+    return Intl.message(
+      'Valid until',
+      name: 'billingValidUntil',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Accesses`
   String get menuAccesses {
     return Intl.message('Accesses', name: 'menuAccesses', desc: '', args: []);
   }
 
+  /// `Billing`
+  String get menuBilling {
+    return Intl.message('Billing', name: 'menuBilling', desc: '', args: []);
+  }
+
   /// `My Boutiques`
   String get menuBoutiques {
-    return Intl.message('My Boutiques', name: 'menuBoutiques', desc: '', args: []);
+    return Intl.message(
+      'My Boutiques',
+      name: 'menuBoutiques',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Devices`
@@ -754,6 +864,11 @@ class Lang {
     return Intl.message('Search', name: 'search', desc: '', args: []);
   }
 
+  /// `Submit`
+  String get submit {
+    return Intl.message('Submit', name: 'submit', desc: '', args: []);
+  }
+
   /// `Support`
   String get support {
     return Intl.message('Support', name: 'support', desc: '', args: []);
@@ -761,17 +876,22 @@ class Lang {
 
   /// `Chat with Weebi support`
   String get supportChatWhatsApp {
-    return Intl.message('Chat with Weebi support', name: 'supportChatWhatsApp', desc: '', args: []);
+    return Intl.message(
+      'Chat with Weebi support',
+      name: 'supportChatWhatsApp',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Send us an email`
   String get supportEmailUs {
-    return Intl.message('Send us an email', name: 'supportEmailUs', desc: '', args: []);
-  }
-
-  /// `Submit`
-  String get submit {
-    return Intl.message('Submit', name: 'submit', desc: '', args: []);
+    return Intl.message(
+      'Send us an email',
+      name: 'supportEmailUs',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Text`
