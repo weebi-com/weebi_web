@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/master_layout_config.dart';
@@ -8,8 +9,6 @@ import 'package:web_admin/utils/profile_image_provider.dart';
 
 import '../../../core/constants/dimens.dart';
 import '../../../core/theme/theme_extensions/app_sidebar_theme.dart';
-
-const String kWebAdminAppVersion = '1.0.3';
 
 class SidebarMenuConfig {
   final String uri;
@@ -59,6 +58,25 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   final _scrollController = ScrollController();
+  String? _appVersion;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAppVersion();
+  }
+
+  Future<void> _loadAppVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (!mounted) return;
+      setState(() {
+        _appVersion = info.version;
+      });
+    } catch (_) {
+      // Ignore version load errors; keep UI minimal.
+    }
+  }
 
   @override
   void dispose() {
@@ -157,10 +175,10 @@ class _SidebarState extends State<Sidebar> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Web Admin v$kWebAdminAppVersion',
+                'Web Console v${_appVersion ?? '-'}',
                 style: TextStyle(
-                  fontSize: sidebarTheme.menuFontSize - 4,
-                  color: sidebarTheme.foregroundColor.withOpacity(0.6),
+                  fontSize: sidebarTheme.menuFontSize - 2,
+                  color: sidebarTheme.foregroundColor.withValues(alpha: 0.6),
                   height: 1.2,
                 ),
               ),
