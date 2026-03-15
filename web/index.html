@@ -33,6 +33,7 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <!-- defer keeps load order; async can cause makeFlutterFactory LateInitializationError -->
+  <script src="flutter_bootstrap.js" defer></script>
 </body>
 </html>

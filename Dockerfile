@@ -30,10 +30,8 @@ RUN mkdir $APP
 COPY . $APP
 WORKDIR $APP
 
-# Use only .example dotenv so we never bake dev/prd URLs into the image (config at runtime via config.json).
-# Otherwise a stray dotenv_dev.txt with API_URL=envoyproxy-dev would be used when config.json fails.
-RUN cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt && \
-    cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
+# Satisfy pubspec asset (dotenv_lcl is gitignored; web app uses config.json only at runtime)
+RUN touch assets/dotenv_lcl.txt
 
 # Build the Flutter web application
 RUN flutter clean
