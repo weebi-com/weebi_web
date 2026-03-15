@@ -172,10 +172,18 @@ class _BillingScreenState extends State<BillingScreen> {
     final attributed = license.seats.where((s) => s.userId.isNotEmpty).length;
     if (attributed >= license.maxUsers) return;
 
+    // Users who already have any license attributed (across all licenses)
+    final allAttributedUserIds = <String>{
+      for (final lic in _licenses)
+        for (final seat in lic.seats)
+          if (seat.userId.isNotEmpty) seat.userId,
+    };
+
     showDialog<void>(
       context: context,
       builder: (ctx) => _AssignSeatDialog(
         license: license,
+        allAttributedUserIds: allAttributedUserIds,
         onAssigned: () {
           Navigator.of(ctx).pop();
           _loadData();
@@ -331,34 +339,12 @@ class _BillingScreenState extends State<BillingScreen> {
                       ),
                     ),
                   ] else ...[
-                    CardHeader(title: lang.billingMyLicenses),
                     CardBody(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (totalSeats > 0) ...[
-                            Row(
-                              children: [
-                                Text(
-                                  '${lang.billingLicenses}: $totalSeats',
-                                  style: themeData.textTheme.titleSmall,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: kDefaultPadding),
-                          ],
-                          ..._licenses.map(
-                            (license) => _LicenseCard(
-                              license: license,
-                              usersById: _usersById,
-                              onAssignSeats: () =>
-                                  _showAssignSeatDialog(context, license),
-                            ),
-                          ),
+                          // Purchase / get more on top so it stays visible when many licenses
                           if (_products.isNotEmpty) ...[
-                            const SizedBox(height: kDefaultPadding * 2),
-                            const Divider(),
-                            const SizedBox(height: kDefaultPadding * 2),
                             Text(
                               lang.billingPurchaseLicense,
                               style: themeData.textTheme.titleMedium,
@@ -375,7 +361,24 @@ class _BillingScreenState extends State<BillingScreen> {
                                       ))
                                   .toList(),
                             ),
+                            const SizedBox(height: kDefaultPadding * 2),
+                            const Divider(),
+                            const SizedBox(height: kDefaultPadding * 2),
                           ],
+                          // My licenses header below the purchase section
+                          Text(
+                            '${lang.billingMyLicenses} ($totalSeats ${lang.billingLicenses})',
+                            style: themeData.textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: kDefaultPadding),
+                          ..._licenses.map(
+                            (license) => _LicenseCard(
+                              license: license,
+                              usersById: _usersById,
+                              onAssignSeats: () =>
+                                  _showAssignSeatDialog(context, license),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -642,13 +645,16 @@ class _LicenseCard extends StatelessWidget {
 }
 
 /// Dialog to pick a user and assign one seat of [license] to them.
-/// Reuses the same user list data source as the users screen (UserService).
+/// Only users who do not yet have any license attributed are shown.
 class _AssignSeatDialog extends StatefulWidget {
   final License license;
+  /// User IDs that already have a license (any plan). Excluded from the list.
+  final Set<String> allAttributedUserIds;
   final VoidCallback onAssigned;
 
   const _AssignSeatDialog({
     required this.license,
+    required this.allAttributedUserIds,
     required this.onAssigned,
   });
 
@@ -702,10 +708,6 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final lang = Lang.of(context);
-    final attributedIds = widget.license.seats
-        .where((s) => s.userId.isNotEmpty)
-        .map((s) => s.userId)
-        .toSet();
 
     return AlertDialog(
       title: Text(lang.billingAssignSeatDialogTitle),
@@ -732,12 +734,13 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
             if (response == null || response.users.isEmpty) {
               return Text(lang.billingNoUsersAvailable);
             }
+            // Only users who do not have any license attributed yet
             final available = response.users
-                .where((u) => !attributedIds.contains(u.userId))
+                .where((u) => !widget.allAttributedUserIds.contains(u.userId))
                 .toList();
             if (available.isEmpty) {
               return Text(
-                'All seats are already assigned.',
+                'All users already have a license attributed.',
                 style: themeData.textTheme.bodyMedium,
               );
             }

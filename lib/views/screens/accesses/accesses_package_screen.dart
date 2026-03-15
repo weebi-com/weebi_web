@@ -49,9 +49,7 @@ class AccessesPackageScreen extends StatelessWidget {
             }
           }
           return MaterialPageRoute<void>(
-            builder: (context) => _AccessListWithAppBar(
-              currentUserId: currentUserId,
-            ),
+            builder: (context) => AccessListWidget(currentUserId: currentUserId),
           );
         },
       ),
@@ -59,26 +57,3 @@ class AccessesPackageScreen extends StatelessWidget {
   }
 }
 
-class _AccessListWithAppBar extends StatelessWidget {
-  final String currentUserId;
-
-  const _AccessListWithAppBar({required this.currentUserId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Access Management'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              context.read<AccessProvider>().initialize();
-            },
-          ),
-        ],
-      ),
-      body: AccessListWidget(currentUserId: currentUserId),
-    );
-  }
-}

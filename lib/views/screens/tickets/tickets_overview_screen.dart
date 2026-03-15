@@ -107,16 +107,6 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
           );
           all.addAll(res.tickets.map((t) => _TicketWithMeta(t, false)));
           break;
-        case DeletedFilter.include:
-          final nonDeletedRes = await stub.readAll(
-            ReadAllTicketsRequest()..chainId = chainId..isDeleted = false,
-          );
-          final deletedRes = await stub.readAll(
-            ReadAllTicketsRequest()..chainId = chainId..isDeleted = true,
-          );
-          all.addAll(nonDeletedRes.tickets.map((t) => _TicketWithMeta(t, false)));
-          all.addAll(deletedRes.tickets.map((t) => _TicketWithMeta(t, true)));
-          break;
         case DeletedFilter.only:
           final res = await stub.readAll(
             ReadAllTicketsRequest()..chainId = chainId..isDeleted = true,

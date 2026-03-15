@@ -36,10 +36,10 @@ dependencies:
   auth_weebi: ^1.0.6
   boutiques_weebi: ^1.0.6
   devices_weebi: ^1.0.6
-  users_weebi: ^1.0.6+1
+  users_weebi: ^1.0.7
   accesses_weebi: ^1.0.6
   gatekeeper_weebi: ^1.0.6
-  design_weebi: ^0.1.1
+  design_weebi: ^0.1.2
 
 #dependency_overrides:
 dev_dependencies:
