@@ -9,10 +9,14 @@ Future<String?> fetchConfigJson() async {
       .resolve('/config.json')
       .replace(queryParameters: {'_': '${DateTime.now().millisecondsSinceEpoch}'});
   final response = await html.window.fetch(uri.toString());
-  if (response.status == 200) {
-    return response.text();
+  if (response.status != 200) {
+    debugPrint('[weebi] config.json status=${response.status} → fallback to dotenv');
+    return null;
   }
-  // Non-200 → fallback to dotenv (empty in Docker) → same-origin POST → 405
-  debugPrint('[weebi] config.json fetch failed: status=${response.status} url=$uri');
-  return null;
+  final text = await response.text();
+  if (text.isEmpty) {
+    debugPrint('[weebi] config.json 200 but empty body → fallback to dotenv');
+    return null;
+  }
+  return text;
 }

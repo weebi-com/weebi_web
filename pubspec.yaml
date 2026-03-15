@@ -55,8 +55,9 @@ flutter:
 
   assets:
     - assets/images/app_logo.png
-    # dotenv_lcl for main_local (local dev). Web uses config.json only; no dotenv_dev/dotenv_prd in bundle.
     - assets/dotenv_lcl.txt
+    - assets/dotenv_dev.txt
+    - assets/dotenv_prd.txt
 
   # fonts:
   #   - family: Schyler
