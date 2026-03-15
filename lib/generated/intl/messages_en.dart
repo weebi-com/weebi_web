@@ -79,16 +79,44 @@ class MessageLookup extends MessageLookupByLibrary {
       "Admin Portal Login",
     ),
     "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
+    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Assign the license to a user",
+    ),
+    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
+      "Assign the license to a user",
+    ),
+    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
+      "Assign your new licenses to users below.",
+    ),
+    "billingAttributedTo": MessageLookupByLibrary.simpleMessage(
+      "Attributed to",
+    ),
+    "billingLicenses": MessageLookupByLibrary.simpleMessage("License(s)"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("Lifetime"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("My licenses"),
+    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
+      "No users to assign. Add users in Users first.",
+    ),
+    "billingNotYetAttributed": MessageLookupByLibrary.simpleMessage(
+      "Not yet attributed",
+    ),
+    "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
+      "Payment received. We\'re confirming with Stripe — your license will appear shortly. If it doesn\'t, check your webhook configuration.",
+    ),
+    "billingPaymentSuccess": MessageLookupByLibrary.simpleMessage(
+      "Your payment was accepted. You now have an active license.",
+    ),
     "billingPurchase": MessageLookupByLibrary.simpleMessage("Purchase"),
     "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage(
       "Purchase a license",
     ),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
-      "Choose a plan to get started with Weebi.",
+      "Choose a license to use the advanced features of Weebi.",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
+      "license(s) attributed",
+    ),
     "billingUsers": MessageLookupByLibrary.simpleMessage("users"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage("Valid until"),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("Button Emphasis"),

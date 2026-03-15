@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/master_layout_config.dart';
@@ -57,6 +58,25 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   final _scrollController = ScrollController();
+  String? _appVersion;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAppVersion();
+  }
+
+  Future<void> _loadAppVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (!mounted) return;
+      setState(() {
+        _appVersion = info.version;
+      });
+    } catch (_) {
+      // Ignore version load errors; keep UI minimal.
+    }
+  }
 
   @override
   void dispose() {
@@ -98,7 +118,8 @@ class _SidebarState extends State<Sidebar> {
               data: themeData.copyWith(
                 scrollbarTheme: themeData.scrollbarTheme.copyWith(
                   thumbColor: WidgetStateProperty.all(
-                      sidebarTheme.foregroundColor.withOpacity(0.2)),
+                    sidebarTheme.foregroundColor.withOpacity(0.2),
+                  ),
                 ),
               ),
               child: Scrollbar(
@@ -145,6 +166,20 @@ class _SidebarState extends State<Sidebar> {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Web Console v${_appVersion ?? '-'}',
+                style: TextStyle(
+                  fontSize: sidebarTheme.menuFontSize - 2,
+                  color: sidebarTheme.foregroundColor.withValues(alpha: 0.6),
+                  height: 1.2,
                 ),
               ),
             ),

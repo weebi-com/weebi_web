@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 /// How to filter soft-deleted tickets.
 enum DeletedFilter {
   exclude, // only non-deleted (default)
-  include, // both non-deleted and deleted (kept for backward compat, no longer in UI)
-  only, // only deleted (auditing)
+  only, // only deleted
 }
 
 /// A boutique option for filtering and display.
@@ -255,11 +254,9 @@ class _DeletedFilterChip extends StatelessWidget {
   String get _label {
     switch (deletedFilter) {
       case DeletedFilter.exclude:
-        return 'Sans supprimés';
-      case DeletedFilter.include:
-        return 'Avec supprimés';
+        return 'Non supprimés';
       case DeletedFilter.only:
-        return 'Supprimés uniquement';
+        return 'Supprimés';
     }
   }
 
@@ -270,11 +267,11 @@ class _DeletedFilterChip extends StatelessWidget {
       itemBuilder: (_) => [
         const PopupMenuItem(
           value: DeletedFilter.exclude,
-          child: Text('Sans supprimés'),
+          child: Text('Non supprimés'),
         ),
         const PopupMenuItem(
           value: DeletedFilter.only,
-          child: Text('Supprimés uniquement (audit)'),
+          child: Text('Supprimés uniquement'),
         ),
       ],
       onSelected: onChanged,
@@ -284,9 +281,7 @@ class _DeletedFilterChip extends StatelessWidget {
           size: 18,
           color: deletedFilter == DeletedFilter.only
               ? Colors.red
-              : deletedFilter == DeletedFilter.include
-                  ? Colors.orange
-                  : null,
+              :   null,
         ),
         label: Text(_label),
       ),

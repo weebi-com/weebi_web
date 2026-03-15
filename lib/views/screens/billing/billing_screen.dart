@@ -2,7 +2,7 @@
 import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
+import 'package:grpc/grpc.dart' hide ConnectionState;
 import 'package:provider/provider.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/app_router.dart';
@@ -10,9 +10,21 @@ import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
+import 'package:web_admin/core/services/user_service.dart';
 
 import '../../../core/constants/dimens.dart';
 import '../../../core/theme/theme_extensions/app_color_scheme.dart';
+
+/// Query params from current URL. With hash routing, params may be in the fragment (#/billing?success=...).
+Map<String, String> _billingQueryParams() {
+  final base = Uri.base;
+  final fragment = base.fragment;
+  final qIndex = fragment.indexOf('?');
+  if (qIndex >= 0) {
+    return Uri.splitQueryString(fragment.substring(qIndex + 1));
+  }
+  return base.queryParameters;
+}
 
 class BillingScreen extends StatefulWidget {
   const BillingScreen({super.key});
@@ -24,6 +36,8 @@ class BillingScreen extends StatefulWidget {
 class _BillingScreenState extends State<BillingScreen> {
   List<License> _licenses = [];
   List<BillingProduct> _products = [];
+  /// User info by userId, loaded when we have licenses (to show attributed users).
+  Map<String, UserPublic>? _usersById;
   bool _loading = true;
   String? _errorMessage;
   String? _checkoutProductId;
@@ -32,10 +46,23 @@ class _BillingScreenState extends State<BillingScreen> {
   void initState() {
     super.initState();
     _loadData();
-    // If returning from Stripe success/cancel, refresh to show updated licenses
-    final uri = Uri.base;
-    if (uri.queryParameters['success'] == 'true' ||
-        uri.queryParameters['canceled'] == 'true') {
+    // If returning from Stripe success with session_id, sync license (webhook may have failed)
+    final params = _billingQueryParams();
+    final sessionId = params['session_id'];
+    if (params['success'] == 'true' && sessionId != null && sessionId.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        final provider = context.read<BillingServiceClientProvider>();
+        try {
+          await provider.billingServiceClient.fulfillFromStripeCheckoutSession(
+            FulfillFromStripeCheckoutSessionRequest(checkoutSessionId: sessionId),
+          );
+        } catch (_) {
+          // Idempotent: already fulfilled or not paid yet; loadData will show current state
+        }
+        if (mounted) _loadData();
+      });
+    } else if (params['canceled'] == 'true') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _loadData();
       });
@@ -59,11 +86,24 @@ class _BillingScreenState extends State<BillingScreen> {
       final results = await Future.wait([licensesFuture, productsFuture]);
       final licensesResponse = results[0] as ReadLicensesResponse;
       final productsResponse = results[1] as ReadBillingProductsResponse;
+      final licenses = licensesResponse.licenses;
+      final products = productsResponse.products;
+
+      Map<String, UserPublic>? usersById;
+      if (licenses.isNotEmpty) {
+        try {
+          final usersResponse = await UserService().readAllUsers();
+          usersById = {for (final u in usersResponse.users) u.userId: u};
+        } catch (_) {
+          // Keep usersById null; cards will show userId only
+        }
+      }
 
       if (mounted) {
         setState(() {
-          _licenses = licensesResponse.licenses;
-          _products = productsResponse.products;
+          _licenses = licenses;
+          _products = products;
+          _usersById = usersById;
           _loading = false;
           _errorMessage = null;
         });
@@ -94,11 +134,15 @@ class _BillingScreenState extends State<BillingScreen> {
     setState(() => _checkoutProductId = product.productId);
 
     try {
-      final baseUrl = '${html.window.location.origin}${RouteUri.billing}';
+      // Use hash-based return URL so the app router (e.g. #/billing) shows Billing after redirect
+      final origin = html.window.location.origin;
+      final billingPath = RouteUri.billing;
+      final successUrl = '$origin/#$billingPath?success=true&session_id={CHECKOUT_SESSION_ID}';
+      final cancelUrl = '$origin/#$billingPath?canceled=true';
       final request = CreateCheckoutSessionRequest(
         priceId: stripePriceId,
-        successUrl: '$baseUrl?success=true',
-        cancelUrl: '$baseUrl?canceled=true',
+        successUrl: successUrl,
+        cancelUrl: cancelUrl,
       );
 
       final response = await provider.billingServiceClient
@@ -124,11 +168,38 @@ class _BillingScreenState extends State<BillingScreen> {
     }
   }
 
+  void _showAssignSeatDialog(BuildContext context, License license) {
+    final attributed = license.seats.where((s) => s.userId.isNotEmpty).length;
+    if (attributed >= license.maxUsers) return;
+
+    // Users who already have any license attributed (across all licenses)
+    final allAttributedUserIds = <String>{
+      for (final lic in _licenses)
+        for (final seat in lic.seats)
+          if (seat.userId.isNotEmpty) seat.userId,
+    };
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => _AssignSeatDialog(
+        license: license,
+        allAttributedUserIds: allAttributedUserIds,
+        onAssigned: () {
+          Navigator.of(ctx).pop();
+          _loadData();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final appColorScheme = themeData.extension<AppColorScheme>()!;
     final lang = Lang.of(context);
+    final totalSeats = _licenses.fold<int>(0, (sum, l) => sum + l.maxUsers);
+    final returnedFromSuccess =
+        _billingQueryParams()['success'] == 'true' && !_loading;
 
     return PortalMasterLayout(
       body: ListView(
@@ -138,6 +209,65 @@ class _BillingScreenState extends State<BillingScreen> {
             lang.menuBilling,
             style: themeData.textTheme.headlineMedium,
           ),
+          if (returnedFromSuccess) ...[
+            Padding(
+              padding: const EdgeInsets.only(top: kDefaultPadding),
+              child: Material(
+                color: _licenses.isNotEmpty
+                    ? themeData.colorScheme.primaryContainer
+                    : themeData.colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultPadding,
+                    vertical: kDefaultPadding * 0.75,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            _licenses.isNotEmpty
+                                ? Icons.check_circle_outline_rounded
+                                : Icons.schedule_rounded,
+                            color: _licenses.isNotEmpty
+                                ? themeData.colorScheme.onPrimaryContainer
+                                : themeData.colorScheme.onSecondaryContainer,
+                            size: 24,
+                          ),
+                          const SizedBox(width: kDefaultPadding),
+                          Expanded(
+                            child: Text(
+                              _licenses.isNotEmpty
+                                  ? lang.billingPaymentSuccess
+                                  : lang.billingPaymentProcessing,
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: _licenses.isNotEmpty
+                                    ? themeData.colorScheme.onPrimaryContainer
+                                    : themeData.colorScheme.onSecondaryContainer,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (_licenses.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            lang.billingAssignSeatsCta,
+                            style: themeData.textTheme.bodySmall!.copyWith(
+                              color: themeData.colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
             child: Card(
@@ -209,13 +339,45 @@ class _BillingScreenState extends State<BillingScreen> {
                       ),
                     ),
                   ] else ...[
-                    CardHeader(title: lang.billingMyLicenses),
                     CardBody(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Purchase / get more on top so it stays visible when many licenses
+                          if (_products.isNotEmpty) ...[
+                            Text(
+                              lang.billingPurchaseLicense,
+                              style: themeData.textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: kDefaultPadding),
+                            Wrap(
+                              spacing: kDefaultPadding,
+                              runSpacing: kDefaultPadding,
+                              children: _products
+                                  .map((p) => _ProductOfferCard(
+                                        product: p,
+                                        onPurchase: () => _purchaseProduct(p),
+                                        isLoading: _checkoutProductId == p.productId,
+                                      ))
+                                  .toList(),
+                            ),
+                            const SizedBox(height: kDefaultPadding * 2),
+                            const Divider(),
+                            const SizedBox(height: kDefaultPadding * 2),
+                          ],
+                          // My licenses header below the purchase section
+                          Text(
+                            '${lang.billingMyLicenses} ($totalSeats ${lang.billingLicenses})',
+                            style: themeData.textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: kDefaultPadding),
                           ..._licenses.map(
-                            (license) => _LicenseCard(license: license),
+                            (license) => _LicenseCard(
+                              license: license,
+                              usersById: _usersById,
+                              onAssignSeats: () =>
+                                  _showAssignSeatDialog(context, license),
+                            ),
                           ),
                         ],
                       ),
@@ -268,8 +430,8 @@ class _ProductOfferCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '${product.maxUsers} ${Lang.of(context).billingUsers}',
-                style: themeData.textTheme.bodyMedium,
+                '${product.maxUsers} ${Lang.of(context).billingLicenses}',
+                style: themeData.textTheme.titleSmall,
               ),
               const SizedBox(height: 8),
               Text(
@@ -316,16 +478,31 @@ class _ProductOfferCard extends StatelessWidget {
 
 class _LicenseCard extends StatelessWidget {
   final License license;
+  final Map<String, UserPublic>? usersById;
+  final VoidCallback onAssignSeats;
 
-  const _LicenseCard({required this.license});
+  const _LicenseCard({
+    required this.license,
+    this.usersById,
+    required this.onAssignSeats,
+  });
+
+  int get _attributedCount =>
+      license.seats.where((s) => s.userId.isNotEmpty).length;
 
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final lang = Lang.of(context);
     final planName = _planDisplayName(license.licensePlan);
     final validUntil = license.hasValidUntil()
         ? _formatTimestamp(license.validUntil)
-        : Lang.of(context).billingLifetime;
+        : lang.billingLifetime;
+    final purchasedOn =
+        license.hasValidFrom() ? _formatTimestamp(license.validFrom) : null;
+    final attributed = _attributedCount;
+    final total = license.maxUsers;
+    final notYetAttributed = attributed == 0;
 
     return Card(
       margin: const EdgeInsets.only(bottom: kDefaultPadding),
@@ -345,12 +522,77 @@ class _LicenseCard extends StatelessWidget {
                 const Spacer(),
                 Chip(
                   label: Text(
-                    '${license.maxUsers} ${Lang.of(context).billingUsers}',
-                    style: themeData.textTheme.labelSmall,
+                    '${license.maxUsers} ${lang.billingLicenses}',
+                    style: themeData.textTheme.bodyMedium,
                   ),
                 ),
               ],
             ),
+            // Attribution status: plain text for state; primary button is the only CTA
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  if (notYetAttributed)
+                    Text(
+                      lang.billingNotYetAttributed,
+                      style: themeData.textTheme.bodyMedium,
+                    )
+                  else
+                    Text(
+                      '$attributed / $total ${lang.billingSeatsAttributed}',
+                      style: themeData.textTheme.bodyMedium,
+                    ),
+                  if (attributed < total) ...[
+                    const SizedBox(width: kDefaultPadding),
+                    FilledButton(
+                      onPressed: onAssignSeats,
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                      ),
+                      child: Text(lang.billingAssignSeats),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            // Show to which user(s) the license has been attributed (bigger, clearer)
+            ...license.seats
+                .where((s) => s.userId.isNotEmpty)
+                .map((seat) {
+                  final u = usersById?[seat.userId];
+                  final label = u != null
+                      ? ('${u.firstname} ${u.lastname}'.trim().isNotEmpty
+                            ? '${u.firstname} ${u.lastname}'.trim()
+                            : u.mail.isNotEmpty
+                                ? u.mail
+                                : seat.userId)
+                      : seat.userId;
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          lang.billingAttributedTo,
+                          style: themeData.textTheme.bodyMedium?.copyWith(
+                            color: themeData.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          label,
+                          style: themeData.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
             if (license.licenseId.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 4),
@@ -359,10 +601,18 @@ class _LicenseCard extends StatelessWidget {
                   style: themeData.textTheme.bodySmall,
                 ),
               ),
+            if (purchasedOn != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  'Purchased on: $purchasedOn',
+                  style: themeData.textTheme.bodySmall,
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
-                '${Lang.of(context).billingValidUntil}: $validUntil',
+                '${lang.billingValidUntil}: $validUntil',
                 style: themeData.textTheme.bodySmall,
               ),
             ),
@@ -391,5 +641,175 @@ class _LicenseCard extends StatelessWidget {
       isUtc: true,
     );
     return '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
+  }
+}
+
+/// Dialog to pick a user and assign one seat of [license] to them.
+/// Only users who do not yet have any license attributed are shown.
+class _AssignSeatDialog extends StatefulWidget {
+  final License license;
+  /// User IDs that already have a license (any plan). Excluded from the list.
+  final Set<String> allAttributedUserIds;
+  final VoidCallback onAssigned;
+
+  const _AssignSeatDialog({
+    required this.license,
+    required this.allAttributedUserIds,
+    required this.onAssigned,
+  });
+
+  @override
+  State<_AssignSeatDialog> createState() => _AssignSeatDialogState();
+}
+
+class _AssignSeatDialogState extends State<_AssignSeatDialog> {
+  bool _assigning = false;
+  String? _error;
+
+  Future<void> _assignSeatToUser(UserPublic user) async {
+    if (!mounted) return;
+    setState(() {
+      _assigning = true;
+      _error = null;
+    });
+
+    try {
+      // Persist attribution in the backend via BillingService.updateLicense (gRPC).
+      // The license's seats (with userId) are stored in the firm document (e.g. MongoDB).
+      final billingClient = context.read<BillingServiceClientProvider>().billingServiceClient;
+      final updated = License()..mergeFromMessage(widget.license);
+      updated.seats.add(LicenseSeat()..userId = user.userId);
+
+      await billingClient.updateLicense(
+        UpdateLicenseRequest(
+          licenseId: widget.license.licenseId,
+          license: updated,
+        ),
+      );
+      if (mounted) widget.onAssigned();
+    } on GrpcError catch (e) {
+      if (mounted) {
+        setState(() {
+          _assigning = false;
+          _error = e.message ?? 'Failed to assign seat';
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _assigning = false;
+          _error = e.toString();
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    final lang = Lang.of(context);
+
+    return AlertDialog(
+      title: Text(lang.billingAssignSeatDialogTitle),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: FutureBuilder<UsersPublic>(
+          future: UserService().readAllUsers(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: kDefaultPadding * 2),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            if (snapshot.hasError) {
+              return Text(
+                snapshot.error.toString(),
+                style: themeData.textTheme.bodySmall?.copyWith(
+                  color: themeData.colorScheme.error,
+                ),
+              );
+            }
+            final response = snapshot.data;
+            if (response == null || response.users.isEmpty) {
+              return Text(lang.billingNoUsersAvailable);
+            }
+            // Only users who do not have any license attributed yet
+            final available = response.users
+                .where((u) => !widget.allAttributedUserIds.contains(u.userId))
+                .toList();
+            if (available.isEmpty) {
+              return Text(
+                'All users already have a license attributed.',
+                style: themeData.textTheme.bodyMedium,
+              );
+            }
+            if (_error != null)
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _error!,
+                    style: themeData.textTheme.bodySmall?.copyWith(
+                      color: themeData.colorScheme.error,
+                    ),
+                  ),
+                  const SizedBox(height: kDefaultPadding),
+                  _UserListView(
+                    users: available,
+                    onTap: _assigning ? null : _assignSeatToUser,
+                  ),
+                ],
+              );
+            return _UserListView(
+              users: available,
+              onTap: _assigning ? null : _assignSeatToUser,
+            );
+          },
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: _assigning ? null : () => Navigator.of(context).pop(),
+          child: Text(lang.cancel),
+        ),
+      ],
+    );
+  }
+}
+
+/// User list rows: avatar + name + email, same pattern as users_weebi list UI.
+class _UserListView extends StatelessWidget {
+  final List<UserPublic> users;
+  final void Function(UserPublic)? onTap;
+
+  const _UserListView({required this.users, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 320),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: users.length,
+        itemBuilder: (context, index) {
+          final u = users[index];
+          final name = '${u.firstname} ${u.lastname}'.trim();
+          final initial = name.isNotEmpty
+              ? name.substring(0, 1).toUpperCase()
+              : (u.mail.isNotEmpty ? u.mail.substring(0, 1).toUpperCase() : '?');
+
+          return ListTile(
+            leading: CircleAvatar(
+              child: Text(initial),
+            ),
+            title: Text(name.isNotEmpty ? name : u.userId),
+            subtitle: u.mail.isNotEmpty ? Text(u.mail) : null,
+            onTap: onTap != null ? () => onTap!(u) : null,
+          );
+        },
+      ),
+    );
   }
 }
