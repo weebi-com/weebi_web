@@ -30,12 +30,8 @@ RUN mkdir $APP
 COPY . $APP
 WORKDIR $APP
 
-# Satisfy pubspec asset (dotenv_lcl is gitignored; web app uses config.json only at runtime)
-RUN touch assets/dotenv_lcl.txt
-
-# Build the Flutter web application
-RUN flutter clean
-RUN flutter pub get
+# API_URL is hardcoded in lib/config/api_url.dart; change when merging dev ↔ prod.
+RUN flutter clean && flutter pub get
 RUN flutter build web --verbose
 
 # Stage 2: Create the runtime environment with Nginx
@@ -54,9 +50,7 @@ COPY --from=build-env /app/build/web/ /usr/share/nginx/html/
 # Expose port 8080
 EXPOSE 8080
 
-# API_URL and other env are NOT available at build time. They are set by Cloud Run at
-# container start. entrypoint.sh reads them and writes /config.json; the app fetches that
-# in the browser. Set these in Cloud Run (or leave empty and use ENVIRONMENT + API_URL_PRD).
-ENV API_URL="" ENVIRONMENT="" API_URL_DEV="" API_URL_PRD="" LOCALE="fr"
+# API_URL is baked in at build via --build-arg. LOCALE can be set at runtime for entrypoint (config.json).
+ENV LOCALE="fr"
 
 ENTRYPOINT ["/entrypoint.sh"]

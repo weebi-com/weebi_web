@@ -25,7 +25,6 @@ dependencies:
   file_picker: ^8.0.0
 
   grpc: ^4.0.1 # grpc_web not exported from protos_weebi
-  flutter_dotenv: ^5.2.1
 
   package_info_plus: ^8.3.1
 
@@ -55,8 +54,6 @@ flutter:
 
   assets:
     - assets/images/app_logo.png
-    # dotenv_lcl for main_local (local dev). Web uses config.json only; no dotenv_dev/dotenv_prd in bundle.
-    - assets/dotenv_lcl.txt
 
   # fonts:
   #   - family: Schyler
