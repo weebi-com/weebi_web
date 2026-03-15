@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'config_loader_web.dart' if (dart.library.io) 'config_loader_stub.dart'
@@ -33,8 +34,12 @@ Future<void> loadConfig() async {
   } else {
     await dotenv.load(fileName: 'assets/dotenv_prd.txt');
   }
-  Config.init(
-    apiUrl: dotenv.env['API_URL'] ?? '',
-    locale: dotenv.env['LOCALE'] ?? 'fr',
-  );
+  var apiUrl = dotenv.env['API_URL'] ?? '';
+  final locale = dotenv.env['LOCALE'] ?? 'fr';
+  // Do NOT set apiUrl to '' on web: empty base URL makes gRPC send POST to same origin (webapp),
+  // and the webapp nginx returns 405 for POST to static content.
+  if (kIsWeb && apiUrl.isEmpty) {
+    debugPrint('[weebi] WARNING: API_URL is empty (config.json failed?). gRPC will hit same origin and get 405. Fix config.json in production.');
+  }
+  Config.init(apiUrl: apiUrl, locale: locale);
 }
