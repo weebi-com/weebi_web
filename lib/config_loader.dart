@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'config_loader_web.dart' if (dart.library.io) 'config_loader_stub.dart'
@@ -33,8 +34,12 @@ Future<void> loadConfig() async {
   } else {
     await dotenv.load(fileName: 'assets/dotenv_prd.txt');
   }
-  Config.init(
-    apiUrl: dotenv.env['API_URL'] ?? '',
-    locale: dotenv.env['LOCALE'] ?? 'fr',
-  );
+  var apiUrl = dotenv.env['API_URL'] ?? '';
+  final locale = dotenv.env['LOCALE'] ?? 'fr';
+  // Safety: on web, never use dev Envoy URL from fallback (prevents prod build with baked-in dev URL).
+  if (kIsWeb && apiUrl.contains('envoyproxy-dev')) {
+    debugPrint('[weebi] Refusing dotenv fallback with dev Envoy URL on web; use config.json.');
+    apiUrl = '';
+  }
+  Config.init(apiUrl: apiUrl, locale: locale);
 }
