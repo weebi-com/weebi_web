@@ -1,30 +1,15 @@
 # weebi web-app
 
 ``` shell
-# main_local: uses dotenv_lcl.txt (localhost) – no setup
+# main_local or main: both use lib/config/api_url.dart (kApiUrl)
 flutter run -t lib/main_local.dart
 flutter run -d web-server -t lib/main_local.dart
-
-# main.dart with ENVIRONMENT: first-time setup required
-cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt
-cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
-# Then add API_URL to each (obtain from team)
-flutter run --dart-define=ENVIRONMENT=development
-flutter run --dart-define=ENVIRONMENT=production
+flutter run
 ```
 
 ## Configuration
 
-The webapp calls the **Envoy proxy** (gRPC-Web), which forwards to weebi_server.
-
-**Two separate config paths** (no mixing):
-
-| Context | Source | See |
-|---------|--------|-----|
-| **Production** (Cloud Run) | Env vars → `/config.json` at startup | [SECRETS.md](SECRETS.md) |
-| **Local dev** | `assets/dotenv_*.txt` (gitignored) | [SECRETS.md](SECRETS.md) |
-
-Envoy URLs must **never** be committed. Use GitHub Secrets and Cloud Run Secret Manager.
+The webapp calls the **Envoy proxy** (gRPC-Web), which forwards to weebi_server. API_URL is set in `lib/config/api_url.dart` (`kApiUrl`). Change it when merging dev ↔ prod. See [SECRETS.md](SECRETS.md).
 
 ## issues
 

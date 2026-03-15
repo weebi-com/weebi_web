@@ -1,2 +1,2 @@
-/// Stub for non-web platforms (returns null - dotenv fallback will be used).
+/// Stub for non-web platforms (returns null).
 Future<String?> fetchConfigJson() async => null;
