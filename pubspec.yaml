@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.3
 
 environment:
-  sdk: '>=3.11.1 <4.0.0'
+  sdk: '>=3.3.3 <4.0.0'
 
 # avoid risking `flutter pub upgrade --major-versions`
 # prefer `flutter pub outdated`
@@ -19,20 +19,20 @@ dependencies:
   go_router: ^13.2.0
   google_fonts: ^6.3.2
   pointer_interceptor: ^0.10.1
-  flutter_form_builder: ^10.3.0+2
+  flutter_form_builder: any #^10.3.0+2
   form_builder_validators: ^11.1.2
   awesome_dialog: ^3.2.0
   file_picker: ^8.0.0
 
-  grpc: ^4.0.1 # grpc_web not exported from protos
+  grpc: ^4.0.1 # grpc_web not exported from protos_weebi
   flutter_dotenv: ^5.2.1
 
   package_info_plus: ^8.3.1
 
   protobuf: ^4.0.0
-  protos_weebi: ^1.1.0 # export protos (1.1.0+ for billing)
-  models_weebi: any
 
+  protos_weebi: ^1.1.1 # export protos (1.1.0+ for billing)
+  models_weebi: any
   auth_weebi: ^1.0.6
   boutiques_weebi: ^1.0.6
   devices_weebi: ^1.0.6

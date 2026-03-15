@@ -142,6 +142,7 @@ class _BillingScreenState extends State<BillingScreen> {
     final themeData = Theme.of(context);
     final appColorScheme = themeData.extension<AppColorScheme>()!;
     final lang = Lang.of(context);
+    final totalSeats = _licenses.fold<int>(0, (sum, l) => sum + l.maxUsers);
     final returnedFromSuccess =
         Uri.base.queryParameters['success'] == 'true' && !_loading;
 
@@ -272,9 +273,41 @@ class _BillingScreenState extends State<BillingScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          if (totalSeats > 0) ...[
+                            Row(
+                              children: [
+                                Text(
+                                  '${lang.billingUsers}: $totalSeats',
+                                  style: themeData.textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: kDefaultPadding),
+                          ],
                           ..._licenses.map(
                             (license) => _LicenseCard(license: license),
                           ),
+                          if (_products.isNotEmpty) ...[
+                            const SizedBox(height: kDefaultPadding * 2),
+                            const Divider(),
+                            const SizedBox(height: kDefaultPadding * 2),
+                            Text(
+                              lang.billingPurchaseLicense,
+                              style: themeData.textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: kDefaultPadding),
+                            Wrap(
+                              spacing: kDefaultPadding,
+                              runSpacing: kDefaultPadding,
+                              children: _products
+                                  .map((p) => _ProductOfferCard(
+                                        product: p,
+                                        onPurchase: () => _purchaseProduct(p),
+                                        isLoading: _checkoutProductId == p.productId,
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -384,6 +417,8 @@ class _LicenseCard extends StatelessWidget {
     final validUntil = license.hasValidUntil()
         ? _formatTimestamp(license.validUntil)
         : Lang.of(context).billingLifetime;
+    final purchasedOn =
+        license.hasValidFrom() ? _formatTimestamp(license.validFrom) : null;
 
     return Card(
       margin: const EdgeInsets.only(bottom: kDefaultPadding),
@@ -414,6 +449,14 @@ class _LicenseCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   'ID: ${license.licenseId}',
+                  style: themeData.textTheme.bodySmall,
+                ),
+              ),
+            if (purchasedOn != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  'Purchased on: $purchasedOn',
                   style: themeData.textTheme.bodySmall,
                 ),
               ),
