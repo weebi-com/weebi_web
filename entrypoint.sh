@@ -1,6 +1,7 @@
 #!/bin/sh
-# Generate config.json from environment variables at container startup.
-# Envoy proxy URL must be provided via env vars (API_URL or API_URL_DEV/API_URL_PRD).
+# Cloud Run sets API_URL (and optionally ENVIRONMENT, API_URL_DEV/API_URL_PRD) at runtime.
+# We write them into config.json so the Flutter app (running in the browser) can fetch it.
+# The app cannot read server env vars; config.json is the only way to pass them in.
 # See SECRETS.md for GitHub Actions and Cloud Run setup.
 
 CONFIG_FILE="/usr/share/nginx/html/config.json"
