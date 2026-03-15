@@ -30,9 +30,10 @@ RUN mkdir $APP
 COPY . $APP
 WORKDIR $APP
 
-# Ensure dotenv assets exist (gitignored files may be missing in CI; use .example)
-RUN [ -f assets/dotenv_dev.txt ] || cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt
-RUN [ -f assets/dotenv_prd.txt ] || cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
+# Use only .example dotenv so we never bake dev/prd URLs into the image (config at runtime via config.json).
+# Otherwise a stray dotenv_dev.txt with API_URL=envoyproxy-dev would be used when config.json fails.
+RUN cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt && \
+    cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
 
 # Build the Flutter web application
 RUN flutter clean
@@ -55,7 +56,9 @@ COPY --from=build-env /app/build/web/ /usr/share/nginx/html/
 # Expose port 8080
 EXPOSE 8080
 
-# Env vars - set via Cloud Run / GitHub Secrets (see SECRETS.md)
+# API_URL and other env are NOT available at build time. They are set by Cloud Run at
+# container start. entrypoint.sh reads them and writes /config.json; the app fetches that
+# in the browser. Set these in Cloud Run (or leave empty and use ENVIRONMENT + API_URL_PRD).
 ENV API_URL="" ENVIRONMENT="" API_URL_DEV="" API_URL_PRD="" LOCALE="fr"
 
 ENTRYPOINT ["/entrypoint.sh"]
