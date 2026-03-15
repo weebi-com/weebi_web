@@ -30,8 +30,10 @@ RUN mkdir $APP
 COPY . $APP
 WORKDIR $APP
 
-# Satisfy pubspec asset (dotenv_lcl is gitignored; web app uses config.json only at runtime)
-RUN touch assets/dotenv_lcl.txt
+# Dotenv assets are gitignored; create from .example so build succeeds. Runtime uses config.json when deployed.
+RUN cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt && \
+    cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
+RUN [ -f assets/dotenv_lcl.txt ] || touch assets/dotenv_lcl.txt
 
 # Build the Flutter web application
 RUN flutter clean
