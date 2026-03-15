@@ -629,11 +629,91 @@ class Lang {
     return Intl.message('users', name: 'billingUsers', desc: '', args: []);
   }
 
+  /// `License(s)`
+  String get billingLicenses {
+    return Intl.message(
+      'License(s)',
+      name: 'billingLicenses',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Valid until`
   String get billingValidUntil {
     return Intl.message(
       'Valid until',
       name: 'billingValidUntil',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `license(s) attributed`
+  String get billingSeatsAttributed {
+    return Intl.message(
+      'license(s) attributed',
+      name: 'billingSeatsAttributed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not yet attributed`
+  String get billingNotYetAttributed {
+    return Intl.message(
+      'Not yet attributed',
+      name: 'billingNotYetAttributed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attributed to`
+  String get billingAttributedTo {
+    return Intl.message(
+      'Attributed to',
+      name: 'billingAttributedTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign the license to a user`
+  String get billingAssignSeats {
+    return Intl.message(
+      'Assign the license to a user',
+      name: 'billingAssignSeats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign your new licenses to users below.`
+  String get billingAssignSeatsCta {
+    return Intl.message(
+      'Assign your new licenses to users below.',
+      name: 'billingAssignSeatsCta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign the license to a user`
+  String get billingAssignSeatDialogTitle {
+    return Intl.message(
+      'Assign the license to a user',
+      name: 'billingAssignSeatDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No users to assign. Add users in Users first.`
+  String get billingNoUsersAvailable {
+    return Intl.message(
+      'No users to assign. Add users in Users first.',
+      name: 'billingNoUsersAvailable',
       desc: '',
       args: [],
     );

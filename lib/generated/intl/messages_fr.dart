@@ -103,6 +103,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingValidUntil": MessageLookupByLibrary.simpleMessage(
       "Valide jusqu\'au",
     ),
+    "billingLicenses":
+        MessageLookupByLibrary.simpleMessage("Licence(s)"),
+    "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
+        "licence(s) attribuée(s)"),
+    "billingNotYetAttributed":
+        MessageLookupByLibrary.simpleMessage("Pas encore attribuée(s)"),
+    "billingAttributedTo":
+        MessageLookupByLibrary.simpleMessage("Attribué à"),
+    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
+        "Attribuer la licence à un utilisateur"),
+    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
+        "Attribuez vos nouvelles licences aux utilisateurs ci‑dessous."),
+    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+        "Attribuer la licence à un utilisateur"),
+    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
+        "Aucun utilisateur à attribuer. Ajoutez des utilisateurs dans Utilisateurs d'abord."),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage(
       "Accentuation du Bouton",
     ),

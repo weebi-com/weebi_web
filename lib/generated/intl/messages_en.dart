@@ -96,7 +96,23 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Retry"),
     "billingUsers": MessageLookupByLibrary.simpleMessage("users"),
+    "billingLicenses":
+        MessageLookupByLibrary.simpleMessage("License(s)"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage("Valid until"),
+    "billingSeatsAttributed":
+        MessageLookupByLibrary.simpleMessage("license(s) attributed"),
+    "billingNotYetAttributed":
+        MessageLookupByLibrary.simpleMessage("Not yet attributed"),
+    "billingAttributedTo":
+        MessageLookupByLibrary.simpleMessage("Attributed to"),
+    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
+        "Assign the license to a user"),
+    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
+        "Assign your new licenses to users below."),
+    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+        "Assign the license to a user"),
+    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
+        "No users to assign. Add users in Users first."),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("Button Emphasis"),
     "buttons": m0,
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),

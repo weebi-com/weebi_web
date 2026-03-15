@@ -80,7 +80,22 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("重试"),
     "billingUsers": MessageLookupByLibrary.simpleMessage("用户"),
+    "billingLicenses": MessageLookupByLibrary.simpleMessage("许可证"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage("有效期至"),
+    "billingSeatsAttributed":
+        MessageLookupByLibrary.simpleMessage("许可证已分配"),
+    "billingNotYetAttributed":
+        MessageLookupByLibrary.simpleMessage("尚未分配"),
+    "billingAttributedTo":
+        MessageLookupByLibrary.simpleMessage("已分配给"),
+    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
+        "将许可证分配给用户"),
+    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
+        "在下方将您的新许可证分配给用户。"),
+    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+        "将许可证分配给用户"),
+    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
+        "没有可分配的用户。请先在「用户」中添加用户。"),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("按钮强调"),
     "buttons": m0,
     "cancel": MessageLookupByLibrary.simpleMessage("取消"),
