@@ -5,9 +5,9 @@ FROM debian:latest AS build-env
 RUN apt-get update
 RUN apt-get install -y curl git unzip xz-utils zip libglu1-mesa
 
-# Define variables
+# Define variables (Flutter version must match pubspec.yaml environment.sdk and local stable)
 ARG FLUTTER_SDK=/usr/local/flutter
-ARG FLUTTER_VERSION=stable
+ARG FLUTTER_VERSION=3.29.3
 ARG APP=/app/
 
 # Clone the Flutter repository
@@ -19,10 +19,8 @@ RUN cd $FLUTTER_SDK && git fetch && git checkout $FLUTTER_VERSION
 # Setup the Flutter path as an environmental variable
 ENV PATH="$FLUTTER_SDK/bin:$FLUTTER_SDK/bin/cache/dart-sdk/bin:${PATH}"
 
-# Run Flutter commands
+# Run Flutter commands (no upgrade: version is pinned above)
 RUN flutter doctor -v
-RUN flutter channel stable
-RUN flutter upgrade
 
 # Enable web support and disable mobile platforms
 RUN flutter config --enable-web
