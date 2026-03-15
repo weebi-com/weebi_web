@@ -15,6 +15,17 @@ import 'package:web_admin/core/services/user_service.dart';
 import '../../../core/constants/dimens.dart';
 import '../../../core/theme/theme_extensions/app_color_scheme.dart';
 
+/// Query params from current URL. With hash routing, params may be in the fragment (#/billing?success=...).
+Map<String, String> _billingQueryParams() {
+  final base = Uri.base;
+  final fragment = base.fragment;
+  final qIndex = fragment.indexOf('?');
+  if (qIndex >= 0) {
+    return Uri.splitQueryString(fragment.substring(qIndex + 1));
+  }
+  return base.queryParameters;
+}
+
 class BillingScreen extends StatefulWidget {
   const BillingScreen({super.key});
 
@@ -36,9 +47,9 @@ class _BillingScreenState extends State<BillingScreen> {
     super.initState();
     _loadData();
     // If returning from Stripe success with session_id, sync license (webhook may have failed)
-    final uri = Uri.base;
-    final sessionId = uri.queryParameters['session_id'];
-    if (uri.queryParameters['success'] == 'true' && sessionId != null && sessionId.isNotEmpty) {
+    final params = _billingQueryParams();
+    final sessionId = params['session_id'];
+    if (params['success'] == 'true' && sessionId != null && sessionId.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!mounted) return;
         final provider = context.read<BillingServiceClientProvider>();
@@ -51,7 +62,7 @@ class _BillingScreenState extends State<BillingScreen> {
         }
         if (mounted) _loadData();
       });
-    } else if (uri.queryParameters['canceled'] == 'true') {
+    } else if (params['canceled'] == 'true') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _loadData();
       });
@@ -123,11 +134,15 @@ class _BillingScreenState extends State<BillingScreen> {
     setState(() => _checkoutProductId = product.productId);
 
     try {
-      final baseUrl = '${html.window.location.origin}${RouteUri.billing}';
+      // Use hash-based return URL so the app router (e.g. #/billing) shows Billing after redirect
+      final origin = html.window.location.origin;
+      final billingPath = RouteUri.billing;
+      final successUrl = '$origin/#$billingPath?success=true&session_id={CHECKOUT_SESSION_ID}';
+      final cancelUrl = '$origin/#$billingPath?canceled=true';
       final request = CreateCheckoutSessionRequest(
         priceId: stripePriceId,
-        successUrl: '$baseUrl?success=true&session_id={CHECKOUT_SESSION_ID}',
-        cancelUrl: '$baseUrl?canceled=true',
+        successUrl: successUrl,
+        cancelUrl: cancelUrl,
       );
 
       final response = await provider.billingServiceClient
@@ -176,7 +191,7 @@ class _BillingScreenState extends State<BillingScreen> {
     final lang = Lang.of(context);
     final totalSeats = _licenses.fold<int>(0, (sum, l) => sum + l.maxUsers);
     final returnedFromSuccess =
-        Uri.base.queryParameters['success'] == 'true' && !_loading;
+        _billingQueryParams()['success'] == 'true' && !_loading;
 
     return PortalMasterLayout(
       body: ListView(

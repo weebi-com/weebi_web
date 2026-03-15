@@ -79,8 +79,27 @@ class MessageLookup extends MessageLookupByLibrary {
       "Admin Portal Login",
     ),
     "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
+    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Assign the license to a user",
+    ),
+    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
+      "Assign the license to a user",
+    ),
+    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
+      "Assign your new licenses to users below.",
+    ),
+    "billingAttributedTo": MessageLookupByLibrary.simpleMessage(
+      "Attributed to",
+    ),
+    "billingLicenses": MessageLookupByLibrary.simpleMessage("License(s)"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("Lifetime"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("My licenses"),
+    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
+      "No users to assign. Add users in Users first.",
+    ),
+    "billingNotYetAttributed": MessageLookupByLibrary.simpleMessage(
+      "Not yet attributed",
+    ),
     "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
       "Payment received. We\'re confirming with Stripe — your license will appear shortly. If it doesn\'t, check your webhook configuration.",
     ),
@@ -95,24 +114,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Choose a license to use the advanced features of Weebi.",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
+      "license(s) attributed",
+    ),
     "billingUsers": MessageLookupByLibrary.simpleMessage("users"),
-    "billingLicenses":
-        MessageLookupByLibrary.simpleMessage("License(s)"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage("Valid until"),
-    "billingSeatsAttributed":
-        MessageLookupByLibrary.simpleMessage("license(s) attributed"),
-    "billingNotYetAttributed":
-        MessageLookupByLibrary.simpleMessage("Not yet attributed"),
-    "billingAttributedTo":
-        MessageLookupByLibrary.simpleMessage("Attributed to"),
-    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
-        "Assign the license to a user"),
-    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
-        "Assign your new licenses to users below."),
-    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
-        "Assign the license to a user"),
-    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
-        "No users to assign. Add users in Users first."),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("Button Emphasis"),
     "buttons": m0,
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),

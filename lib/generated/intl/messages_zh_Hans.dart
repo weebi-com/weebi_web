@@ -65,8 +65,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "account": MessageLookupByLibrary.simpleMessage("账户"),
     "adminPortalLogin": MessageLookupByLibrary.simpleMessage("管理后台登录"),
     "backToLogin": MessageLookupByLibrary.simpleMessage("返回登入页面"),
+    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "将许可证分配给用户",
+    ),
+    "billingAssignSeats": MessageLookupByLibrary.simpleMessage("将许可证分配给用户"),
+    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
+      "在“访问”中为用户分配您的新席位",
+    ),
+    "billingAttributedTo": MessageLookupByLibrary.simpleMessage("已分配给"),
+    "billingLicenses": MessageLookupByLibrary.simpleMessage("许可证"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("终身"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("我的许可证"),
+    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
+      "没有可分配的用户。请先在「用户」中添加用户。",
+    ),
+    "billingNotYetAttributed": MessageLookupByLibrary.simpleMessage("尚未分配"),
     "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
       "付款已收到。我们正在与 Stripe 确认 — 您的许可证将很快显示。如未显示，请检查 webhook 配置。",
     ),
@@ -79,23 +92,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "选择套餐以开始使用 Weebi。",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("重试"),
+    "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage("许可证已分配"),
     "billingUsers": MessageLookupByLibrary.simpleMessage("用户"),
-    "billingLicenses": MessageLookupByLibrary.simpleMessage("许可证"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage("有效期至"),
-    "billingSeatsAttributed":
-        MessageLookupByLibrary.simpleMessage("许可证已分配"),
-    "billingNotYetAttributed":
-        MessageLookupByLibrary.simpleMessage("尚未分配"),
-    "billingAttributedTo":
-        MessageLookupByLibrary.simpleMessage("已分配给"),
-    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
-        "将许可证分配给用户"),
-    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
-        "在下方将您的新许可证分配给用户。"),
-    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
-        "将许可证分配给用户"),
-    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
-        "没有可分配的用户。请先在「用户」中添加用户。"),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("按钮强调"),
     "buttons": m0,
     "cancel": MessageLookupByLibrary.simpleMessage("取消"),

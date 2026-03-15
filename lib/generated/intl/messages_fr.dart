@@ -83,8 +83,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToLogin": MessageLookupByLibrary.simpleMessage(
       "Retour à la Connexion",
     ),
+    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Attribuer la licence à un utilisateur",
+    ),
+    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
+      "Attribuer la licence à un utilisateur",
+    ),
+    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
+      "Attribuez vos nouvelles licences aux utilisateurs ci‑dessous.",
+    ),
+    "billingAttributedTo": MessageLookupByLibrary.simpleMessage("Attribué à"),
+    "billingLicenses": MessageLookupByLibrary.simpleMessage("Licence(s)"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("À vie"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("Mes licences"),
+    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
+      "Aucun utilisateur à attribuer. Ajoutez des utilisateurs dans Utilisateurs d\'abord.",
+    ),
+    "billingNotYetAttributed": MessageLookupByLibrary.simpleMessage(
+      "Pas encore attribuée(s)",
+    ),
     "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
       "Paiement reçu. Nous confirmons avec Stripe — votre licence apparaîtra sous peu. Sinon, vérifiez la configuration du webhook.",
     ),
@@ -99,26 +116,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Choisissez une licence pour utiliser les fonctions avancées de Weebi.",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Réessayer"),
+    "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
+      "licence(s) attribuée(s)",
+    ),
     "billingUsers": MessageLookupByLibrary.simpleMessage("utilisateur(s)"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage(
       "Valide jusqu\'au",
     ),
-    "billingLicenses":
-        MessageLookupByLibrary.simpleMessage("Licence(s)"),
-    "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
-        "licence(s) attribuée(s)"),
-    "billingNotYetAttributed":
-        MessageLookupByLibrary.simpleMessage("Pas encore attribuée(s)"),
-    "billingAttributedTo":
-        MessageLookupByLibrary.simpleMessage("Attribué à"),
-    "billingAssignSeats": MessageLookupByLibrary.simpleMessage(
-        "Attribuer la licence à un utilisateur"),
-    "billingAssignSeatsCta": MessageLookupByLibrary.simpleMessage(
-        "Attribuez vos nouvelles licences aux utilisateurs ci‑dessous."),
-    "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
-        "Attribuer la licence à un utilisateur"),
-    "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
-        "Aucun utilisateur à attribuer. Ajoutez des utilisateurs dans Utilisateurs d'abord."),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage(
       "Accentuation du Bouton",
     ),
