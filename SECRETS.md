@@ -22,6 +22,8 @@ Set these as environment variables or [Secret Manager](https://cloud.google.com/
 
 \* Either set `API_URL` directly, or set `ENVIRONMENT` + `API_URL_DEV`/`API_URL_PRD`.
 
+**Troubleshooting 405 on gRPC:** If the app sends POST to the *webapp* host (e.g. `webapp.dev.weebi.com/weebi..../authenticateWithCredentials`) and nginx returns 405, `API_URL` is empty at runtime. Set `API_URL` (or `ENVIRONMENT` + `API_URL_DEV`/`API_URL_PRD`) on the **webapp** Cloud Run service for that environment and deploy a new revision so `config.json` gets the Envoy URL.
+
 **Example (direct URL):**
 ```bash
 gcloud run deploy weebi-webapp --set-secrets "API_URL=envoy-url-prd:latest"
