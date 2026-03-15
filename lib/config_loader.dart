@@ -36,10 +36,10 @@ Future<void> loadConfig() async {
   }
   var apiUrl = dotenv.env['API_URL'] ?? '';
   final locale = dotenv.env['LOCALE'] ?? 'fr';
-  // Safety: on web, never use dev Envoy URL from fallback (prevents prod build with baked-in dev URL).
-  if (kIsWeb && apiUrl.contains('envoyproxy-dev')) {
-    debugPrint('[weebi] Refusing dotenv fallback with dev Envoy URL on web; use config.json.');
-    apiUrl = '';
+  // Do NOT set apiUrl to '' on web: empty base URL makes gRPC send POST to same origin (webapp),
+  // and the webapp nginx returns 405 for POST to static content.
+  if (kIsWeb && apiUrl.isEmpty) {
+    debugPrint('[weebi] WARNING: API_URL is empty (config.json failed?). gRPC will hit same origin and get 405. Fix config.json in production.');
   }
   Config.init(apiUrl: apiUrl, locale: locale);
 }
