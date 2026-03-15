@@ -1,83 +1,27 @@
 # Secrets & Configuration
 
-Envoy proxy URLs and other sensitive values must **never** be committed. Configure them via:
+API_URL is **hardcoded** in `lib/config/api_url.dart`. Change it when merging between dev and prod (git merge triggers the build; no build args).
 
-- **Production (Cloud Run)**: Environment variables / Secret Manager
-- **CI/CD (GitHub Actions)**: Repository secrets
-- **Local development**: Gitignored dotenv files
+- **Deployed & local**: Uses `kApiUrl` from that file. Dev branch = dev URL, prod/main = prod URL.
 
 ---
 
-## Production (Google Cloud Run)
+## Hardcoded API_URL
 
-Set these as environment variables or [Secret Manager](https://cloud.google.com/secret-manager) references:
+**File:** `lib/config/api_url.dart`
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `API_URL` | Yes* | Envoy proxy URL (e.g. `https://weebi-envoyproxy-prd-xxx.run.app`) |
-| `API_URL_DEV` | If using ENVIRONMENT | Dev Envoy URL (use when `ENVIRONMENT=development`) |
-| `API_URL_PRD` | If using ENVIRONMENT | Prod Envoy URL (use when `ENVIRONMENT=production`) |
-| `ENVIRONMENT` | Optional | `development` or `production` – used to pick `API_URL_DEV` / `API_URL_PRD` |
-| `LOCALE` | No | Default locale (default: `fr`) |
+| Branch / env | Set `kApiUrl` to |
+|-------------|-------------------|
+| **Dev** | `https://weebi-envoyproxy-dev-29758828833.europe-west1.run.app` |
+| **Prod** | `https://weebi-envoyproxy-prd-29758828833.europe-west1.run.app` |
 
-\* Either set `API_URL` directly, or set `ENVIRONMENT` + `API_URL_DEV`/`API_URL_PRD`.
-
-**Troubleshooting 405 on gRPC:** If the app sends POST to the *webapp* host (e.g. `webapp.dev.weebi.com/weebi..../authenticateWithCredentials`) and nginx returns 405, `API_URL` is empty at runtime. Set `API_URL` (or `ENVIRONMENT` + `API_URL_DEV`/`API_URL_PRD`) on the **webapp** Cloud Run service for that environment and deploy a new revision so `config.json` gets the Envoy URL.
-
-**Example (direct URL):**
-```bash
-gcloud run deploy weebi-webapp --set-secrets "API_URL=envoy-url-prd:latest"
-```
-
-**Example (via ENVIRONMENT + secrets):**
-```bash
-gcloud run deploy weebi-webapp \
-  --set-env-vars "ENVIRONMENT=production" \
-  --set-secrets "API_URL_PRD=envoy-url-prd:latest"
-```
+When you merge dev → prod (or prod → dev), update this constant so the built app points to the correct Envoy. Merge then triggers the build with the right URL.
 
 ---
 
-## GitHub Actions / CI
+## Config flow summary
 
-Add these as [repository secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets):
-
-| Secret | Description |
-|--------|-------------|
-| `API_URL` | Envoy proxy URL for the deployed environment |
-| `API_URL_DEV` | Dev Envoy URL (if building for dev) |
-| `API_URL_PRD` | Prod Envoy URL (if building for prod) |
-
-Use them when building/deploying:
-```yaml
-env:
-  API_URL: ${{ secrets.API_URL_PRD }}
-```
-
----
-
-## Local Development
-
-1. Copy the example files:
-   ```bash
-   cp assets/dotenv_dev.txt.example assets/dotenv_dev.txt
-   cp assets/dotenv_prd.txt.example assets/dotenv_prd.txt
-   ```
-
-2. Obtain the Envoy URL from your team and add it to `assets/dotenv_dev.txt`:
-   ```
-   API_URL=https://your-envoy-url.run.app
-   LOCALE=fr
-   ```
-
-3. **Do not commit** `dotenv_dev.txt` or `dotenv_prd.txt` – they are gitignored.
-
----
-
-## Config Flow Summary
-
-| Context | Config source | Secrets from |
-|---------|---------------|--------------|
-| **Cloud Run** | `/config.json` (generated at startup) | Env vars / Secret Manager |
-| **Local `flutter run`** | `assets/dotenv_*.txt` | Local files (gitignored) |
-| **Docker build** | Uses `.example` files (empty URLs) | N/A – runtime uses env vars |
+| Context | API_URL source |
+|---------|----------------|
+| **All** | `lib/config/api_url.dart` (`kApiUrl`). Change when merging dev ↔ prod. |
+| **Fallback** | If `kApiUrl` empty: config.json (then empty). |
