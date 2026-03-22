@@ -14,6 +14,20 @@ flutter run -t lib/main_dev.dart
 
 The webapp calls the **Envoy proxy** (gRPC-Web), which forwards to weebi_server. API_URL is set in `lib/config/api_url.dart` (`kApiUrl`). Change it when merging dev ↔ prod. Use `lib/main_dev.dart` to hit dev while `kApiUrl` is prod (or vice versa). See [SECRETS.md](SECRETS.md).
 
+## Localization (intl)
+
+| | Path |
+|---|------|
+| **Source (edit these)** | `lib/l10n/` — `intl_en.arb` (main locale), `intl_fr.arb`, `intl_zh_Hans.arb`, … |
+| **Generated (do not edit by hand)** | `lib/generated/` — `l10n.dart`, `intl/messages_*.dart` |
+
+1. Change strings in **`lib/l10n/*.arb`** only.
+2. Regenerate: **Flutter Intl** extension → command palette → **Flutter Intl: Generate** (refreshes **`lib/generated/`** from the ARBs).  
+   *Optional CLI (no pubspec entry):* `dart pub global activate intl_utils` then `dart pub global run intl_utils:generate` from the project root.
+3. Commit **both** `lib/l10n/` and `lib/generated/`.
+
+At runtime the app reads **`Lang`** from **`lib/generated/`**; the `.arb` files are not loaded by the app.
+
 ## issues
 
 FORK OF flutter-web-admin

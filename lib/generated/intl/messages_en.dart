@@ -174,6 +174,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "example": MessageLookupByLibrary.simpleMessage("Example"),
     "extensions": m4,
     "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
+    "forgotPassword": MessageLookupByLibrary.simpleMessage("Forgot password?"),
+    "forgotPasswordMessage": MessageLookupByLibrary.simpleMessage(
+      "Enter your email address to reset your password.",
+    ),
+    "forgotPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Forgot password",
+    ),
     "forms": m5,
     "generalUi": MessageLookupByLibrary.simpleMessage("General UI"),
     "help": MessageLookupByLibrary.simpleMessage("Help"),

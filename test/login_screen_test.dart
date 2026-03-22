@@ -24,7 +24,7 @@ void main() {
           supportedLocales: Lang.delegate.supportedLocales,
           locale: const Locale('en'),
           home: Builder(
-            builder: (context) => const Text('Forgot Password'),
+            builder: (context) => Text(Lang.of(context).forgotPassword),
           ),
         ),
       );
@@ -47,14 +47,14 @@ void main() {
           supportedLocales: Lang.delegate.supportedLocales,
           locale: const Locale('en'),
           home: Builder(
-            builder: (context) => Text('Forgot password'),
+            builder: (context) => Text(Lang.of(context).forgotPasswordTitle),
           ),
         ),
       );
 
       await tester.pumpAndSettle();
 
-      expect(find.text('Reset your password'), findsOneWidget);
+      expect(find.text('Forgot password'), findsOneWidget);
     });
   });
 }

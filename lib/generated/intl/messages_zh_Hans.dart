@@ -137,6 +137,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "error404Title": MessageLookupByLibrary.simpleMessage("找不到页面"),
     "example": MessageLookupByLibrary.simpleMessage("例子"),
     "extensions": m4,
+    "forgotPassword": MessageLookupByLibrary.simpleMessage("忘记密码？"),
+    "forgotPasswordMessage": MessageLookupByLibrary.simpleMessage(
+      "输入您的电子邮件地址，我们将向您发送重置密码的链接。",
+    ),
+    "forgotPasswordTitle": MessageLookupByLibrary.simpleMessage("重置您的密码"),
     "forms": m5,
     "generalUi": MessageLookupByLibrary.simpleMessage("常规 UI"),
     "help": MessageLookupByLibrary.simpleMessage("帮助"),

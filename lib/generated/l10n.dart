@@ -359,6 +359,36 @@ class Lang {
     );
   }
 
+  /// `Forgot password?`
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot password?',
+      name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address to reset your password.`
+  String get forgotPasswordMessage {
+    return Intl.message(
+      'Enter your email address to reset your password.',
+      name: 'forgotPasswordMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password`
+  String get forgotPasswordTitle {
+    return Intl.message(
+      'Forgot password',
+      name: 'forgotPasswordTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `General UI`
   String get generalUi {
     return Intl.message('General UI', name: 'generalUi', desc: '', args: []);
