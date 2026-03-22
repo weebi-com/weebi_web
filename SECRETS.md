@@ -23,5 +23,6 @@ When you merge dev → prod (or prod → dev), update this constant so the built
 
 | Context | API_URL source |
 |---------|----------------|
-| **All** | `lib/config/api_url.dart` (`kApiUrl`). Change when merging dev ↔ prod. |
+| **Default** (`main` / `main_local`) | `lib/config/api_url.dart` (`kApiUrl`). Change when merging dev ↔ prod. |
+| **Dev override** | `flutter run -t lib/main_dev.dart` → always `kApiUrlDev` in the same file. |
 | **Fallback** | If `kApiUrl` empty: config.json (then empty). |

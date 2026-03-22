@@ -11,6 +11,7 @@ import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 import 'package:web_admin/core/services/user_service.dart';
+import 'package:web_admin/legal/enterprise_terms_version.dart';
 
 import '../../../core/constants/dimens.dart';
 import '../../../core/theme/theme_extensions/app_color_scheme.dart';
@@ -41,6 +42,7 @@ class _BillingScreenState extends State<BillingScreen> {
   bool _loading = true;
   String? _errorMessage;
   String? _checkoutProductId;
+  bool _acceptedEnterpriseTerms = false;
 
   @override
   void initState() {
@@ -55,7 +57,10 @@ class _BillingScreenState extends State<BillingScreen> {
         final provider = context.read<BillingServiceClientProvider>();
         try {
           await provider.billingServiceClient.fulfillFromStripeCheckoutSession(
-            FulfillFromStripeCheckoutSessionRequest(checkoutSessionId: sessionId),
+            FulfillFromStripeCheckoutSessionRequest(
+              checkoutSessionId: sessionId,
+              legalTermsVersionDate: kEnterpriseTermsVersionId,
+            ),
           );
         } catch (_) {
           // Idempotent: already fulfilled or not paid yet; loadData will show current state
@@ -125,8 +130,60 @@ class _BillingScreenState extends State<BillingScreen> {
     }
   }
 
+  void _openLegalDocumentInNewTab() {
+    final locale = Localizations.localeOf(context);
+    final path = locale.languageCode == 'fr'
+        ? RouteUri.legalCgvFr
+        : RouteUri.legalTermsEn;
+    final url = '${html.window.location.origin}/#$path';
+    html.window.open(url, '_blank');
+  }
+
+  Widget _enterpriseTermsAcceptanceBlock(ThemeData theme, Lang lang) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Checkbox(
+              value: _acceptedEnterpriseTerms,
+              onChanged: (v) =>
+                  setState(() => _acceptedEnterpriseTerms = v ?? false),
+            ),
+            Expanded(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => setState(
+                  () => _acceptedEnterpriseTerms = !_acceptedEnterpriseTerms,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                    lang.billingAcceptEnterpriseTerms,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        TextButton(
+          onPressed: _openLegalDocumentInNewTab,
+          child: Text(lang.billingViewFullTerms),
+        ),
+      ],
+    );
+  }
+
   Future<void> _purchaseProduct(BillingProduct product) async {
     if (!mounted) return;
+    if (!_acceptedEnterpriseTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(Lang.of(context).billingAcceptTermsToContinue)),
+      );
+      return;
+    }
     final provider = context.read<BillingServiceClientProvider>();
     final stripePriceId = product.stripePriceId;
     if (stripePriceId.isEmpty) return;
@@ -136,13 +193,14 @@ class _BillingScreenState extends State<BillingScreen> {
     try {
       // Use hash-based return URL so the app router (e.g. #/billing) shows Billing after redirect
       final origin = html.window.location.origin;
-      final billingPath = RouteUri.billing;
+      const billingPath = RouteUri.billing;
       final successUrl = '$origin/#$billingPath?success=true&session_id={CHECKOUT_SESSION_ID}';
       final cancelUrl = '$origin/#$billingPath?canceled=true';
       final request = CreateCheckoutSessionRequest(
         priceId: stripePriceId,
         successUrl: successUrl,
         cancelUrl: cancelUrl,
+        legalTermsVersionDate: kEnterpriseTermsVersionId,
       );
 
       final response = await provider.billingServiceClient
@@ -323,6 +381,10 @@ class _BillingScreenState extends State<BillingScreen> {
                             lang.billingPurchaseLicenseDescription,
                             style: themeData.textTheme.bodyMedium,
                           ),
+                          if (_products.isNotEmpty) ...[
+                            const SizedBox(height: kDefaultPadding * 2),
+                            _enterpriseTermsAcceptanceBlock(themeData, lang),
+                          ],
                           const SizedBox(height: kDefaultPadding * 2),
                           Wrap(
                             spacing: kDefaultPadding,
@@ -332,6 +394,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                       product: p,
                                       onPurchase: () => _purchaseProduct(p),
                                       isLoading: _checkoutProductId == p.productId,
+                                      purchaseEnabled: _acceptedEnterpriseTerms,
                                     ))
                                 .toList(),
                           ),
@@ -350,6 +413,8 @@ class _BillingScreenState extends State<BillingScreen> {
                               style: themeData.textTheme.titleMedium,
                             ),
                             const SizedBox(height: kDefaultPadding),
+                            _enterpriseTermsAcceptanceBlock(themeData, lang),
+                            const SizedBox(height: kDefaultPadding),
                             Wrap(
                               spacing: kDefaultPadding,
                               runSpacing: kDefaultPadding,
@@ -358,6 +423,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                         product: p,
                                         onPurchase: () => _purchaseProduct(p),
                                         isLoading: _checkoutProductId == p.productId,
+                                        purchaseEnabled: _acceptedEnterpriseTerms,
                                       ))
                                   .toList(),
                             ),
@@ -397,11 +463,13 @@ class _ProductOfferCard extends StatelessWidget {
   final BillingProduct product;
   final VoidCallback onPurchase;
   final bool isLoading;
+  final bool purchaseEnabled;
 
   const _ProductOfferCard({
     required this.product,
     required this.onPurchase,
     required this.isLoading,
+    required this.purchaseEnabled,
   });
 
   @override
@@ -445,7 +513,8 @@ class _ProductOfferCard extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: isLoading ? null : onPurchase,
+                  onPressed:
+                      (isLoading || !purchaseEnabled) ? null : onPurchase,
                   child: isLoading
                       ? const SizedBox(
                           height: 20,

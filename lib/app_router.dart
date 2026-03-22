@@ -29,6 +29,7 @@ import 'package:web_admin/views/screens/help/help_screen.dart';
 import 'package:web_admin/views/screens/support/support_screen.dart';
 import 'package:web_admin/views/screens/about/about_screen.dart';
 import 'package:web_admin/views/screens/billing/billing_screen.dart';
+import 'package:web_admin/views/screens/legal/legal_document_screen.dart';
 
 class RouteUri {
   static const String home = '/';
@@ -69,6 +70,12 @@ class RouteUri {
   static const String about = '/about';
 
   static const String billing = '/billing';
+
+  /// Stable URL for English Enterprise license terms (shareable, citeable).
+  static const String legalTermsEn = '/legal/terms';
+
+  /// Stable URL for French CGV (shareable, citeable).
+  static const String legalCgvFr = '/legal/cgv';
 }
 
 const List<String> unrestrictedRoutes = [
@@ -76,6 +83,8 @@ const List<String> unrestrictedRoutes = [
   RouteUri.logout,
   RouteUri.login, // Remove this line for actual authentication flow.
   RouteUri.register, // Remove this line for actual authentication flow.
+  RouteUri.legalTermsEn,
+  RouteUri.legalCgvFr,
 ];
 
 const List<String> publicRoutes = [
@@ -319,6 +328,27 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
             child: const AboutScreen(),
           );
         },
+      ),
+
+      // =========================== LEGAL (public, stable URLs) ===========================
+
+      GoRoute(
+        path: RouteUri.legalTermsEn,
+        pageBuilder: (context, state) => NoTransitionPage<void>(
+          key: state.pageKey,
+          child: const LegalDocumentScreen(
+            document: EnterpriseLegalDocument.termsEn,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: RouteUri.legalCgvFr,
+        pageBuilder: (context, state) => NoTransitionPage<void>(
+          key: state.pageKey,
+          child: const LegalDocumentScreen(
+            document: EnterpriseLegalDocument.cgvFr,
+          ),
+        ),
       ),
 
       // =========================== BILLING ===========================

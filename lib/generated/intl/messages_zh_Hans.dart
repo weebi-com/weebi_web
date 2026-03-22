@@ -65,6 +65,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "account": MessageLookupByLibrary.simpleMessage("账户"),
     "adminPortalLogin": MessageLookupByLibrary.simpleMessage("管理后台登录"),
     "backToLogin": MessageLookupByLibrary.simpleMessage("返回登入页面"),
+    "billingAcceptEnterpriseTerms": MessageLookupByLibrary.simpleMessage(
+      "我已阅读并同意企业版许可证的销售条款和条件。",
+    ),
+    "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
+      "请先接受条款和条件。",
+    ),
     "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
       "将许可证分配给用户",
     ),
@@ -95,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage("许可证已分配"),
     "billingUsers": MessageLookupByLibrary.simpleMessage("用户"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage("有效期至"),
+    "billingViewFullTerms": MessageLookupByLibrary.simpleMessage("在新标签页查看完整文档"),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("按钮强调"),
     "buttons": m0,
     "cancel": MessageLookupByLibrary.simpleMessage("取消"),
@@ -146,6 +153,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "integerErrorText": MessageLookupByLibrary.simpleMessage("此字段需要有效的整数。"),
     "ipErrorText": MessageLookupByLibrary.simpleMessage("此字段需要有效的IP。"),
     "language": MessageLookupByLibrary.simpleMessage("语言"),
+    "legalDocTitleCgvFr": MessageLookupByLibrary.simpleMessage(
+      "Conditions Générales de Vente",
+    ),
+    "legalDocTitleTermsEn": MessageLookupByLibrary.simpleMessage(
+      "Terms and Conditions of Sale",
+    ),
+    "legalDocumentVersionId": MessageLookupByLibrary.simpleMessage("文档版本编号"),
     "lightTheme": MessageLookupByLibrary.simpleMessage("亮色主题"),
     "login": MessageLookupByLibrary.simpleMessage("登入"),
     "loginNow": MessageLookupByLibrary.simpleMessage("马上登入！"),

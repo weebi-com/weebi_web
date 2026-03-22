@@ -83,6 +83,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToLogin": MessageLookupByLibrary.simpleMessage(
       "Retour à la Connexion",
     ),
+    "billingAcceptEnterpriseTerms": MessageLookupByLibrary.simpleMessage(
+      "J\'ai lu et j\'accepte les Conditions Générales de Vente applicables à l\'achat d\'une licence Entreprise.",
+    ),
+    "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
+      "Veuillez accepter les conditions générales pour continuer.",
+    ),
     "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
       "Attribuer la licence à un utilisateur",
     ),
@@ -122,6 +128,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingUsers": MessageLookupByLibrary.simpleMessage("utilisateur(s)"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage(
       "Valide jusqu\'au",
+    ),
+    "billingViewFullTerms": MessageLookupByLibrary.simpleMessage(
+      "Voir le document complet (nouvel onglet)",
     ),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage(
       "Accentuation du Bouton",
@@ -198,6 +207,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Langue"),
     "lastName": MessageLookupByLibrary.simpleMessage("Nom"),
+    "legalDocTitleCgvFr": MessageLookupByLibrary.simpleMessage(
+      "Conditions Générales de Vente",
+    ),
+    "legalDocTitleTermsEn": MessageLookupByLibrary.simpleMessage(
+      "Terms and Conditions of Sale",
+    ),
+    "legalDocumentVersionId": MessageLookupByLibrary.simpleMessage(
+      "Référence du document",
+    ),
     "lightTheme": MessageLookupByLibrary.simpleMessage("Thème Clair"),
     "login": MessageLookupByLibrary.simpleMessage("Connexion"),
     "loginNow": MessageLookupByLibrary.simpleMessage(
