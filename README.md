@@ -1,15 +1,18 @@
 # weebi web-app
 
 ``` shell
-# main_local or main: both use lib/config/api_url.dart (kApiUrl)
+# main / main_local: use lib/config/api_url.dart (kApiUrl)
 flutter run -t lib/main_local.dart
 flutter run -d web-server -t lib/main_local.dart
 flutter run
+
+# main_dev: always dev Envoy (kApiUrlDev), regardless of kApiUrl
+flutter run -t lib/main_dev.dart
 ```
 
 ## Configuration
 
-The webapp calls the **Envoy proxy** (gRPC-Web), which forwards to weebi_server. API_URL is set in `lib/config/api_url.dart` (`kApiUrl`). Change it when merging dev ↔ prod. See [SECRETS.md](SECRETS.md).
+The webapp calls the **Envoy proxy** (gRPC-Web), which forwards to weebi_server. API_URL is set in `lib/config/api_url.dart` (`kApiUrl`). Change it when merging dev ↔ prod. Use `lib/main_dev.dart` to hit dev while `kApiUrl` is prod (or vice versa). See [SECRETS.md](SECRETS.md).
 
 ## issues
 

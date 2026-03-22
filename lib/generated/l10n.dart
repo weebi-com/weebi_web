@@ -599,6 +599,66 @@ class Lang {
     );
   }
 
+  /// `I have read and accept the Terms and Conditions of Sale for the Enterprise license.`
+  String get billingAcceptEnterpriseTerms {
+    return Intl.message(
+      'I have read and accept the Terms and Conditions of Sale for the Enterprise license.',
+      name: 'billingAcceptEnterpriseTerms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View full document (new tab)`
+  String get billingViewFullTerms {
+    return Intl.message(
+      'View full document (new tab)',
+      name: 'billingViewFullTerms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please accept the terms and conditions to continue.`
+  String get billingAcceptTermsToContinue {
+    return Intl.message(
+      'Please accept the terms and conditions to continue.',
+      name: 'billingAcceptTermsToContinue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms and Conditions of Sale`
+  String get legalDocTitleTermsEn {
+    return Intl.message(
+      'Terms and Conditions of Sale',
+      name: 'legalDocTitleTermsEn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conditions Générales de Vente`
+  String get legalDocTitleCgvFr {
+    return Intl.message(
+      'Conditions Générales de Vente',
+      name: 'legalDocTitleCgvFr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Document version ID`
+  String get legalDocumentVersionId {
+    return Intl.message(
+      'Document version ID',
+      name: 'legalDocumentVersionId',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Payment received. We're confirming with Stripe — your license will appear shortly. If it doesn't, check your webhook configuration.`
   String get billingPaymentProcessing {
     return Intl.message(
