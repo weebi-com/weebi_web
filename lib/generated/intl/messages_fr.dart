@@ -306,6 +306,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "Accentuation du Texte",
     ),
     "textTheme": MessageLookupByLibrary.simpleMessage("Thème du Texte"),
+    "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
+      "Le filtre et le groupement des tickets par boutique sont réservés aux comptes avec licence Weebi. Ouvrez Facturation pour vous abonner.",
+    ),
+    "ticketsLicenseOnlyMultiBoutiqueTitle":
+        MessageLookupByLibrary.simpleMessage(
+          "Filtre et groupement par boutique",
+        ),
+    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage(
+      "Licence requise",
+    ),
     "todaySales": MessageLookupByLibrary.simpleMessage(
       "Ventes d\'Aujourd\'hui",
     ),

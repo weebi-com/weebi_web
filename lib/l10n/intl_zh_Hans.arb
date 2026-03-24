@@ -128,5 +128,8 @@
   "uiElements": "{count, plural, one{UI 元素} other{UI 元素}}",
   "urlErrorText": "此字段需要有效的URL地址。",
   "username": "用户名",
-  "yes": "是的"
+  "yes": "是的",
+  "ticketsLicenseOnlyShort": "需要许可证",
+  "ticketsLicenseOnlyMultiBoutiqueTitle": "按门店筛选与分组",
+  "ticketsLicenseOnlyMultiBoutiqueDetail": "按门店筛选和分组小票为 Weebi 许可证功能。请前往“计费”订阅以解锁。"
 }

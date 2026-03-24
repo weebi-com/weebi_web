@@ -40,6 +40,7 @@ dependencies:
   gatekeeper_weebi: ^1.0.6
   design_weebi: ^0.1.2
   flutter_markdown: ^0.7.7+1
+  aptabase_flutter: ^0.4.1
 
 dependency_overrides:
   # Remove when protos_weebi 1.2.0+ is on pub.dev; keeps webapp aligned with server protos.

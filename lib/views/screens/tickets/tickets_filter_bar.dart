@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:web_admin/generated/l10n.dart';
 
 /// How to filter soft-deleted tickets.
 enum DeletedFilter {
@@ -65,17 +66,70 @@ class TicketsFilterState {
   }
 }
 
+/// Explains that filtering / grouping tickets by store requires a firm license.
+class TicketsMultiBoutiqueLicenseGateButton extends StatelessWidget {
+  const TicketsMultiBoutiqueLicenseGateButton({super.key});
+
+  void _showHint(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final lang = Lang.of(context);
+    final detail = lang.ticketsLicenseOnlyMultiBoutiqueDetail;
+
+    return Tooltip(
+      message: detail,
+      child: OutlinedButton.icon(
+        onPressed: () => _showHint(context, detail),
+        icon: Icon(
+          Icons.lock_outline_rounded,
+          size: 20,
+          color: theme.colorScheme.primary,
+        ),
+        label: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              lang.ticketsLicenseOnlyMultiBoutiqueTitle,
+              style: theme.textTheme.labelLarge,
+            ),
+            Text(
+              lang.ticketsLicenseOnlyShort,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+        style: OutlinedButton.styleFrom(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        ),
+      ),
+    );
+  }
+}
+
 /// Filter bar for tickets: date range, status, soft-deleted, boutique, group.
 class TicketsFilterBar extends StatelessWidget {
   final TicketsFilterState filter;
   final ValueChanged<TicketsFilterState> onFilterChanged;
   final List<BoutiqueOption> availableBoutiques;
+  /// When false, boutique filter and "group by boutique" are replaced by a license notice.
+  final bool multiBoutiqueFeaturesUnlocked;
 
   const TicketsFilterBar({
     super.key,
     required this.filter,
     required this.onFilterChanged,
     this.availableBoutiques = const [],
+    this.multiBoutiqueFeaturesUnlocked = true,
   });
 
   @override
@@ -113,27 +167,30 @@ class TicketsFilterBar extends StatelessWidget {
                   onChanged: (v) =>
                       onFilterChanged(filter.copyWith(deletedFilter: v)),
                 ),
-                _BoutiqueFilterChip(
-                  boutiqueId: filter.boutiqueId,
-                  availableBoutiques: availableBoutiques,
-                  onChanged: (v) => onFilterChanged(
-                    v == null
-                        ? TicketsFilterState(
-                            dateFrom: filter.dateFrom,
-                            dateTo: filter.dateTo,
-                            statusActive: filter.statusActive,
-                            deletedFilter: filter.deletedFilter,
-                            boutiqueId: null,
-                            groupByBoutique: filter.groupByBoutique,
-                          )
-                        : filter.copyWith(boutiqueId: v),
+                if (multiBoutiqueFeaturesUnlocked) ...[
+                  _BoutiqueFilterChip(
+                    boutiqueId: filter.boutiqueId,
+                    availableBoutiques: availableBoutiques,
+                    onChanged: (v) => onFilterChanged(
+                      v == null
+                          ? TicketsFilterState(
+                              dateFrom: filter.dateFrom,
+                              dateTo: filter.dateTo,
+                              statusActive: filter.statusActive,
+                              deletedFilter: filter.deletedFilter,
+                              boutiqueId: null,
+                              groupByBoutique: filter.groupByBoutique,
+                            )
+                          : filter.copyWith(boutiqueId: v),
+                    ),
                   ),
-                ),
-                _GroupByBoutiqueChip(
-                  groupByBoutique: filter.groupByBoutique,
-                  onChanged: (v) =>
-                      onFilterChanged(filter.copyWith(groupByBoutique: v)),
-                ),
+                  _GroupByBoutiqueChip(
+                    groupByBoutique: filter.groupByBoutique,
+                    onChanged: (v) =>
+                        onFilterChanged(filter.copyWith(groupByBoutique: v)),
+                  ),
+                ] else
+                  const TicketsMultiBoutiqueLicenseGateButton(),
               ],
             ),
           ],

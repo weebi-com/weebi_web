@@ -1145,6 +1145,36 @@ class Lang {
   String get yes {
     return Intl.message('Yes', name: 'yes', desc: '', args: []);
   }
+
+  /// `License required`
+  String get ticketsLicenseOnlyShort {
+    return Intl.message(
+      'License required',
+      name: 'ticketsLicenseOnlyShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store filter & grouping`
+  String get ticketsLicenseOnlyMultiBoutiqueTitle {
+    return Intl.message(
+      'Store filter & grouping',
+      name: 'ticketsLicenseOnlyMultiBoutiqueTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filtering and grouping tickets by store are available with a Weebi license. Open Billing to subscribe.`
+  String get ticketsLicenseOnlyMultiBoutiqueDetail {
+    return Intl.message(
+      'Filtering and grouping tickets by store are available with a Weebi license. Open Billing to subscribe.',
+      name: 'ticketsLicenseOnlyMultiBoutiqueDetail',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<Lang> {

@@ -219,6 +219,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "text": MessageLookupByLibrary.simpleMessage("文字"),
     "textEmphasis": MessageLookupByLibrary.simpleMessage("文字强调"),
     "textTheme": MessageLookupByLibrary.simpleMessage("文字主题"),
+    "ticketsLicenseOnlyMultiBoutiqueDetail":
+        MessageLookupByLibrary.simpleMessage(
+          "按门店筛选和分组小票为 Weebi 许可证功能。请前往“计费”订阅以解锁。",
+        ),
+    "ticketsLicenseOnlyMultiBoutiqueTitle":
+        MessageLookupByLibrary.simpleMessage("按门店筛选与分组"),
+    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage("需要许可证"),
     "todaySales": MessageLookupByLibrary.simpleMessage("今日销售额"),
     "typography": MessageLookupByLibrary.simpleMessage("排版"),
     "uiElements": m16,

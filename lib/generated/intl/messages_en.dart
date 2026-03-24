@@ -282,6 +282,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "text": MessageLookupByLibrary.simpleMessage("Text"),
     "textEmphasis": MessageLookupByLibrary.simpleMessage("Text Emphasis"),
     "textTheme": MessageLookupByLibrary.simpleMessage("Text Theme"),
+    "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
+      "Filtering and grouping tickets by store are available with a Weebi license. Open Billing to subscribe.",
+    ),
+    "ticketsLicenseOnlyMultiBoutiqueTitle":
+        MessageLookupByLibrary.simpleMessage("Store filter & grouping"),
+    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage(
+      "License required",
+    ),
     "todaySales": MessageLookupByLibrary.simpleMessage("Today Sales"),
     "typography": MessageLookupByLibrary.simpleMessage("Typography"),
     "uiElements": m16,

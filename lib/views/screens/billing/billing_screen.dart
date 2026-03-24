@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_web_libraries_in_flutter, deprecated_member_use
 import 'dart:html' as html;
 
+import 'package:aptabase_flutter/aptabase_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart' hide ConnectionState;
 import 'package:provider/provider.dart';
@@ -43,10 +44,13 @@ class _BillingScreenState extends State<BillingScreen> {
   String? _errorMessage;
   String? _checkoutProductId;
   bool _acceptedEnterpriseTerms = false;
+  bool _subscriptionConfirmedLogged = false;
+  bool _checkoutCanceledLogged = false;
 
   @override
   void initState() {
     super.initState();
+    Aptabase.instance.trackEvent('billing_screen_opened', {});
     _loadData();
     // If returning from Stripe success with session_id, sync license (webhook may have failed)
     final params = _billingQueryParams();
@@ -68,10 +72,26 @@ class _BillingScreenState extends State<BillingScreen> {
         if (mounted) _loadData();
       });
     } else if (params['canceled'] == 'true') {
+      if (!_checkoutCanceledLogged) {
+        _checkoutCanceledLogged = true;
+        Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+          'reason': 'checkout_canceled',
+        });
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _loadData();
       });
     }
+  }
+
+  void _maybeTrackSubscriptionConfirmed(List<License> licenses) {
+    if (_subscriptionConfirmedLogged) return;
+    if (_billingQueryParams()['success'] != 'true') return;
+    if (licenses.isEmpty) return;
+    _subscriptionConfirmedLogged = true;
+    Aptabase.instance.trackEvent('billing_subscription_confirmed', {
+      'license_count': licenses.length,
+    });
   }
 
   Future<void> _loadData() async {
@@ -112,6 +132,7 @@ class _BillingScreenState extends State<BillingScreen> {
           _loading = false;
           _errorMessage = null;
         });
+        _maybeTrackSubscriptionConfirmed(licenses);
       }
     } on GrpcError catch (e) {
       if (mounted) {
@@ -131,12 +152,21 @@ class _BillingScreenState extends State<BillingScreen> {
   }
 
   void _openLegalDocumentInNewTab() {
+    Aptabase.instance.trackEvent('billing_terms_full_document_opened', {});
     final locale = Localizations.localeOf(context);
     final path = locale.languageCode == 'fr'
         ? RouteUri.legalCgvFr
         : RouteUri.legalTermsEn;
     final url = '${html.window.location.origin}/#$path';
     html.window.open(url, '_blank');
+  }
+
+  void _setEnterpriseTermsAccepted(bool value) {
+    if (value == _acceptedEnterpriseTerms) return;
+    setState(() => _acceptedEnterpriseTerms = value);
+    Aptabase.instance.trackEvent('billing_enterprise_terms_toggled', {
+      'accepted': value ? 1 : 0,
+    });
   }
 
   Widget _enterpriseTermsAcceptanceBlock(ThemeData theme, Lang lang) {
@@ -148,14 +178,13 @@ class _BillingScreenState extends State<BillingScreen> {
           children: [
             Checkbox(
               value: _acceptedEnterpriseTerms,
-              onChanged: (v) =>
-                  setState(() => _acceptedEnterpriseTerms = v ?? false),
+              onChanged: (v) => _setEnterpriseTermsAccepted(v ?? false),
             ),
             Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => setState(
-                  () => _acceptedEnterpriseTerms = !_acceptedEnterpriseTerms,
+                onTap: () => _setEnterpriseTermsAccepted(
+                  !_acceptedEnterpriseTerms,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 12),
@@ -174,6 +203,13 @@ class _BillingScreenState extends State<BillingScreen> {
         ),
       ],
     );
+  }
+
+  void _onLicensePurchaseTapped(BillingProduct product) {
+    Aptabase.instance.trackEvent('billing_license_purchase_clicked', {
+      'product_id': product.productId,
+    });
+    _purchaseProduct(product);
   }
 
   Future<void> _purchaseProduct(BillingProduct product) async {
@@ -206,10 +242,26 @@ class _BillingScreenState extends State<BillingScreen> {
       final response = await provider.billingServiceClient
           .createCheckoutSession(request);
 
-      if (response.checkoutUrl.isNotEmpty && mounted) {
-        html.window.location.href = response.checkoutUrl;
+      if (!mounted) return;
+      if (response.checkoutUrl.isEmpty) {
+        Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+          'reason': 'empty_checkout_url',
+          'product_id': product.productId,
+        });
+        setState(() {
+          _checkoutProductId = null;
+          _errorMessage = 'Checkout failed';
+        });
+        return;
       }
+      html.window.location.href = response.checkoutUrl;
     } on GrpcError catch (e) {
+      Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+        'reason': 'checkout_session_grpc',
+        'product_id': product.productId,
+        'code': e.code,
+        'detail': e.message ?? '',
+      });
       if (mounted) {
         setState(() {
           _checkoutProductId = null;
@@ -217,6 +269,11 @@ class _BillingScreenState extends State<BillingScreen> {
         });
       }
     } catch (e) {
+      Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+        'reason': 'checkout_session_error',
+        'product_id': product.productId,
+        'detail': e.toString(),
+      });
       if (mounted) {
         setState(() {
           _checkoutProductId = null;
@@ -392,7 +449,7 @@ class _BillingScreenState extends State<BillingScreen> {
                             children: _products
                                 .map((p) => _ProductOfferCard(
                                       product: p,
-                                      onPurchase: () => _purchaseProduct(p),
+                                      onPurchase: () => _onLicensePurchaseTapped(p),
                                       isLoading: _checkoutProductId == p.productId,
                                       purchaseEnabled: _acceptedEnterpriseTerms,
                                     ))
@@ -421,7 +478,8 @@ class _BillingScreenState extends State<BillingScreen> {
                               children: _products
                                   .map((p) => _ProductOfferCard(
                                         product: p,
-                                        onPurchase: () => _purchaseProduct(p),
+                                        onPurchase: () =>
+                                            _onLicensePurchaseTapped(p),
                                         isLoading: _checkoutProductId == p.productId,
                                         purchaseEnabled: _acceptedEnterpriseTerms,
                                       ))

@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:models_weebi/models.dart' show TicketType;
 import 'package:provider/provider.dart';
 import 'package:protos_weebi/protos_weebi_io.dart'
-    show ReadAllTicketsRequest, TicketPb;
+    show Empty, ReadAllTicketsRequest, TicketPb;
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
@@ -44,6 +44,12 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   String? _errorMessage;
   TicketsFilterState _filter = const TicketsFilterState();
   final _tableScrollController = ScrollController();
+  bool _licenseGateResolved = false;
+  bool _hasActiveFirmLicense = false;
+
+  /// Until billing responds, allow controls (optimistic). Then require a firm license.
+  bool get _multiBoutiqueFeaturesUnlocked =>
+      !_licenseGateResolved || _hasActiveFirmLicense;
 
   @override
   void initState() {
@@ -51,7 +57,43 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadTickets();
       _ensureBoutiqueCache();
+      _loadLicenseGate();
     });
+  }
+
+  TicketsFilterState _withoutMultiBoutiqueFilters(TicketsFilterState f) {
+    return TicketsFilterState(
+      dateFrom: f.dateFrom,
+      dateTo: f.dateTo,
+      statusActive: f.statusActive,
+      deletedFilter: f.deletedFilter,
+      boutiqueId: null,
+      groupByBoutique: false,
+    );
+  }
+
+  Future<void> _loadLicenseGate() async {
+    try {
+      final billing =
+          context.read<BillingServiceClientProvider>().billingServiceClient;
+      final res = await billing.readLicenses(Empty());
+      if (!mounted) return;
+      final has = res.licenses.isNotEmpty;
+      setState(() {
+        _licenseGateResolved = true;
+        _hasActiveFirmLicense = has;
+        if (!has) {
+          _filter = _withoutMultiBoutiqueFilters(_filter);
+        }
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _licenseGateResolved = true;
+        _hasActiveFirmLicense = false;
+        _filter = _withoutMultiBoutiqueFilters(_filter);
+      });
+    }
   }
 
   @override
@@ -347,8 +389,11 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
 
   void _onFilterChanged(TicketsFilterState filter) {
     final prevDeleted = _filter.deletedFilter;
-    setState(() => _filter = filter);
-    if (filter.deletedFilter != prevDeleted) {
+    final next = _multiBoutiqueFeaturesUnlocked
+        ? filter
+        : _withoutMultiBoutiqueFilters(filter);
+    setState(() => _filter = next);
+    if (next.deletedFilter != prevDeleted) {
       _loadTickets();
     }
   }
@@ -429,6 +474,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
               filter: _filter,
               onFilterChanged: _onFilterChanged,
               availableBoutiques: _extractBoutiques(_allTickets, cache),
+              multiBoutiqueFeaturesUnlocked: _multiBoutiqueFeaturesUnlocked,
             ),
           ),
           Card(

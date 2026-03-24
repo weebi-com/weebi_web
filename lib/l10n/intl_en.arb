@@ -130,5 +130,8 @@
   "uiElements": "{count, plural, one{UI Element} other{UI Elements}}",
   "urlErrorText": "This field requires a valid URL address.",
   "username": "Username",
-  "yes": "Yes"
+  "yes": "Yes",
+  "ticketsLicenseOnlyShort": "License required",
+  "ticketsLicenseOnlyMultiBoutiqueTitle": "Store filter & grouping",
+  "ticketsLicenseOnlyMultiBoutiqueDetail": "Filtering and grouping tickets by store are available with a Weebi license. Open Billing to subscribe."
 }

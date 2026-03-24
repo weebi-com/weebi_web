@@ -130,5 +130,8 @@
   "uiElements": "{count, plural, one{Élément UI} other{Éléments UI}}",
   "urlErrorText": "Ce champ nécessite une adresse URL valide.",
   "username": "Nom d'Utilisateur",
-  "yes": "Oui"
+  "yes": "Oui",
+  "ticketsLicenseOnlyShort": "Licence requise",
+  "ticketsLicenseOnlyMultiBoutiqueTitle": "Filtre et groupement par boutique",
+  "ticketsLicenseOnlyMultiBoutiqueDetail": "Le filtre et le groupement des tickets par boutique sont réservés aux comptes avec licence Weebi. Ouvrez Facturation pour vous abonner."
 }
