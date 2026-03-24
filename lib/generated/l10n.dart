@@ -1218,12 +1218,7 @@ class Lang {
 
   /// `Refresh`
   String get refreshAction {
-    return Intl.message(
-      'Refresh',
-      name: 'refreshAction',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Refresh', name: 'refreshAction', desc: '', args: []);
   }
 
   /// `My firm`
@@ -1450,8 +1445,8 @@ class Lang {
   String ticketsCount(num count) {
     return Intl.plural(
       count,
-      one: '$count ticket',
-      other: '$count tickets',
+      one: '# ticket',
+      other: '# tickets',
       name: 'ticketsCount',
       desc: '',
       args: [count],
