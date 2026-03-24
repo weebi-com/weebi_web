@@ -6,7 +6,10 @@ import 'package:web_admin/app_router.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
 /// Users view using users_weebi package, embedded in the app's
-/// PortalMasterLayout so global navigation (back to home, sidebar) remains available.
+/// [PortalMasterLayout] so global navigation (back to home, sidebar) remains available.
+///
+/// A nested [Navigator] matches [AccessesPackageScreen]: [UserRoutes.navigateToUserDetailView]
+/// pushes onto this stack instead of the root navigator, so the drawer / sidebar stay visible.
 class UsersPackageScreen extends StatelessWidget {
   const UsersPackageScreen({super.key});
 
@@ -16,12 +19,20 @@ class UsersPackageScreen extends StatelessWidget {
     final currentUserId = permissionProvider.userId;
     return PortalMasterLayout(
       selectedMenuUri: RouteUri.listUser,
-      body: UserRoutes.buildUserListWithCustomScaffold(
-        currentUserId: currentUserId,
-        appBar: null, // PortalMasterLayout provides the AppBar
-        drawer: null,
-        endDrawer: null,
-        onCreateUser: () => context.push(RouteUri.createUser),
+      body: Navigator(
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute<void>(
+            settings: settings,
+            builder: (nestedContext) => UserRoutes.buildUserListWithCustomScaffold(
+              currentUserId: currentUserId,
+              appBar: null, // PortalMasterLayout provides the AppBar
+              drawer: null,
+              endDrawer: null,
+              onCreateUser: () => nestedContext.push(RouteUri.createUser),
+            ),
+          );
+        },
       ),
     );
   }
