@@ -6,6 +6,7 @@ import 'package:protos_weebi/protos_weebi_io.dart'
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
+import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/screens/tickets/ticket_detail_body.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
@@ -39,9 +40,9 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
   }
 
   Future<void> _loadFromRoute() async {
-    // If no ticket passed, we can't load - show error
+    if (!mounted) return;
     setState(() {
-      _errorMessage = 'Ticket non fourni';
+      _errorMessage = Lang.of(context).ticketNotProvided;
     });
   }
 
@@ -87,6 +88,7 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final lang = Lang.of(context);
 
     return PortalMasterLayout(
       body: ListView(
@@ -97,12 +99,14 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
               IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => context.go(RouteUri.ticketsOverview),
-                tooltip: 'Retour',
+                tooltip: lang.crudBack,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Détail du ticket #${_ticket?.nonUniqueId ?? '?'}',
+                  lang.ticketDetailTitle(
+                    '${_ticket?.nonUniqueId ?? '?'}',
+                  ),
                   style: themeData.textTheme.headlineMedium,
                 ),
               ),
@@ -116,7 +120,7 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
                         )
                       : const Icon(Icons.refresh),
                   onPressed: _isLoading ? null : _refreshTicket,
-                  tooltip: 'Actualiser',
+                  tooltip: lang.ticketsTooltipRefresh,
                 ),
             ],
           ),

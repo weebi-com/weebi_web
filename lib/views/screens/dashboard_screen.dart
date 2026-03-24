@@ -67,7 +67,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () => GoRouter.of(context).go(RouteUri.firmDetail),
                       child: SummaryCard(
                         title: lang.pendingIssues(2),
-                        value: 'Ma Firme',
+                        value: lang.dashboardCardMyFirmValue,
                         icon: Icons.business,
                         backgroundColor: Colors.lightBlue,
                         textColor: themeData.colorScheme.onPrimary,
@@ -92,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () => GoRouter.of(context).go(RouteUri.listUser),
                       child: SummaryCard(
                         title: lang.newUsers(2),
-                        value: 'Utilisateurs',
+                        value: lang.dashboardCardUsersValue,
                         icon: Icons.group_add_rounded,
                         backgroundColor: appColorScheme.warning,
                         textColor: appColorScheme.buttonTextBlack,
@@ -104,8 +104,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () =>
                           GoRouter.of(context).go(RouteUri.listAccess),
                       child: SummaryCard(
-                        title: 'Accès utilisateurs',
-                        value: 'Accès utilisateurs',
+                        title: lang.dashboardCardUserAccess,
+                        value: lang.dashboardCardUserAccess,
                         icon: Icons.admin_panel_settings_rounded,
                         backgroundColor: Colors.purple,
                         textColor: themeData.colorScheme.onPrimary,
@@ -117,8 +117,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () =>
                           GoRouter.of(context).go(RouteUri.listDevice),
                       child: SummaryCard(
-                        title: 'Appareils',
-                        value: 'Appareils',
+                        title: lang.dashboardCardDevicesValue,
+                        value: lang.dashboardCardDevicesValue,
                         icon: Icons.devices_rounded,
                         backgroundColor: Colors.teal,
                         textColor: themeData.colorScheme.onPrimary,
@@ -130,8 +130,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () =>
                           GoRouter.of(context).go(RouteUri.ticketsOverview),
                       child: SummaryCard(
-                        title: 'Tickets du jour',
-                        value: 'Tickets',
+                        title: lang.dashboardCardTicketsToday,
+                        value: lang.dashboardCardTicketsShort,
                         icon: IconsWeebi.ticketsIconData,
                         backgroundColor: Colors.grey,
                         textColor: themeData.colorScheme.onPrimary,

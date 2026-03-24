@@ -244,10 +244,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             padding: const EdgeInsets.only(bottom: kDefaultPadding * 2.0),
             child: FormBuilderTextField(
               name: 'email',
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                hintText: 'Email',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: lang.email,
+                hintText: lang.email,
+                border: const OutlineInputBorder(),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
               initialValue: _formData.mail,

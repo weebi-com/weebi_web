@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:protos_weebi/protos_weebi_io.dart'
     show Empty, ReadAllTicketsRequest, TicketPb;
 import 'package:web_admin/app_router.dart';
+import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/billing/license_seat_client.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
@@ -130,8 +131,9 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   Future<void> _loadTickets() async {
     final chainId = _getChainId();
     if (chainId == null || chainId.isEmpty) {
+      if (!mounted) return;
       setState(() {
-        _errorMessage = 'Chaîne non disponible';
+        _errorMessage = Lang.of(context).ticketsChainUnavailable;
         _isLoading = false;
       });
       return;
@@ -284,6 +286,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   Widget _buildGroupedList(
     List<_TicketWithMeta> filtered,
     TicketsBoutiqueCache cache,
+    Lang lang,
   ) {
     if (filtered.isEmpty) return const SizedBox.shrink();
     final themeData = Theme.of(context);
@@ -315,7 +318,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
               ),
               const SizedBox(width: 8),
               Text(
-                '(${tickets.length} ticket${tickets.length > 1 ? 's' : ''})',
+                '(${lang.ticketsCount(tickets.length)})',
                 style: themeData.textTheme.bodySmall?.copyWith(
                   color: themeData.colorScheme.onSurfaceVariant,
                 ),
@@ -324,7 +327,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
           ),
           children: [
             if (isLargeScreen)
-              _buildTicketsTableForGroup(tickets, cache)
+              _buildTicketsTableForGroup(tickets, cache, lang)
             else
               ...tickets.expand((meta) => [
                     TicketGlimpseWidget(
@@ -345,6 +348,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   Widget _buildTicketsTableForGroup(
     List<_TicketWithMeta> tickets,
     TicketsBoutiqueCache cache,
+    Lang lang,
   ) {
     final themeData = Theme.of(context);
     final appDataTableTheme = themeData.extension<AppDataTableTheme>()!;
@@ -352,6 +356,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       tickets: tickets,
       cache: cache,
       onTap: _openTicketDetail,
+      lang: lang,
     );
 
     return LayoutBuilder(
@@ -371,12 +376,13 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                 rowsPerPage: tickets.length <= 20 ? tickets.length : 20,
                 showCheckboxColumn: false,
                 showFirstLastButtons: tickets.length > 20,
-                columns: const [
-                  DataColumn(label: Text('Boutique')),
-                  DataColumn(label: Text('Type')),
-                  DataColumn(label: Text('Montant'), numeric: true),
-                  DataColumn(label: Text('Contact')),
-                  DataColumn(label: Text('Date · n°')),
+                columns: [
+                  DataColumn(label: Text(lang.ticketsColumnBoutique)),
+                  DataColumn(label: Text(lang.ticketsColumnType)),
+                  DataColumn(
+                      label: Text(lang.ticketsColumnAmount), numeric: true),
+                  DataColumn(label: Text(lang.ticketsColumnContact)),
+                  DataColumn(label: Text(lang.ticketsColumnDateAndNumber)),
                 ],
               ),
             ),
@@ -412,6 +418,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   Widget _buildTicketsTable(
     List<_TicketWithMeta> filtered,
     TicketsBoutiqueCache cache,
+    Lang lang,
   ) {
     final themeData = Theme.of(context);
     final appDataTableTheme = themeData.extension<AppDataTableTheme>()!;
@@ -419,6 +426,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       tickets: filtered,
       cache: cache,
       onTap: _openTicketDetail,
+      lang: lang,
     );
 
     return LayoutBuilder(
@@ -443,12 +451,13 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                   rowsPerPage: 20,
                   showCheckboxColumn: false,
                   showFirstLastButtons: true,
-                  columns: const [
-                    DataColumn(label: Text('Boutique')),
-                    DataColumn(label: Text('Type')),
-                    DataColumn(label: Text('Montant'), numeric: true),
-                    DataColumn(label: Text('Contact')),
-                    DataColumn(label: Text('Date · n°')),
+                  columns: [
+                    DataColumn(label: Text(lang.ticketsColumnBoutique)),
+                    DataColumn(label: Text(lang.ticketsColumnType)),
+                    DataColumn(
+                        label: Text(lang.ticketsColumnAmount), numeric: true),
+                    DataColumn(label: Text(lang.ticketsColumnContact)),
+                    DataColumn(label: Text(lang.ticketsColumnDateAndNumber)),
                   ],
                 ),
               ),
@@ -462,6 +471,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final lang = Lang.of(context);
     final filtered = _applyFilters(_allTickets);
     final cache = context.watch<TicketsBoutiqueCache>();
     final useTable = _useDataTable(context);
@@ -471,7 +481,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
         padding: const EdgeInsets.all(kDefaultPadding),
         children: [
           Text(
-            'Tickets',
+            lang.menuTickets,
             style: themeData.textTheme.headlineMedium,
           ),
           Padding(
@@ -494,7 +504,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          '${filtered.length} ticket(s)',
+                          lang.ticketsCount(filtered.length),
                           style: themeData.textTheme.titleMedium,
                         ),
                       ),
@@ -506,7 +516,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                                 await _loadLicenseGate();
                                 await _loadTickets();
                               },
-                        tooltip: 'Actualiser',
+                        tooltip: lang.ticketsTooltipRefresh,
                       ),
                     ],
                   ),
@@ -525,16 +535,16 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                     ),
                   )
                 else if (filtered.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.all(kDefaultPadding * 2),
+                  Padding(
+                    padding: const EdgeInsets.all(kDefaultPadding * 2),
                     child: Center(
-                      child: Text('Aucun ticket'),
+                      child: Text(lang.ticketsEmpty),
                     ),
                   )
                 else if (_filter.groupByBoutique)
-                  _buildGroupedList(filtered, cache)
+                  _buildGroupedList(filtered, cache, lang)
                 else if (useTable)
-                  _buildTicketsTable(filtered, cache)
+                  _buildTicketsTable(filtered, cache, lang)
                 else
                   ListView.separated(
                     shrinkWrap: true,
@@ -567,11 +577,13 @@ class _TicketsTableSource extends DataTableSource {
   final List<_TicketWithMeta> tickets;
   final TicketsBoutiqueCache cache;
   final void Function(TicketPb) onTap;
+  final Lang lang;
 
   _TicketsTableSource({
     required this.tickets,
     required this.cache,
     required this.onTap,
+    required this.lang,
   });
 
   TicketType _toTicketType(dynamic pbType) =>
@@ -579,12 +591,14 @@ class _TicketsTableSource extends DataTableSource {
 
   String _typeLabel(TicketType type) {
     final name = type.toString();
-    if (name.isEmpty) return 'Ticket';
+    if (name.isEmpty) return lang.ticketTypeDefault;
     return name[0].toUpperCase() + name.substring(1).replaceAll('_', ' ');
   }
 
   String _getAmount(_TicketWithMeta meta) {
-    if (meta.isSoftDeleted || !meta.ticket.status) return '—';
+    if (meta.isSoftDeleted || !meta.ticket.status) {
+      return lang.ticketsPaymentUnknown;
+    }
     final type = _toTicketType(meta.ticket.ticketType);
     if (meta.ticket.received > 0) {
       return _numFormat.format(meta.ticket.received);
@@ -595,27 +609,35 @@ class _TicketsTableSource extends DataTableSource {
         final ticketW = ticketPbToWeebi(meta.ticket);
         return _numFormat.format(ticketW.total);
       } catch (_) {
-        return '${meta.ticket.items.length} art.';
+        return lang.ticketItemsShort(meta.ticket.items.length);
       }
     }
     return meta.ticket.items.isEmpty
-        ? '—'
-        : '${meta.ticket.items.length} art.';
+        ? lang.ticketsPaymentUnknown
+        : lang.ticketItemsShort(meta.ticket.items.length);
   }
 
   String _paymentLabel(dynamic pb) {
     final s = pb?.name ?? '';
-    if (s.isEmpty) return '—';
-    const map = {
-      'cash': 'Espèces',
-      'mobileMoney': 'Mobile Money',
-      'nope': 'Crédit',
-      'cheque': 'Chèque',
-      'creditCard': 'Carte',
-      'goods': 'Marchandises',
-      'unknown': '—',
-    };
-    return map[s] ?? s;
+    if (s.isEmpty) return lang.ticketsPaymentUnknown;
+    switch (s) {
+      case 'cash':
+        return lang.ticketsPaymentCash;
+      case 'mobileMoney':
+        return lang.ticketsPaymentMobileMoney;
+      case 'nope':
+        return lang.ticketsPaymentCredit;
+      case 'cheque':
+        return lang.ticketsPaymentCheque;
+      case 'creditCard':
+        return lang.ticketsPaymentCard;
+      case 'goods':
+        return lang.ticketsPaymentGoods;
+      case 'unknown':
+        return lang.ticketsPaymentUnknown;
+      default:
+        return s;
+    }
   }
 
   String _getBoutiqueName(_TicketWithMeta meta) {
@@ -684,7 +706,9 @@ class _TicketsTableSource extends DataTableSource {
             children: [
               if (boutiqueIcon != null) ...[boutiqueIcon, const SizedBox(width: 6)],
               Text(
-                boutiqueName.isEmpty ? '—' : boutiqueName,
+                boutiqueName.isEmpty
+                    ? lang.ticketsPaymentUnknown
+                    : boutiqueName,
                 style: textStyle(null),
               ),
             ],
@@ -716,7 +740,9 @@ class _TicketsTableSource extends DataTableSource {
         DataCell(Text(_getAmount(meta), style: textStyle(null))),
         DataCell(
           Text(
-            _getContactName(meta).isEmpty ? '—' : _getContactName(meta),
+            _getContactName(meta).isEmpty
+                ? lang.ticketsPaymentUnknown
+                : _getContactName(meta),
             style: textStyle(null),
           ),
         ),

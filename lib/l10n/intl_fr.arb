@@ -137,5 +137,74 @@
   "uiElements": "{count, plural, one{Élément UI} other{Éléments UI}}",
   "urlErrorText": "Ce champ nécessite une adresse URL valide.",
   "username": "Nom d'Utilisateur",
-  "yes": "Oui"
+  "yes": "Oui",
+  "refreshAction": "Actualiser",
+  "dashboardCardMyFirmValue": "Ma firme",
+  "dashboardCardBoutiquesValue": "Mes boutiques",
+  "dashboardCardUsersValue": "Utilisateurs",
+  "dashboardCardUserAccess": "Accès utilisateurs",
+  "dashboardCardDevicesValue": "Appareils",
+  "dashboardCardTicketsToday": "Tickets du jour",
+  "dashboardCardTicketsShort": "Tickets",
+  "firmPageTitle": "Ma firme",
+  "firmCardDescription": "La firme représente votre entreprise, elle regroupe vos utilisateurs et vos chaînes/boutiques",
+  "firmErrorCreateHint": "Veuillez créer une nouvelle firme en cliquant sur le bouton « Ajouter une firme ».",
+  "firmErrorUnexpected": "Une erreur inattendue est survenue.",
+  "ticketDetailTitle": "Détail du ticket n°{ticketId}",
+  "@ticketDetailTitle": {
+    "placeholders": {
+      "ticketId": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketNotProvided": "Ticket non fourni",
+  "ticketTypeDefault": "Ticket",
+  "ticketItemsShort": "{count} art.",
+  "@ticketItemsShort": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "ticketsBoutiqueAll": "Toutes les boutiques",
+  "ticketsBoutiqueFallback": "Boutique",
+  "ticketsChainUnavailable": "Chaîne non disponible",
+  "ticketsColumnAmount": "Montant",
+  "ticketsColumnBoutique": "Boutique",
+  "ticketsColumnContact": "Contact",
+  "ticketsColumnDateAndNumber": "Date · n°",
+  "ticketsColumnType": "Type",
+  "ticketsCount": "{count, plural, one{# ticket} other{# tickets}}",
+  "@ticketsCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "ticketsDateAll": "Toutes les dates",
+  "ticketsDeletedChip": "Supprimés",
+  "ticketsDeletedExclude": "Non supprimés",
+  "ticketsDeletedOnly": "Supprimés uniquement",
+  "ticketsEmpty": "Aucun ticket",
+  "ticketsFiltersTitle": "Filtres",
+  "ticketsGroupByBoutique": "Grouper par boutique",
+  "ticketsPaymentCard": "Carte",
+  "ticketsPaymentCash": "Espèces",
+  "ticketsPaymentCheque": "Chèque",
+  "ticketsPaymentCredit": "Crédit",
+  "ticketsPaymentGoods": "Marchandises",
+  "ticketsPaymentMobileMoney": "Mobile Money",
+  "ticketsPaymentUnknown": "—",
+  "ticketsSortChronological": "Ordre chronologique",
+  "ticketsStatusActive": "Actifs",
+  "ticketsStatusAll": "Tous",
+  "ticketsStatusInactive": "Inactifs",
+  "ticketsTooltipClearDates": "Toutes les dates",
+  "ticketsTooltipFilterBoutique": "Filtrer par boutique",
+  "ticketsTooltipFilterByStatus": "Filtrer par statut",
+  "ticketsTooltipFilterDeleted": "Filtrer par tickets supprimés",
+  "ticketsTooltipRefresh": "Actualiser"
 }

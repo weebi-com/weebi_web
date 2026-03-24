@@ -137,5 +137,74 @@
   "uiElements": "{count, plural, one{UI Element} other{UI Elements}}",
   "urlErrorText": "This field requires a valid URL address.",
   "username": "Username",
-  "yes": "Yes"
+  "yes": "Yes",
+  "refreshAction": "Refresh",
+  "dashboardCardMyFirmValue": "My firm",
+  "dashboardCardBoutiquesValue": "My stores",
+  "dashboardCardUsersValue": "Users",
+  "dashboardCardUserAccess": "User access",
+  "dashboardCardDevicesValue": "Devices",
+  "dashboardCardTicketsToday": "Today's tickets",
+  "dashboardCardTicketsShort": "Tickets",
+  "firmPageTitle": "My firm",
+  "firmCardDescription": "The firm represents your company; it groups your users and your chains/stores.",
+  "firmErrorCreateHint": "Please create a new firm by clicking the \"Add a firm\" button.",
+  "firmErrorUnexpected": "An unexpected error occurred.",
+  "ticketDetailTitle": "Ticket detail #{ticketId}",
+  "@ticketDetailTitle": {
+    "placeholders": {
+      "ticketId": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketNotProvided": "No ticket provided",
+  "ticketTypeDefault": "Ticket",
+  "ticketItemsShort": "{count} items",
+  "@ticketItemsShort": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "ticketsBoutiqueAll": "All stores",
+  "ticketsBoutiqueFallback": "Store",
+  "ticketsChainUnavailable": "Chain unavailable",
+  "ticketsColumnAmount": "Amount",
+  "ticketsColumnBoutique": "Store",
+  "ticketsColumnContact": "Contact",
+  "ticketsColumnDateAndNumber": "Date · no.",
+  "ticketsColumnType": "Type",
+  "ticketsCount": "{count, plural, one{# ticket} other{# tickets}}",
+  "@ticketsCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "ticketsDateAll": "All dates",
+  "ticketsDeletedChip": "Deleted",
+  "ticketsDeletedExclude": "Not deleted",
+  "ticketsDeletedOnly": "Deleted only",
+  "ticketsEmpty": "No tickets",
+  "ticketsFiltersTitle": "Filters",
+  "ticketsGroupByBoutique": "Group by store",
+  "ticketsPaymentCard": "Card",
+  "ticketsPaymentCash": "Cash",
+  "ticketsPaymentCheque": "Check",
+  "ticketsPaymentCredit": "Credit",
+  "ticketsPaymentGoods": "Goods",
+  "ticketsPaymentMobileMoney": "Mobile money",
+  "ticketsPaymentUnknown": "—",
+  "ticketsSortChronological": "Chronological order",
+  "ticketsStatusActive": "Active",
+  "ticketsStatusAll": "All",
+  "ticketsStatusInactive": "Inactive",
+  "ticketsTooltipClearDates": "All dates",
+  "ticketsTooltipFilterBoutique": "Filter by store",
+  "ticketsTooltipFilterByStatus": "Filter by status",
+  "ticketsTooltipFilterDeleted": "Filter by deleted tickets",
+  "ticketsTooltipRefresh": "Refresh"
 }

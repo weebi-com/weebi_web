@@ -1215,6 +1215,453 @@ class Lang {
   String get yes {
     return Intl.message('Yes', name: 'yes', desc: '', args: []);
   }
+
+  /// `Refresh`
+  String get refreshAction {
+    return Intl.message(
+      'Refresh',
+      name: 'refreshAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My firm`
+  String get dashboardCardMyFirmValue {
+    return Intl.message(
+      'My firm',
+      name: 'dashboardCardMyFirmValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My stores`
+  String get dashboardCardBoutiquesValue {
+    return Intl.message(
+      'My stores',
+      name: 'dashboardCardBoutiquesValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users`
+  String get dashboardCardUsersValue {
+    return Intl.message(
+      'Users',
+      name: 'dashboardCardUsersValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User access`
+  String get dashboardCardUserAccess {
+    return Intl.message(
+      'User access',
+      name: 'dashboardCardUserAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devices`
+  String get dashboardCardDevicesValue {
+    return Intl.message(
+      'Devices',
+      name: 'dashboardCardDevicesValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today's tickets`
+  String get dashboardCardTicketsToday {
+    return Intl.message(
+      'Today\'s tickets',
+      name: 'dashboardCardTicketsToday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tickets`
+  String get dashboardCardTicketsShort {
+    return Intl.message(
+      'Tickets',
+      name: 'dashboardCardTicketsShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My firm`
+  String get firmPageTitle {
+    return Intl.message('My firm', name: 'firmPageTitle', desc: '', args: []);
+  }
+
+  /// `The firm represents your company; it groups your users and your chains/stores.`
+  String get firmCardDescription {
+    return Intl.message(
+      'The firm represents your company; it groups your users and your chains/stores.',
+      name: 'firmCardDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please create a new firm by clicking the "Add a firm" button.`
+  String get firmErrorCreateHint {
+    return Intl.message(
+      'Please create a new firm by clicking the "Add a firm" button.',
+      name: 'firmErrorCreateHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred.`
+  String get firmErrorUnexpected {
+    return Intl.message(
+      'An unexpected error occurred.',
+      name: 'firmErrorUnexpected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ticket detail #{ticketId}`
+  String ticketDetailTitle(String ticketId) {
+    return Intl.message(
+      'Ticket detail #$ticketId',
+      name: 'ticketDetailTitle',
+      desc: '',
+      args: [ticketId],
+    );
+  }
+
+  /// `No ticket provided`
+  String get ticketNotProvided {
+    return Intl.message(
+      'No ticket provided',
+      name: 'ticketNotProvided',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ticket`
+  String get ticketTypeDefault {
+    return Intl.message(
+      'Ticket',
+      name: 'ticketTypeDefault',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} items`
+  String ticketItemsShort(num count) {
+    return Intl.message(
+      '$count items',
+      name: 'ticketItemsShort',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `All stores`
+  String get ticketsBoutiqueAll {
+    return Intl.message(
+      'All stores',
+      name: 'ticketsBoutiqueAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store`
+  String get ticketsBoutiqueFallback {
+    return Intl.message(
+      'Store',
+      name: 'ticketsBoutiqueFallback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chain unavailable`
+  String get ticketsChainUnavailable {
+    return Intl.message(
+      'Chain unavailable',
+      name: 'ticketsChainUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get ticketsColumnAmount {
+    return Intl.message(
+      'Amount',
+      name: 'ticketsColumnAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store`
+  String get ticketsColumnBoutique {
+    return Intl.message(
+      'Store',
+      name: 'ticketsColumnBoutique',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact`
+  String get ticketsColumnContact {
+    return Intl.message(
+      'Contact',
+      name: 'ticketsColumnContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date · no.`
+  String get ticketsColumnDateAndNumber {
+    return Intl.message(
+      'Date · no.',
+      name: 'ticketsColumnDateAndNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type`
+  String get ticketsColumnType {
+    return Intl.message('Type', name: 'ticketsColumnType', desc: '', args: []);
+  }
+
+  /// `{count, plural, one{# ticket} other{# tickets}}`
+  String ticketsCount(num count) {
+    return Intl.plural(
+      count,
+      one: '$count ticket',
+      other: '$count tickets',
+      name: 'ticketsCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `All dates`
+  String get ticketsDateAll {
+    return Intl.message(
+      'All dates',
+      name: 'ticketsDateAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted`
+  String get ticketsDeletedChip {
+    return Intl.message(
+      'Deleted',
+      name: 'ticketsDeletedChip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not deleted`
+  String get ticketsDeletedExclude {
+    return Intl.message(
+      'Not deleted',
+      name: 'ticketsDeletedExclude',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted only`
+  String get ticketsDeletedOnly {
+    return Intl.message(
+      'Deleted only',
+      name: 'ticketsDeletedOnly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No tickets`
+  String get ticketsEmpty {
+    return Intl.message('No tickets', name: 'ticketsEmpty', desc: '', args: []);
+  }
+
+  /// `Filters`
+  String get ticketsFiltersTitle {
+    return Intl.message(
+      'Filters',
+      name: 'ticketsFiltersTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group by store`
+  String get ticketsGroupByBoutique {
+    return Intl.message(
+      'Group by store',
+      name: 'ticketsGroupByBoutique',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card`
+  String get ticketsPaymentCard {
+    return Intl.message('Card', name: 'ticketsPaymentCard', desc: '', args: []);
+  }
+
+  /// `Cash`
+  String get ticketsPaymentCash {
+    return Intl.message('Cash', name: 'ticketsPaymentCash', desc: '', args: []);
+  }
+
+  /// `Check`
+  String get ticketsPaymentCheque {
+    return Intl.message(
+      'Check',
+      name: 'ticketsPaymentCheque',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Credit`
+  String get ticketsPaymentCredit {
+    return Intl.message(
+      'Credit',
+      name: 'ticketsPaymentCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Goods`
+  String get ticketsPaymentGoods {
+    return Intl.message(
+      'Goods',
+      name: 'ticketsPaymentGoods',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mobile money`
+  String get ticketsPaymentMobileMoney {
+    return Intl.message(
+      'Mobile money',
+      name: 'ticketsPaymentMobileMoney',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `—`
+  String get ticketsPaymentUnknown {
+    return Intl.message('—', name: 'ticketsPaymentUnknown', desc: '', args: []);
+  }
+
+  /// `Chronological order`
+  String get ticketsSortChronological {
+    return Intl.message(
+      'Chronological order',
+      name: 'ticketsSortChronological',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Active`
+  String get ticketsStatusActive {
+    return Intl.message(
+      'Active',
+      name: 'ticketsStatusActive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get ticketsStatusAll {
+    return Intl.message('All', name: 'ticketsStatusAll', desc: '', args: []);
+  }
+
+  /// `Inactive`
+  String get ticketsStatusInactive {
+    return Intl.message(
+      'Inactive',
+      name: 'ticketsStatusInactive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All dates`
+  String get ticketsTooltipClearDates {
+    return Intl.message(
+      'All dates',
+      name: 'ticketsTooltipClearDates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter by store`
+  String get ticketsTooltipFilterBoutique {
+    return Intl.message(
+      'Filter by store',
+      name: 'ticketsTooltipFilterBoutique',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter by status`
+  String get ticketsTooltipFilterByStatus {
+    return Intl.message(
+      'Filter by status',
+      name: 'ticketsTooltipFilterByStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter by deleted tickets`
+  String get ticketsTooltipFilterDeleted {
+    return Intl.message(
+      'Filter by deleted tickets',
+      name: 'ticketsTooltipFilterDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refresh`
+  String get ticketsTooltipRefresh {
+    return Intl.message(
+      'Refresh',
+      name: 'ticketsTooltipRefresh',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<Lang> {

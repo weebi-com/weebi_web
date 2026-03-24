@@ -57,6 +57,13 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(count) =>
       "${Intl.plural(count, one: 'UI 元素', other: 'UI 元素')}";
 
+  static String m17(ticketId) => "小票详情 #${ticketId}";
+
+  static String m18(count) => "${count} 项";
+
+  static String m19(count) =>
+      "${Intl.plural(count, one: '${count} 张小票', other: '${count} 张小票')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("关于"),
@@ -126,6 +133,58 @@ class MessageLookup extends MessageLookupByLibrary {
     "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
       "此字段需要有效的信用卡号码。",
     ),
+    "dashboardCardBoutiquesValue": MessageLookupByLibrary.simpleMessage("我的门店"),
+    "dashboardCardDevicesValue": MessageLookupByLibrary.simpleMessage("设备"),
+    "dashboardCardMyFirmValue": MessageLookupByLibrary.simpleMessage("我的公司"),
+    "dashboardCardTicketsShort": MessageLookupByLibrary.simpleMessage("小票"),
+    "dashboardCardTicketsToday": MessageLookupByLibrary.simpleMessage("今日小票"),
+    "dashboardCardUserAccess": MessageLookupByLibrary.simpleMessage("用户权限"),
+    "dashboardCardUsersValue": MessageLookupByLibrary.simpleMessage("用户"),
+    "firmCardDescription": MessageLookupByLibrary.simpleMessage(
+      "公司代表您的企业，汇总用户与门店/连锁。",
+    ),
+    "firmErrorCreateHint": MessageLookupByLibrary.simpleMessage(
+      "请点击「添加公司」按钮创建新公司。",
+    ),
+    "firmErrorUnexpected": MessageLookupByLibrary.simpleMessage("发生意外错误。"),
+    "firmPageTitle": MessageLookupByLibrary.simpleMessage("我的公司"),
+    "refreshAction": MessageLookupByLibrary.simpleMessage("刷新"),
+    "ticketDetailTitle": m17,
+    "ticketItemsShort": m18,
+    "ticketNotProvided": MessageLookupByLibrary.simpleMessage("未提供小票"),
+    "ticketTypeDefault": MessageLookupByLibrary.simpleMessage("小票"),
+    "ticketsBoutiqueAll": MessageLookupByLibrary.simpleMessage("全部门店"),
+    "ticketsBoutiqueFallback": MessageLookupByLibrary.simpleMessage("门店"),
+    "ticketsChainUnavailable": MessageLookupByLibrary.simpleMessage("连锁不可用"),
+    "ticketsColumnAmount": MessageLookupByLibrary.simpleMessage("金额"),
+    "ticketsColumnBoutique": MessageLookupByLibrary.simpleMessage("门店"),
+    "ticketsColumnContact": MessageLookupByLibrary.simpleMessage("联系人"),
+    "ticketsColumnDateAndNumber": MessageLookupByLibrary.simpleMessage("日期 · 编号"),
+    "ticketsColumnType": MessageLookupByLibrary.simpleMessage("类型"),
+    "ticketsCount": m19,
+    "ticketsDateAll": MessageLookupByLibrary.simpleMessage("全部日期"),
+    "ticketsDeletedChip": MessageLookupByLibrary.simpleMessage("已删除"),
+    "ticketsDeletedExclude": MessageLookupByLibrary.simpleMessage("未删除"),
+    "ticketsDeletedOnly": MessageLookupByLibrary.simpleMessage("仅已删除"),
+    "ticketsEmpty": MessageLookupByLibrary.simpleMessage("暂无小票"),
+    "ticketsFiltersTitle": MessageLookupByLibrary.simpleMessage("筛选"),
+    "ticketsGroupByBoutique": MessageLookupByLibrary.simpleMessage("按门店分组"),
+    "ticketsPaymentCard": MessageLookupByLibrary.simpleMessage("银行卡"),
+    "ticketsPaymentCash": MessageLookupByLibrary.simpleMessage("现金"),
+    "ticketsPaymentCheque": MessageLookupByLibrary.simpleMessage("支票"),
+    "ticketsPaymentCredit": MessageLookupByLibrary.simpleMessage("赊账"),
+    "ticketsPaymentGoods": MessageLookupByLibrary.simpleMessage("货品"),
+    "ticketsPaymentMobileMoney": MessageLookupByLibrary.simpleMessage("移动支付"),
+    "ticketsPaymentUnknown": MessageLookupByLibrary.simpleMessage("—"),
+    "ticketsSortChronological": MessageLookupByLibrary.simpleMessage("按时间排序"),
+    "ticketsStatusActive": MessageLookupByLibrary.simpleMessage("有效"),
+    "ticketsStatusAll": MessageLookupByLibrary.simpleMessage("全部"),
+    "ticketsStatusInactive": MessageLookupByLibrary.simpleMessage("无效"),
+    "ticketsTooltipClearDates": MessageLookupByLibrary.simpleMessage("全部日期"),
+    "ticketsTooltipFilterBoutique": MessageLookupByLibrary.simpleMessage("按门店筛选"),
+    "ticketsTooltipFilterByStatus": MessageLookupByLibrary.simpleMessage("按状态筛选"),
+    "ticketsTooltipFilterDeleted": MessageLookupByLibrary.simpleMessage("按已删除小票筛选"),
+    "ticketsTooltipRefresh": MessageLookupByLibrary.simpleMessage("刷新"),
     "crudBack": MessageLookupByLibrary.simpleMessage("返回"),
     "crudDelete": MessageLookupByLibrary.simpleMessage("删除"),
     "crudDetail": MessageLookupByLibrary.simpleMessage("详情"),

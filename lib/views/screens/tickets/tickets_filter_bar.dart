@@ -135,6 +135,7 @@ class TicketsFilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final lang = Lang.of(context);
 
     return Card(
       child: Padding(
@@ -143,7 +144,7 @@ class TicketsFilterBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Filtres',
+              lang.ticketsFiltersTitle,
               style: theme.textTheme.titleSmall,
             ),
             const SizedBox(height: 8),
@@ -211,8 +212,8 @@ class _DateRangeChip extends StatelessWidget {
     required this.onChanged,
   });
 
-  String get _label {
-    if (dateFrom == null && dateTo == null) return 'Toutes les dates';
+  String _label(Lang lang) {
+    if (dateFrom == null && dateTo == null) return lang.ticketsDateAll;
     final from = dateFrom != null
         ? '${dateFrom!.day}/${dateFrom!.month}/${dateFrom!.year}'
         : '…';
@@ -224,19 +225,20 @@ class _DateRangeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Lang.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         InputChip(
           avatar: const Icon(Icons.calendar_today, size: 18),
-          label: Text(_label),
+          label: Text(_label(lang)),
           onPressed: () => _showDatePicker(context),
         ),
         if (dateFrom != null || dateTo != null)
           IconButton(
             icon: const Icon(Icons.clear, size: 18),
             onPressed: () => onChanged(null, null),
-            tooltip: 'Toutes les dates',
+            tooltip: lang.ticketsTooltipClearDates,
           ),
       ],
     );
@@ -268,19 +270,20 @@ class _StatusFilterChip extends StatelessWidget {
     required this.onChanged,
   });
 
-  String get _label {
-    if (statusActive == null) return 'Tous';
-    return statusActive! ? 'Actifs' : 'Inactifs';
+  String _label(Lang lang) {
+    if (statusActive == null) return lang.ticketsStatusAll;
+    return statusActive! ? lang.ticketsStatusActive : lang.ticketsStatusInactive;
   }
 
   @override
   Widget build(BuildContext context) {
+    final lang = Lang.of(context);
     return PopupMenuButton<bool?>(
-      tooltip: 'Filtrer par statut',
+      tooltip: lang.ticketsTooltipFilterByStatus,
       itemBuilder: (_) => [
-        const PopupMenuItem(value: null, child: Text('Tous')),
-        const PopupMenuItem(value: true, child: Text('Actifs')),
-        const PopupMenuItem(value: false, child: Text('Inactifs')),
+        PopupMenuItem(value: null, child: Text(lang.ticketsStatusAll)),
+        PopupMenuItem(value: true, child: Text(lang.ticketsStatusActive)),
+        PopupMenuItem(value: false, child: Text(lang.ticketsStatusInactive)),
       ],
       onSelected: onChanged,
       child: InputChip(
@@ -293,7 +296,7 @@ class _StatusFilterChip extends StatelessWidget {
                   ? Colors.grey
                   : null,
         ),
-        label: Text(_label),
+        label: Text(_label(lang)),
       ),
     );
   }
@@ -308,27 +311,28 @@ class _DeletedFilterChip extends StatelessWidget {
     required this.onChanged,
   });
 
-  String get _label {
+  String _label(Lang lang) {
     switch (deletedFilter) {
       case DeletedFilter.exclude:
-        return 'Non supprimés';
+        return lang.ticketsDeletedExclude;
       case DeletedFilter.only:
-        return 'Supprimés';
+        return lang.ticketsDeletedChip;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final lang = Lang.of(context);
     return PopupMenuButton<DeletedFilter>(
-      tooltip: 'Filtrer par tickets supprimés',
+      tooltip: lang.ticketsTooltipFilterDeleted,
       itemBuilder: (_) => [
-        const PopupMenuItem(
+        PopupMenuItem(
           value: DeletedFilter.exclude,
-          child: Text('Non supprimés'),
+          child: Text(lang.ticketsDeletedExclude),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: DeletedFilter.only,
-          child: Text('Supprimés uniquement'),
+          child: Text(lang.ticketsDeletedOnly),
         ),
       ],
       onSelected: onChanged,
@@ -340,7 +344,7 @@ class _DeletedFilterChip extends StatelessWidget {
               ? Colors.red
               :   null,
         ),
-        label: Text(_label),
+        label: Text(_label(lang)),
       ),
     );
   }
@@ -357,18 +361,19 @@ class _BoutiqueFilterChip extends StatelessWidget {
     required this.onChanged,
   });
 
-  String get _label {
-    if (boutiqueId == null) return 'Toutes les boutiques';
+  String _label(Lang lang) {
+    if (boutiqueId == null) return lang.ticketsBoutiqueAll;
     final b = availableBoutiques.where((x) => x.id == boutiqueId).firstOrNull;
-    return b?.name ?? boutiqueId ?? 'Boutique';
+    return b?.name ?? boutiqueId ?? lang.ticketsBoutiqueFallback;
   }
 
   @override
   Widget build(BuildContext context) {
+    final lang = Lang.of(context);
     return PopupMenuButton<String?>(
-      tooltip: 'Filtrer par boutique',
+      tooltip: lang.ticketsTooltipFilterBoutique,
       itemBuilder: (_) => [
-        const PopupMenuItem(value: null, child: Text('Toutes les boutiques')),
+        PopupMenuItem(value: null, child: Text(lang.ticketsBoutiqueAll)),
         ...availableBoutiques.map(
           (b) => PopupMenuItem(value: b.id, child: Text(b.name)),
         ),
@@ -380,7 +385,7 @@ class _BoutiqueFilterChip extends StatelessWidget {
           availableBoutiques: availableBoutiques,
           selected: boutiqueId != null,
         ),
-        label: Text(_label),
+        label: Text(_label(lang)),
       ),
     );
   }
@@ -434,13 +439,18 @@ class _GroupByBoutiqueChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Lang.of(context);
     return FilterChip(
       avatar: Icon(
         Icons.view_list,
         size: 18,
         color: groupByBoutique ? Colors.blue : null,
       ),
-      label: Text(groupByBoutique ? 'Grouper par boutique' : 'Ordre chronologique'),
+      label: Text(
+        groupByBoutique
+            ? lang.ticketsGroupByBoutique
+            : lang.ticketsSortChronological,
+      ),
       selected: groupByBoutique,
       onSelected: onChanged,
     );

@@ -135,5 +135,74 @@
   "uiElements": "{count, plural, one{UI 元素} other{UI 元素}}",
   "urlErrorText": "此字段需要有效的URL地址。",
   "username": "用户名",
-  "yes": "是的"
+  "yes": "是的",
+  "refreshAction": "刷新",
+  "dashboardCardMyFirmValue": "我的公司",
+  "dashboardCardBoutiquesValue": "我的门店",
+  "dashboardCardUsersValue": "用户",
+  "dashboardCardUserAccess": "用户权限",
+  "dashboardCardDevicesValue": "设备",
+  "dashboardCardTicketsToday": "今日小票",
+  "dashboardCardTicketsShort": "小票",
+  "firmPageTitle": "我的公司",
+  "firmCardDescription": "公司代表您的企业，汇总用户与门店/连锁。",
+  "firmErrorCreateHint": "请点击「添加公司」按钮创建新公司。",
+  "firmErrorUnexpected": "发生意外错误。",
+  "ticketDetailTitle": "小票详情 #{ticketId}",
+  "@ticketDetailTitle": {
+    "placeholders": {
+      "ticketId": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketNotProvided": "未提供小票",
+  "ticketTypeDefault": "小票",
+  "ticketItemsShort": "{count} 项",
+  "@ticketItemsShort": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "ticketsBoutiqueAll": "全部门店",
+  "ticketsBoutiqueFallback": "门店",
+  "ticketsChainUnavailable": "连锁不可用",
+  "ticketsColumnAmount": "金额",
+  "ticketsColumnBoutique": "门店",
+  "ticketsColumnContact": "联系人",
+  "ticketsColumnDateAndNumber": "日期 · 编号",
+  "ticketsColumnType": "类型",
+  "ticketsCount": "{count, plural, other{# 张小票}}",
+  "@ticketsCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "ticketsDateAll": "全部日期",
+  "ticketsDeletedChip": "已删除",
+  "ticketsDeletedExclude": "未删除",
+  "ticketsDeletedOnly": "仅已删除",
+  "ticketsEmpty": "暂无小票",
+  "ticketsFiltersTitle": "筛选",
+  "ticketsGroupByBoutique": "按门店分组",
+  "ticketsPaymentCard": "银行卡",
+  "ticketsPaymentCash": "现金",
+  "ticketsPaymentCheque": "支票",
+  "ticketsPaymentCredit": "赊账",
+  "ticketsPaymentGoods": "货品",
+  "ticketsPaymentMobileMoney": "移动支付",
+  "ticketsPaymentUnknown": "—",
+  "ticketsSortChronological": "按时间排序",
+  "ticketsStatusActive": "有效",
+  "ticketsStatusAll": "全部",
+  "ticketsStatusInactive": "无效",
+  "ticketsTooltipClearDates": "全部日期",
+  "ticketsTooltipFilterBoutique": "按门店筛选",
+  "ticketsTooltipFilterByStatus": "按状态筛选",
+  "ticketsTooltipFilterDeleted": "按已删除小票筛选",
+  "ticketsTooltipRefresh": "刷新"
 }
