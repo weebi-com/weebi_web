@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () =>
                                     _showForgotPasswordDialog(context),
                                 child: Text(
-                                  'Forgot Password',
+                                  lang.forgotPassword,
                                   style: TextStyle(
                                     color: themeData
                                         .extension<AppColorScheme>()!
@@ -344,14 +344,14 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Forgot Password'),
+      title: Text(widget.lang.forgotPasswordTitle),
       content: FormBuilder(
         key: widget.formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Enter your email to reset your password.'),
+            Text(widget.lang.forgotPasswordMessage),
             const SizedBox(height: kDefaultPadding),
             FormBuilderTextField(
               name: 'email',

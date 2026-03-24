@@ -54,11 +54,6 @@ class Lang {
     return Localizations.of<Lang>(context, Lang);
   }
 
-  /// `Account`
-  String get account {
-    return Intl.message('Account', name: 'account', desc: '', args: []);
-  }
-
   /// `About`
   String get about {
     return Intl.message('About', name: 'about', desc: '', args: []);
@@ -79,6 +74,11 @@ class Lang {
     );
   }
 
+  /// `Account`
+  String get account {
+    return Intl.message('Account', name: 'account', desc: '', args: []);
+  }
+
   /// `Admin Portal Login`
   String get adminPortalLogin {
     return Intl.message(
@@ -94,6 +94,246 @@ class Lang {
     return Intl.message(
       'Back to Login',
       name: 'backToLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I have read and accept the Terms and Conditions of Sale for the Enterprise license.`
+  String get billingAcceptEnterpriseTerms {
+    return Intl.message(
+      'I have read and accept the Terms and Conditions of Sale for the Enterprise license.',
+      name: 'billingAcceptEnterpriseTerms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please accept the terms and conditions to continue.`
+  String get billingAcceptTermsToContinue {
+    return Intl.message(
+      'Please accept the terms and conditions to continue.',
+      name: 'billingAcceptTermsToContinue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All users already have a license assigned.`
+  String get billingAllUsersAlreadyAssigned {
+    return Intl.message(
+      'All users already have a license assigned.',
+      name: 'billingAllUsersAlreadyAssigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign the license to a user`
+  String get billingAssignSeatDialogTitle {
+    return Intl.message(
+      'Assign the license to a user',
+      name: 'billingAssignSeatDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign the license to a user`
+  String get billingAssignSeats {
+    return Intl.message(
+      'Assign the license to a user',
+      name: 'billingAssignSeats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign your new licenses to users below.`
+  String get billingAssignSeatsCta {
+    return Intl.message(
+      'Assign your new licenses to users below.',
+      name: 'billingAssignSeatsCta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attributed to`
+  String get billingAttributedTo {
+    return Intl.message(
+      'Attributed to',
+      name: 'billingAttributedTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License(s)`
+  String get billingLicenses {
+    return Intl.message(
+      'License(s)',
+      name: 'billingLicenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lifetime`
+  String get billingLifetime {
+    return Intl.message(
+      'Lifetime',
+      name: 'billingLifetime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My licenses`
+  String get billingMyLicenses {
+    return Intl.message(
+      'My licenses',
+      name: 'billingMyLicenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not yet attributed`
+  String get billingNotYetAttributed {
+    return Intl.message(
+      'Not yet attributed',
+      name: 'billingNotYetAttributed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No users to assign. Add users in Users first.`
+  String get billingNoUsersAvailable {
+    return Intl.message(
+      'No users to assign. Add users in Users first.',
+      name: 'billingNoUsersAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment received. We're confirming with Stripe — your license will appear shortly. If it doesn't, check your webhook configuration.`
+  String get billingPaymentProcessing {
+    return Intl.message(
+      'Payment received. We\'re confirming with Stripe — your license will appear shortly. If it doesn\'t, check your webhook configuration.',
+      name: 'billingPaymentProcessing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your payment was accepted. You now have an active license.`
+  String get billingPaymentSuccess {
+    return Intl.message(
+      'Your payment was accepted. You now have an active license.',
+      name: 'billingPaymentSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase`
+  String get billingPurchase {
+    return Intl.message(
+      'Purchase',
+      name: 'billingPurchase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase a license`
+  String get billingPurchaseLicense {
+    return Intl.message(
+      'Purchase a license',
+      name: 'billingPurchaseLicense',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a license to use the advanced features of Weebi.`
+  String get billingPurchaseLicenseDescription {
+    return Intl.message(
+      'Choose a license to use the advanced features of Weebi.',
+      name: 'billingPurchaseLicenseDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No other user can receive this seat. Add a user or free a license seat elsewhere first.`
+  String get billingReassignNoOtherUser {
+    return Intl.message(
+      'No other user can receive this seat. Add a user or free a license seat elsewhere first.',
+      name: 'billingReassignNoOtherUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reassign`
+  String get billingReassignSeat {
+    return Intl.message(
+      'Reassign',
+      name: 'billingReassignSeat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reassign this license seat to another user`
+  String get billingReassignSeatDialogTitle {
+    return Intl.message(
+      'Reassign this license seat to another user',
+      name: 'billingReassignSeatDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get billingRetry {
+    return Intl.message('Retry', name: 'billingRetry', desc: '', args: []);
+  }
+
+  /// `license(s) attributed`
+  String get billingSeatsAttributed {
+    return Intl.message(
+      'license(s) attributed',
+      name: 'billingSeatsAttributed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `users`
+  String get billingUsers {
+    return Intl.message('users', name: 'billingUsers', desc: '', args: []);
+  }
+
+  /// `Valid until`
+  String get billingValidUntil {
+    return Intl.message(
+      'Valid until',
+      name: 'billingValidUntil',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View full document (new tab)`
+  String get billingViewFullTerms {
+    return Intl.message(
+      'View full document (new tab)',
+      name: 'billingViewFullTerms',
       desc: '',
       args: [],
     );
@@ -347,6 +587,36 @@ class Lang {
     return Intl.message('First Name', name: 'firstName', desc: '', args: []);
   }
 
+  /// `Forgot password?`
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot password?',
+      name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address to reset your password.`
+  String get forgotPasswordMessage {
+    return Intl.message(
+      'Enter your email address to reset your password.',
+      name: 'forgotPasswordMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password`
+  String get forgotPasswordTitle {
+    return Intl.message(
+      'Forgot password',
+      name: 'forgotPasswordTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{count, plural, one{Form} other{Forms}}`
   String forms(num count) {
     return Intl.plural(
@@ -464,6 +734,36 @@ class Lang {
     return Intl.message('Last Name', name: 'lastName', desc: '', args: []);
   }
 
+  /// `Conditions Générales de Vente`
+  String get legalDocTitleCgvFr {
+    return Intl.message(
+      'Conditions Générales de Vente',
+      name: 'legalDocTitleCgvFr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms and Conditions of Sale`
+  String get legalDocTitleTermsEn {
+    return Intl.message(
+      'Terms and Conditions of Sale',
+      name: 'legalDocTitleTermsEn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Document version ID`
+  String get legalDocumentVersionId {
+    return Intl.message(
+      'Document version ID',
+      name: 'legalDocumentVersionId',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Light Theme`
   String get lightTheme {
     return Intl.message('Light Theme', name: 'lightTheme', desc: '', args: []);
@@ -529,256 +829,6 @@ class Lang {
     );
   }
 
-  /// `Value must be greater than or equal to {min}.`
-  String minErrorText(Object min) {
-    return Intl.message(
-      'Value must be greater than or equal to $min.',
-      name: 'minErrorText',
-      desc: '',
-      args: [min],
-    );
-  }
-
-  /// `Value must have a length greater than or equal to {minLength}`
-  String minLengthErrorText(Object minLength) {
-    return Intl.message(
-      'Value must have a length greater than or equal to $minLength',
-      name: 'minLengthErrorText',
-      desc: '',
-      args: [minLength],
-    );
-  }
-
-  /// `Lifetime`
-  String get billingLifetime {
-    return Intl.message(
-      'Lifetime',
-      name: 'billingLifetime',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `My licenses`
-  String get billingMyLicenses {
-    return Intl.message(
-      'My licenses',
-      name: 'billingMyLicenses',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Purchase`
-  String get billingPurchase {
-    return Intl.message(
-      'Purchase',
-      name: 'billingPurchase',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Purchase a license`
-  String get billingPurchaseLicense {
-    return Intl.message(
-      'Purchase a license',
-      name: 'billingPurchaseLicense',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose a license to use the advanced features of Weebi.`
-  String get billingPurchaseLicenseDescription {
-    return Intl.message(
-      'Choose a license to use the advanced features of Weebi.',
-      name: 'billingPurchaseLicenseDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `I have read and accept the Terms and Conditions of Sale for the Enterprise license.`
-  String get billingAcceptEnterpriseTerms {
-    return Intl.message(
-      'I have read and accept the Terms and Conditions of Sale for the Enterprise license.',
-      name: 'billingAcceptEnterpriseTerms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View full document (new tab)`
-  String get billingViewFullTerms {
-    return Intl.message(
-      'View full document (new tab)',
-      name: 'billingViewFullTerms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please accept the terms and conditions to continue.`
-  String get billingAcceptTermsToContinue {
-    return Intl.message(
-      'Please accept the terms and conditions to continue.',
-      name: 'billingAcceptTermsToContinue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Terms and Conditions of Sale`
-  String get legalDocTitleTermsEn {
-    return Intl.message(
-      'Terms and Conditions of Sale',
-      name: 'legalDocTitleTermsEn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Conditions Générales de Vente`
-  String get legalDocTitleCgvFr {
-    return Intl.message(
-      'Conditions Générales de Vente',
-      name: 'legalDocTitleCgvFr',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Document version ID`
-  String get legalDocumentVersionId {
-    return Intl.message(
-      'Document version ID',
-      name: 'legalDocumentVersionId',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Payment received. We're confirming with Stripe — your license will appear shortly. If it doesn't, check your webhook configuration.`
-  String get billingPaymentProcessing {
-    return Intl.message(
-      'Payment received. We\'re confirming with Stripe — your license will appear shortly. If it doesn\'t, check your webhook configuration.',
-      name: 'billingPaymentProcessing',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Your payment was accepted. You now have an active license.`
-  String get billingPaymentSuccess {
-    return Intl.message(
-      'Your payment was accepted. You now have an active license.',
-      name: 'billingPaymentSuccess',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Retry`
-  String get billingRetry {
-    return Intl.message('Retry', name: 'billingRetry', desc: '', args: []);
-  }
-
-  /// `users`
-  String get billingUsers {
-    return Intl.message('users', name: 'billingUsers', desc: '', args: []);
-  }
-
-  /// `License(s)`
-  String get billingLicenses {
-    return Intl.message(
-      'License(s)',
-      name: 'billingLicenses',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Valid until`
-  String get billingValidUntil {
-    return Intl.message(
-      'Valid until',
-      name: 'billingValidUntil',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `license(s) attributed`
-  String get billingSeatsAttributed {
-    return Intl.message(
-      'license(s) attributed',
-      name: 'billingSeatsAttributed',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Not yet attributed`
-  String get billingNotYetAttributed {
-    return Intl.message(
-      'Not yet attributed',
-      name: 'billingNotYetAttributed',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Attributed to`
-  String get billingAttributedTo {
-    return Intl.message(
-      'Attributed to',
-      name: 'billingAttributedTo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Assign the license to a user`
-  String get billingAssignSeats {
-    return Intl.message(
-      'Assign the license to a user',
-      name: 'billingAssignSeats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Assign your new licenses to users below.`
-  String get billingAssignSeatsCta {
-    return Intl.message(
-      'Assign your new licenses to users below.',
-      name: 'billingAssignSeatsCta',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Assign the license to a user`
-  String get billingAssignSeatDialogTitle {
-    return Intl.message(
-      'Assign the license to a user',
-      name: 'billingAssignSeatDialogTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No users to assign. Add users in Users first.`
-  String get billingNoUsersAvailable {
-    return Intl.message(
-      'No users to assign. Add users in Users first.',
-      name: 'billingNoUsersAvailable',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Accesses`
   String get menuAccesses {
     return Intl.message('Accesses', name: 'menuAccesses', desc: '', args: []);
@@ -827,6 +877,26 @@ class Lang {
   /// `Users`
   String get menuUsers {
     return Intl.message('Users', name: 'menuUsers', desc: '', args: []);
+  }
+
+  /// `Value must be greater than or equal to {min}.`
+  String minErrorText(Object min) {
+    return Intl.message(
+      'Value must be greater than or equal to $min.',
+      name: 'minErrorText',
+      desc: '',
+      args: [min],
+    );
+  }
+
+  /// `Value must have a length greater than or equal to {minLength}`
+  String minLengthErrorText(Object minLength) {
+    return Intl.message(
+      'Value must have a length greater than or equal to $minLength',
+      name: 'minLengthErrorText',
+      desc: '',
+      args: [minLength],
+    );
   }
 
   /// `My Profile`
@@ -1074,6 +1144,36 @@ class Lang {
     return Intl.message('Text Theme', name: 'textTheme', desc: '', args: []);
   }
 
+  /// `Filtering tickets by store require an active license seat assigned to your user. Open Billing to subscribe or ask your administrator to assign you a seat.`
+  String get ticketsLicenseOnlyMultiBoutiqueDetail {
+    return Intl.message(
+      'Filtering tickets by store require an active license seat assigned to your user. Open Billing to subscribe or ask your administrator to assign you a seat.',
+      name: 'ticketsLicenseOnlyMultiBoutiqueDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store filter & grouping`
+  String get ticketsLicenseOnlyMultiBoutiqueTitle {
+    return Intl.message(
+      'Store filter & grouping',
+      name: 'ticketsLicenseOnlyMultiBoutiqueTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License seat required`
+  String get ticketsLicenseOnlyShort {
+    return Intl.message(
+      'License seat required',
+      name: 'ticketsLicenseOnlyShort',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Today Sales`
   String get todaySales {
     return Intl.message('Today Sales', name: 'todaySales', desc: '', args: []);
@@ -1114,6 +1214,453 @@ class Lang {
   /// `Yes`
   String get yes {
     return Intl.message('Yes', name: 'yes', desc: '', args: []);
+  }
+
+  /// `Refresh`
+  String get refreshAction {
+    return Intl.message(
+      'Refresh',
+      name: 'refreshAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My firm`
+  String get dashboardCardMyFirmValue {
+    return Intl.message(
+      'My firm',
+      name: 'dashboardCardMyFirmValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My stores`
+  String get dashboardCardBoutiquesValue {
+    return Intl.message(
+      'My stores',
+      name: 'dashboardCardBoutiquesValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users`
+  String get dashboardCardUsersValue {
+    return Intl.message(
+      'Users',
+      name: 'dashboardCardUsersValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User access`
+  String get dashboardCardUserAccess {
+    return Intl.message(
+      'User access',
+      name: 'dashboardCardUserAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devices`
+  String get dashboardCardDevicesValue {
+    return Intl.message(
+      'Devices',
+      name: 'dashboardCardDevicesValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today's tickets`
+  String get dashboardCardTicketsToday {
+    return Intl.message(
+      'Today\'s tickets',
+      name: 'dashboardCardTicketsToday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tickets`
+  String get dashboardCardTicketsShort {
+    return Intl.message(
+      'Tickets',
+      name: 'dashboardCardTicketsShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My firm`
+  String get firmPageTitle {
+    return Intl.message('My firm', name: 'firmPageTitle', desc: '', args: []);
+  }
+
+  /// `The firm represents your company; it groups your users and your chains/stores.`
+  String get firmCardDescription {
+    return Intl.message(
+      'The firm represents your company; it groups your users and your chains/stores.',
+      name: 'firmCardDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please create a new firm by clicking the "Add a firm" button.`
+  String get firmErrorCreateHint {
+    return Intl.message(
+      'Please create a new firm by clicking the "Add a firm" button.',
+      name: 'firmErrorCreateHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred.`
+  String get firmErrorUnexpected {
+    return Intl.message(
+      'An unexpected error occurred.',
+      name: 'firmErrorUnexpected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ticket detail #{ticketId}`
+  String ticketDetailTitle(String ticketId) {
+    return Intl.message(
+      'Ticket detail #$ticketId',
+      name: 'ticketDetailTitle',
+      desc: '',
+      args: [ticketId],
+    );
+  }
+
+  /// `No ticket provided`
+  String get ticketNotProvided {
+    return Intl.message(
+      'No ticket provided',
+      name: 'ticketNotProvided',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ticket`
+  String get ticketTypeDefault {
+    return Intl.message(
+      'Ticket',
+      name: 'ticketTypeDefault',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} items`
+  String ticketItemsShort(num count) {
+    return Intl.message(
+      '$count items',
+      name: 'ticketItemsShort',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `All stores`
+  String get ticketsBoutiqueAll {
+    return Intl.message(
+      'All stores',
+      name: 'ticketsBoutiqueAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store`
+  String get ticketsBoutiqueFallback {
+    return Intl.message(
+      'Store',
+      name: 'ticketsBoutiqueFallback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chain unavailable`
+  String get ticketsChainUnavailable {
+    return Intl.message(
+      'Chain unavailable',
+      name: 'ticketsChainUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get ticketsColumnAmount {
+    return Intl.message(
+      'Amount',
+      name: 'ticketsColumnAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store`
+  String get ticketsColumnBoutique {
+    return Intl.message(
+      'Store',
+      name: 'ticketsColumnBoutique',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact`
+  String get ticketsColumnContact {
+    return Intl.message(
+      'Contact',
+      name: 'ticketsColumnContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date · no.`
+  String get ticketsColumnDateAndNumber {
+    return Intl.message(
+      'Date · no.',
+      name: 'ticketsColumnDateAndNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type`
+  String get ticketsColumnType {
+    return Intl.message('Type', name: 'ticketsColumnType', desc: '', args: []);
+  }
+
+  /// `{count, plural, one{# ticket} other{# tickets}}`
+  String ticketsCount(num count) {
+    return Intl.plural(
+      count,
+      one: '$count ticket',
+      other: '$count tickets',
+      name: 'ticketsCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `All dates`
+  String get ticketsDateAll {
+    return Intl.message(
+      'All dates',
+      name: 'ticketsDateAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted`
+  String get ticketsDeletedChip {
+    return Intl.message(
+      'Deleted',
+      name: 'ticketsDeletedChip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not deleted`
+  String get ticketsDeletedExclude {
+    return Intl.message(
+      'Not deleted',
+      name: 'ticketsDeletedExclude',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deleted only`
+  String get ticketsDeletedOnly {
+    return Intl.message(
+      'Deleted only',
+      name: 'ticketsDeletedOnly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No tickets`
+  String get ticketsEmpty {
+    return Intl.message('No tickets', name: 'ticketsEmpty', desc: '', args: []);
+  }
+
+  /// `Filters`
+  String get ticketsFiltersTitle {
+    return Intl.message(
+      'Filters',
+      name: 'ticketsFiltersTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group by store`
+  String get ticketsGroupByBoutique {
+    return Intl.message(
+      'Group by store',
+      name: 'ticketsGroupByBoutique',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card`
+  String get ticketsPaymentCard {
+    return Intl.message('Card', name: 'ticketsPaymentCard', desc: '', args: []);
+  }
+
+  /// `Cash`
+  String get ticketsPaymentCash {
+    return Intl.message('Cash', name: 'ticketsPaymentCash', desc: '', args: []);
+  }
+
+  /// `Check`
+  String get ticketsPaymentCheque {
+    return Intl.message(
+      'Check',
+      name: 'ticketsPaymentCheque',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Credit`
+  String get ticketsPaymentCredit {
+    return Intl.message(
+      'Credit',
+      name: 'ticketsPaymentCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Goods`
+  String get ticketsPaymentGoods {
+    return Intl.message(
+      'Goods',
+      name: 'ticketsPaymentGoods',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mobile money`
+  String get ticketsPaymentMobileMoney {
+    return Intl.message(
+      'Mobile money',
+      name: 'ticketsPaymentMobileMoney',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `—`
+  String get ticketsPaymentUnknown {
+    return Intl.message('—', name: 'ticketsPaymentUnknown', desc: '', args: []);
+  }
+
+  /// `Chronological order`
+  String get ticketsSortChronological {
+    return Intl.message(
+      'Chronological order',
+      name: 'ticketsSortChronological',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Active`
+  String get ticketsStatusActive {
+    return Intl.message(
+      'Active',
+      name: 'ticketsStatusActive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get ticketsStatusAll {
+    return Intl.message('All', name: 'ticketsStatusAll', desc: '', args: []);
+  }
+
+  /// `Inactive`
+  String get ticketsStatusInactive {
+    return Intl.message(
+      'Inactive',
+      name: 'ticketsStatusInactive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All dates`
+  String get ticketsTooltipClearDates {
+    return Intl.message(
+      'All dates',
+      name: 'ticketsTooltipClearDates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter by store`
+  String get ticketsTooltipFilterBoutique {
+    return Intl.message(
+      'Filter by store',
+      name: 'ticketsTooltipFilterBoutique',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter by status`
+  String get ticketsTooltipFilterByStatus {
+    return Intl.message(
+      'Filter by status',
+      name: 'ticketsTooltipFilterByStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter by deleted tickets`
+  String get ticketsTooltipFilterDeleted {
+    return Intl.message(
+      'Filter by deleted tickets',
+      name: 'ticketsTooltipFilterDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refresh`
+  String get ticketsTooltipRefresh {
+    return Intl.message(
+      'Refresh',
+      name: 'ticketsTooltipRefresh',
+      desc: '',
+      args: [],
+    );
   }
 }
 

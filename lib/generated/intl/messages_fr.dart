@@ -69,6 +69,13 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(count) =>
       "${Intl.plural(count, one: 'Élément UI', other: 'Éléments UI')}";
 
+  static String m17(ticketId) => "Détail du ticket n°${ticketId}";
+
+  static String m18(count) => "${count} art.";
+
+  static String m19(count) =>
+      "${Intl.plural(count, one: '${count} ticket', other: '${count} tickets')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("À propos"),
@@ -88,6 +95,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "Veuillez accepter les conditions générales pour continuer.",
+    ),
+    "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
+      "Tous les utilisateurs ont déjà une licence attribuée.",
     ),
     "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
       "Attribuer la licence à un utilisateur",
@@ -120,6 +130,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
       "Choisissez une licence pour utiliser les fonctions avancées de Weebi.",
+    ),
+    "billingReassignNoOtherUser": MessageLookupByLibrary.simpleMessage(
+      "Aucun autre utilisateur ne peut recevoir ce siège. Ajoutez un utilisateur ou libérez un siège ailleurs d’abord.",
+    ),
+    "billingReassignSeat": MessageLookupByLibrary.simpleMessage("Réattribuer"),
+    "billingReassignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Réattribuer ce siège de licence à un autre utilisateur",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Réessayer"),
     "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
@@ -156,6 +173,96 @@ class MessageLookup extends MessageLookupByLibrary {
     "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
       "Ce champ nécessite un numéro de carte de crédit valide.",
     ),
+    "dashboardCardBoutiquesValue": MessageLookupByLibrary.simpleMessage(
+      "Mes boutiques",
+    ),
+    "dashboardCardDevicesValue": MessageLookupByLibrary.simpleMessage(
+      "Appareils",
+    ),
+    "dashboardCardMyFirmValue": MessageLookupByLibrary.simpleMessage("Ma firme"),
+    "dashboardCardTicketsShort": MessageLookupByLibrary.simpleMessage("Tickets"),
+    "dashboardCardTicketsToday": MessageLookupByLibrary.simpleMessage(
+      "Tickets du jour",
+    ),
+    "dashboardCardUserAccess": MessageLookupByLibrary.simpleMessage(
+      "Accès utilisateurs",
+    ),
+    "dashboardCardUsersValue": MessageLookupByLibrary.simpleMessage(
+      "Utilisateurs",
+    ),
+    "firmCardDescription": MessageLookupByLibrary.simpleMessage(
+      "La firme représente votre entreprise, elle regroupe vos utilisateurs et vos chaînes/boutiques",
+    ),
+    "firmErrorCreateHint": MessageLookupByLibrary.simpleMessage(
+      "Veuillez créer une nouvelle firme en cliquant sur le bouton « Ajouter une firme ».",
+    ),
+    "firmErrorUnexpected": MessageLookupByLibrary.simpleMessage(
+      "Une erreur inattendue est survenue.",
+    ),
+    "firmPageTitle": MessageLookupByLibrary.simpleMessage("Ma firme"),
+    "refreshAction": MessageLookupByLibrary.simpleMessage("Actualiser"),
+    "ticketDetailTitle": m17,
+    "ticketItemsShort": m18,
+    "ticketNotProvided": MessageLookupByLibrary.simpleMessage(
+      "Ticket non fourni",
+    ),
+    "ticketTypeDefault": MessageLookupByLibrary.simpleMessage("Ticket"),
+    "ticketsBoutiqueAll": MessageLookupByLibrary.simpleMessage(
+      "Toutes les boutiques",
+    ),
+    "ticketsBoutiqueFallback": MessageLookupByLibrary.simpleMessage("Boutique"),
+    "ticketsChainUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Chaîne non disponible",
+    ),
+    "ticketsColumnAmount": MessageLookupByLibrary.simpleMessage("Montant"),
+    "ticketsColumnBoutique": MessageLookupByLibrary.simpleMessage("Boutique"),
+    "ticketsColumnContact": MessageLookupByLibrary.simpleMessage("Contact"),
+    "ticketsColumnDateAndNumber": MessageLookupByLibrary.simpleMessage(
+      "Date · n°",
+    ),
+    "ticketsColumnType": MessageLookupByLibrary.simpleMessage("Type"),
+    "ticketsCount": m19,
+    "ticketsDateAll": MessageLookupByLibrary.simpleMessage("Toutes les dates"),
+    "ticketsDeletedChip": MessageLookupByLibrary.simpleMessage("Supprimés"),
+    "ticketsDeletedExclude": MessageLookupByLibrary.simpleMessage(
+      "Non supprimés",
+    ),
+    "ticketsDeletedOnly": MessageLookupByLibrary.simpleMessage(
+      "Supprimés uniquement",
+    ),
+    "ticketsEmpty": MessageLookupByLibrary.simpleMessage("Aucun ticket"),
+    "ticketsFiltersTitle": MessageLookupByLibrary.simpleMessage("Filtres"),
+    "ticketsGroupByBoutique": MessageLookupByLibrary.simpleMessage(
+      "Grouper par boutique",
+    ),
+    "ticketsPaymentCard": MessageLookupByLibrary.simpleMessage("Carte"),
+    "ticketsPaymentCash": MessageLookupByLibrary.simpleMessage("Espèces"),
+    "ticketsPaymentCheque": MessageLookupByLibrary.simpleMessage("Chèque"),
+    "ticketsPaymentCredit": MessageLookupByLibrary.simpleMessage("Crédit"),
+    "ticketsPaymentGoods": MessageLookupByLibrary.simpleMessage("Marchandises"),
+    "ticketsPaymentMobileMoney": MessageLookupByLibrary.simpleMessage(
+      "Mobile Money",
+    ),
+    "ticketsPaymentUnknown": MessageLookupByLibrary.simpleMessage("—"),
+    "ticketsSortChronological": MessageLookupByLibrary.simpleMessage(
+      "Ordre chronologique",
+    ),
+    "ticketsStatusActive": MessageLookupByLibrary.simpleMessage("Actifs"),
+    "ticketsStatusAll": MessageLookupByLibrary.simpleMessage("Tous"),
+    "ticketsStatusInactive": MessageLookupByLibrary.simpleMessage("Inactifs"),
+    "ticketsTooltipClearDates": MessageLookupByLibrary.simpleMessage(
+      "Toutes les dates",
+    ),
+    "ticketsTooltipFilterBoutique": MessageLookupByLibrary.simpleMessage(
+      "Filtrer par boutique",
+    ),
+    "ticketsTooltipFilterByStatus": MessageLookupByLibrary.simpleMessage(
+      "Filtrer par statut",
+    ),
+    "ticketsTooltipFilterDeleted": MessageLookupByLibrary.simpleMessage(
+      "Filtrer par tickets supprimés",
+    ),
+    "ticketsTooltipRefresh": MessageLookupByLibrary.simpleMessage("Actualiser"),
     "crudBack": MessageLookupByLibrary.simpleMessage("Retour"),
     "crudDelete": MessageLookupByLibrary.simpleMessage("Supprimer"),
     "crudDetail": MessageLookupByLibrary.simpleMessage("Détail"),
@@ -182,6 +289,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "example": MessageLookupByLibrary.simpleMessage("Exemple"),
     "extensions": m4,
     "firstName": MessageLookupByLibrary.simpleMessage("Prénom"),
+    "forgotPassword": MessageLookupByLibrary.simpleMessage(
+      "Mot de passe oublié ?",
+    ),
+    "forgotPasswordMessage": MessageLookupByLibrary.simpleMessage(
+      "Saisissez votre adresse e-mail pour réinitialiser votre mot de passe.",
+    ),
+    "forgotPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Mot de passe oublié",
+    ),
     "forms": m5,
     "generalUi": MessageLookupByLibrary.simpleMessage("UI Générale"),
     "help": MessageLookupByLibrary.simpleMessage("Aide"),
@@ -297,6 +413,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "Accentuation du Texte",
     ),
     "textTheme": MessageLookupByLibrary.simpleMessage("Thème du Texte"),
+    "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
+      "Le filtre et le groupement des tickets par boutique nécessitent un siège de licence actif attribué à votre utilisateur. Ouvrez Facturation pour vous abonner ou demandez à l’administrateur de vous attribuer un siège.",
+    ),
+    "ticketsLicenseOnlyMultiBoutiqueTitle":
+        MessageLookupByLibrary.simpleMessage(
+          "Filtre et groupement par boutique",
+        ),
+    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage(
+      "Siège de licence requis",
+    ),
     "todaySales": MessageLookupByLibrary.simpleMessage(
       "Ventes d\'Aujourd\'hui",
     ),

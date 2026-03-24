@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/core/services/firm_service.dart';
+import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
 
@@ -35,14 +36,15 @@ class _FirmListScreenState extends State<FirmListScreen> {
         errorMessage = null;
       });
     } catch (error) {
+      if (!mounted) return;
+      final lang = Lang.of(context);
       if (error is GrpcError && error.code == 7) {
         setState(() {
-          errorMessage =
-              "Veuillez créer une nouvelle firme en cliquant sur le bouton 'Ajouter une firme'.";
+          errorMessage = lang.firmErrorCreateHint;
         });
       } else {
         setState(() {
-          errorMessage = "Une erreur inattendue est survenue.";
+          errorMessage = lang.firmErrorUnexpected;
         });
       }
     }
@@ -52,13 +54,14 @@ class _FirmListScreenState extends State<FirmListScreen> {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final appColorScheme = themeData.extension<AppColorScheme>()!;
+    final lang = Lang.of(context);
 
     return PortalMasterLayout(
       body: ListView(
         padding: const EdgeInsets.all(kDefaultPadding),
         children: [
           Text(
-            'Ma firme',
+            lang.firmPageTitle,
             style: themeData.textTheme.headlineMedium,
           ),
           Padding(
@@ -68,9 +71,8 @@ class _FirmListScreenState extends State<FirmListScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CardHeader(
-                    title:
-                        "La firme représente votre entreprise, elle regroupe vos utilisateurs et vos chaînes/boutiques",
+                  CardHeader(
+                    title: lang.firmCardDescription,
                   ),
                   CardBody(
                     child: Column(

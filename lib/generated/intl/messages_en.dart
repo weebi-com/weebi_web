@@ -67,6 +67,13 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(count) =>
       "${Intl.plural(count, one: 'UI Element', other: 'UI Elements')}";
 
+  static String m17(ticketId) => "Ticket detail #${ticketId}";
+
+  static String m18(count) => "${count} items";
+
+  static String m19(count) =>
+      "${Intl.plural(count, one: '${count} ticket', other: '${count} tickets')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("About"),
@@ -84,6 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "Please accept the terms and conditions to continue.",
+    ),
+    "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
+      "All users already have a license assigned.",
     ),
     "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
       "Assign the license to a user",
@@ -119,6 +129,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
       "Choose a license to use the advanced features of Weebi.",
     ),
+    "billingReassignNoOtherUser": MessageLookupByLibrary.simpleMessage(
+      "No other user can receive this seat. Add a user or free a license seat elsewhere first.",
+    ),
+    "billingReassignSeat": MessageLookupByLibrary.simpleMessage("Reassign"),
+    "billingReassignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Reassign this license seat to another user",
+    ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Retry"),
     "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
       "license(s) attributed",
@@ -148,6 +165,86 @@ class MessageLookup extends MessageLookupByLibrary {
     "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
       "This field requires a valid credit card number.",
     ),
+    "dashboardCardBoutiquesValue": MessageLookupByLibrary.simpleMessage(
+      "My stores",
+    ),
+    "dashboardCardDevicesValue": MessageLookupByLibrary.simpleMessage(
+      "Devices",
+    ),
+    "dashboardCardMyFirmValue": MessageLookupByLibrary.simpleMessage("My firm"),
+    "dashboardCardTicketsShort": MessageLookupByLibrary.simpleMessage("Tickets"),
+    "dashboardCardTicketsToday": MessageLookupByLibrary.simpleMessage(
+      "Today's tickets",
+    ),
+    "dashboardCardUserAccess": MessageLookupByLibrary.simpleMessage(
+      "User access",
+    ),
+    "dashboardCardUsersValue": MessageLookupByLibrary.simpleMessage("Users"),
+    "firmCardDescription": MessageLookupByLibrary.simpleMessage(
+      "The firm represents your company; it groups your users and your chains/stores.",
+    ),
+    "firmErrorCreateHint": MessageLookupByLibrary.simpleMessage(
+      "Please create a new firm by clicking the \"Add a firm\" button.",
+    ),
+    "firmErrorUnexpected": MessageLookupByLibrary.simpleMessage(
+      "An unexpected error occurred.",
+    ),
+    "firmPageTitle": MessageLookupByLibrary.simpleMessage("My firm"),
+    "refreshAction": MessageLookupByLibrary.simpleMessage("Refresh"),
+    "ticketDetailTitle": m17,
+    "ticketItemsShort": m18,
+    "ticketNotProvided": MessageLookupByLibrary.simpleMessage(
+      "No ticket provided",
+    ),
+    "ticketTypeDefault": MessageLookupByLibrary.simpleMessage("Ticket"),
+    "ticketsBoutiqueAll": MessageLookupByLibrary.simpleMessage("All stores"),
+    "ticketsBoutiqueFallback": MessageLookupByLibrary.simpleMessage("Store"),
+    "ticketsChainUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Chain unavailable",
+    ),
+    "ticketsColumnAmount": MessageLookupByLibrary.simpleMessage("Amount"),
+    "ticketsColumnBoutique": MessageLookupByLibrary.simpleMessage("Store"),
+    "ticketsColumnContact": MessageLookupByLibrary.simpleMessage("Contact"),
+    "ticketsColumnDateAndNumber": MessageLookupByLibrary.simpleMessage(
+      "Date · no.",
+    ),
+    "ticketsColumnType": MessageLookupByLibrary.simpleMessage("Type"),
+    "ticketsCount": m19,
+    "ticketsDateAll": MessageLookupByLibrary.simpleMessage("All dates"),
+    "ticketsDeletedChip": MessageLookupByLibrary.simpleMessage("Deleted"),
+    "ticketsDeletedExclude": MessageLookupByLibrary.simpleMessage("Not deleted"),
+    "ticketsDeletedOnly": MessageLookupByLibrary.simpleMessage("Deleted only"),
+    "ticketsEmpty": MessageLookupByLibrary.simpleMessage("No tickets"),
+    "ticketsFiltersTitle": MessageLookupByLibrary.simpleMessage("Filters"),
+    "ticketsGroupByBoutique": MessageLookupByLibrary.simpleMessage(
+      "Group by store",
+    ),
+    "ticketsPaymentCard": MessageLookupByLibrary.simpleMessage("Card"),
+    "ticketsPaymentCash": MessageLookupByLibrary.simpleMessage("Cash"),
+    "ticketsPaymentCheque": MessageLookupByLibrary.simpleMessage("Check"),
+    "ticketsPaymentCredit": MessageLookupByLibrary.simpleMessage("Credit"),
+    "ticketsPaymentGoods": MessageLookupByLibrary.simpleMessage("Goods"),
+    "ticketsPaymentMobileMoney": MessageLookupByLibrary.simpleMessage(
+      "Mobile money",
+    ),
+    "ticketsPaymentUnknown": MessageLookupByLibrary.simpleMessage("—"),
+    "ticketsSortChronological": MessageLookupByLibrary.simpleMessage(
+      "Chronological order",
+    ),
+    "ticketsStatusActive": MessageLookupByLibrary.simpleMessage("Active"),
+    "ticketsStatusAll": MessageLookupByLibrary.simpleMessage("All"),
+    "ticketsStatusInactive": MessageLookupByLibrary.simpleMessage("Inactive"),
+    "ticketsTooltipClearDates": MessageLookupByLibrary.simpleMessage("All dates"),
+    "ticketsTooltipFilterBoutique": MessageLookupByLibrary.simpleMessage(
+      "Filter by store",
+    ),
+    "ticketsTooltipFilterByStatus": MessageLookupByLibrary.simpleMessage(
+      "Filter by status",
+    ),
+    "ticketsTooltipFilterDeleted": MessageLookupByLibrary.simpleMessage(
+      "Filter by deleted tickets",
+    ),
+    "ticketsTooltipRefresh": MessageLookupByLibrary.simpleMessage("Refresh"),
     "crudBack": MessageLookupByLibrary.simpleMessage("Back"),
     "crudDelete": MessageLookupByLibrary.simpleMessage("Delete"),
     "crudDetail": MessageLookupByLibrary.simpleMessage("Detail"),
@@ -174,6 +271,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "example": MessageLookupByLibrary.simpleMessage("Example"),
     "extensions": m4,
     "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
+    "forgotPassword": MessageLookupByLibrary.simpleMessage("Forgot password?"),
+    "forgotPasswordMessage": MessageLookupByLibrary.simpleMessage(
+      "Enter your email address to reset your password.",
+    ),
+    "forgotPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Forgot password",
+    ),
     "forms": m5,
     "generalUi": MessageLookupByLibrary.simpleMessage("General UI"),
     "help": MessageLookupByLibrary.simpleMessage("Help"),
@@ -275,6 +379,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "text": MessageLookupByLibrary.simpleMessage("Text"),
     "textEmphasis": MessageLookupByLibrary.simpleMessage("Text Emphasis"),
     "textTheme": MessageLookupByLibrary.simpleMessage("Text Theme"),
+    "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
+      "Filtering tickets by store require an active license seat assigned to your user. Open Billing to subscribe or ask your administrator to assign you a seat.",
+    ),
+    "ticketsLicenseOnlyMultiBoutiqueTitle":
+        MessageLookupByLibrary.simpleMessage("Store filter & grouping"),
+    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage(
+      "License seat required",
+    ),
     "todaySales": MessageLookupByLibrary.simpleMessage("Today Sales"),
     "typography": MessageLookupByLibrary.simpleMessage("Typography"),
     "uiElements": m16,

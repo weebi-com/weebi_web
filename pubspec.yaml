@@ -1,7 +1,7 @@
 name: web_admin
 description: Weebi Web Admin
 publish_to: 'none'
-version: 1.0.3
+version: 1.0.4
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -40,11 +40,15 @@ dependencies:
   gatekeeper_weebi: ^1.0.6
   design_weebi: ^0.1.2
   flutter_markdown: ^0.7.7+1
+  aptabase_flutter: ^0.4.1
 
 dependency_overrides:
   # Remove when protos_weebi 1.2.0+ is on pub.dev; keeps webapp aligned with server protos.
   protos_weebi:
     path: ../weebi_server/packages/protos/protos_weebi
+  # Until users_weebi >1.0.7 is published: FAB create-user uses [UserListWidget.onCreateUser].
+  users_weebi:
+    path: ../weebi/packages/users
 dev_dependencies:
   flutter_test:
     sdk: flutter

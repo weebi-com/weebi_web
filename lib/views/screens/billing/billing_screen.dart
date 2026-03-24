@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_web_libraries_in_flutter, deprecated_member_use
 import 'dart:html' as html;
 
+import 'package:aptabase_flutter/aptabase_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart' hide ConnectionState;
 import 'package:provider/provider.dart';
@@ -43,10 +44,13 @@ class _BillingScreenState extends State<BillingScreen> {
   String? _errorMessage;
   String? _checkoutProductId;
   bool _acceptedEnterpriseTerms = false;
+  bool _subscriptionConfirmedLogged = false;
+  bool _checkoutCanceledLogged = false;
 
   @override
   void initState() {
     super.initState();
+    Aptabase.instance.trackEvent('billing_screen_opened', {});
     _loadData();
     // If returning from Stripe success with session_id, sync license (webhook may have failed)
     final params = _billingQueryParams();
@@ -68,10 +72,26 @@ class _BillingScreenState extends State<BillingScreen> {
         if (mounted) _loadData();
       });
     } else if (params['canceled'] == 'true') {
+      if (!_checkoutCanceledLogged) {
+        _checkoutCanceledLogged = true;
+        Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+          'reason': 'checkout_canceled',
+        });
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _loadData();
       });
     }
+  }
+
+  void _maybeTrackSubscriptionConfirmed(List<License> licenses) {
+    if (_subscriptionConfirmedLogged) return;
+    if (_billingQueryParams()['success'] != 'true') return;
+    if (licenses.isEmpty) return;
+    _subscriptionConfirmedLogged = true;
+    Aptabase.instance.trackEvent('billing_subscription_confirmed', {
+      'license_count': licenses.length,
+    });
   }
 
   Future<void> _loadData() async {
@@ -112,6 +132,7 @@ class _BillingScreenState extends State<BillingScreen> {
           _loading = false;
           _errorMessage = null;
         });
+        _maybeTrackSubscriptionConfirmed(licenses);
       }
     } on GrpcError catch (e) {
       if (mounted) {
@@ -131,12 +152,21 @@ class _BillingScreenState extends State<BillingScreen> {
   }
 
   void _openLegalDocumentInNewTab() {
+    Aptabase.instance.trackEvent('billing_terms_full_document_opened', {});
     final locale = Localizations.localeOf(context);
     final path = locale.languageCode == 'fr'
         ? RouteUri.legalCgvFr
         : RouteUri.legalTermsEn;
     final url = '${html.window.location.origin}/#$path';
     html.window.open(url, '_blank');
+  }
+
+  void _setEnterpriseTermsAccepted(bool value) {
+    if (value == _acceptedEnterpriseTerms) return;
+    setState(() => _acceptedEnterpriseTerms = value);
+    Aptabase.instance.trackEvent('billing_enterprise_terms_toggled', {
+      'accepted': value ? 1 : 0,
+    });
   }
 
   Widget _enterpriseTermsAcceptanceBlock(ThemeData theme, Lang lang) {
@@ -148,14 +178,13 @@ class _BillingScreenState extends State<BillingScreen> {
           children: [
             Checkbox(
               value: _acceptedEnterpriseTerms,
-              onChanged: (v) =>
-                  setState(() => _acceptedEnterpriseTerms = v ?? false),
+              onChanged: (v) => _setEnterpriseTermsAccepted(v ?? false),
             ),
             Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => setState(
-                  () => _acceptedEnterpriseTerms = !_acceptedEnterpriseTerms,
+                onTap: () => _setEnterpriseTermsAccepted(
+                  !_acceptedEnterpriseTerms,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 12),
@@ -174,6 +203,13 @@ class _BillingScreenState extends State<BillingScreen> {
         ),
       ],
     );
+  }
+
+  void _onLicensePurchaseTapped(BillingProduct product) {
+    Aptabase.instance.trackEvent('billing_license_purchase_clicked', {
+      'product_id': product.productId,
+    });
+    _purchaseProduct(product);
   }
 
   Future<void> _purchaseProduct(BillingProduct product) async {
@@ -206,10 +242,26 @@ class _BillingScreenState extends State<BillingScreen> {
       final response = await provider.billingServiceClient
           .createCheckoutSession(request);
 
-      if (response.checkoutUrl.isNotEmpty && mounted) {
-        html.window.location.href = response.checkoutUrl;
+      if (!mounted) return;
+      if (response.checkoutUrl.isEmpty) {
+        Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+          'reason': 'empty_checkout_url',
+          'product_id': product.productId,
+        });
+        setState(() {
+          _checkoutProductId = null;
+          _errorMessage = 'Checkout failed';
+        });
+        return;
       }
+      html.window.location.href = response.checkoutUrl;
     } on GrpcError catch (e) {
+      Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+        'reason': 'checkout_session_grpc',
+        'product_id': product.productId,
+        'code': e.code,
+        'detail': e.message ?? '',
+      });
       if (mounted) {
         setState(() {
           _checkoutProductId = null;
@@ -217,6 +269,11 @@ class _BillingScreenState extends State<BillingScreen> {
         });
       }
     } catch (e) {
+      Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+        'reason': 'checkout_session_error',
+        'product_id': product.productId,
+        'detail': e.toString(),
+      });
       if (mounted) {
         setState(() {
           _checkoutProductId = null;
@@ -242,6 +299,32 @@ class _BillingScreenState extends State<BillingScreen> {
       builder: (ctx) => _AssignSeatDialog(
         license: license,
         allAttributedUserIds: allAttributedUserIds,
+        onAssigned: () {
+          Navigator.of(ctx).pop();
+          _loadData();
+        },
+      ),
+    );
+  }
+
+  void _showReassignSeatDialog(
+    BuildContext context,
+    License license,
+    String previousUserId,
+  ) {
+    if (previousUserId.isEmpty) return;
+    final allAttributedUserIds = <String>{
+      for (final lic in _licenses)
+        for (final seat in lic.seats)
+          if (seat.userId.isNotEmpty) seat.userId,
+    };
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => _AssignSeatDialog(
+        license: license,
+        allAttributedUserIds: allAttributedUserIds,
+        replaceSeatUserId: previousUserId,
         onAssigned: () {
           Navigator.of(ctx).pop();
           _loadData();
@@ -392,7 +475,7 @@ class _BillingScreenState extends State<BillingScreen> {
                             children: _products
                                 .map((p) => _ProductOfferCard(
                                       product: p,
-                                      onPurchase: () => _purchaseProduct(p),
+                                      onPurchase: () => _onLicensePurchaseTapped(p),
                                       isLoading: _checkoutProductId == p.productId,
                                       purchaseEnabled: _acceptedEnterpriseTerms,
                                     ))
@@ -421,7 +504,8 @@ class _BillingScreenState extends State<BillingScreen> {
                               children: _products
                                   .map((p) => _ProductOfferCard(
                                         product: p,
-                                        onPurchase: () => _purchaseProduct(p),
+                                        onPurchase: () =>
+                                            _onLicensePurchaseTapped(p),
                                         isLoading: _checkoutProductId == p.productId,
                                         purchaseEnabled: _acceptedEnterpriseTerms,
                                       ))
@@ -443,6 +527,9 @@ class _BillingScreenState extends State<BillingScreen> {
                               usersById: _usersById,
                               onAssignSeats: () =>
                                   _showAssignSeatDialog(context, license),
+                              onReassignSeat: (userId) =>
+                                  _showReassignSeatDialog(
+                                      context, license, userId),
                             ),
                           ),
                         ],
@@ -549,11 +636,14 @@ class _LicenseCard extends StatelessWidget {
   final License license;
   final Map<String, UserPublic>? usersById;
   final VoidCallback onAssignSeats;
+  /// Called with the current [LicenseSeat.userId] to open reassignment.
+  final void Function(String seatUserId) onReassignSeat;
 
   const _LicenseCard({
     required this.license,
     this.usersById,
     required this.onAssignSeats,
+    required this.onReassignSeat,
   });
 
   int get _attributedCount =>
@@ -642,21 +732,34 @@ class _LicenseCard extends StatelessWidget {
                       : seat.userId;
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Column(
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          lang.billingAttributedTo,
-                          style: themeData.textTheme.bodyMedium?.copyWith(
-                            color: themeData.colorScheme.onSurfaceVariant,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                lang.billingAttributedTo,
+                                style: themeData.textTheme.bodyMedium?.copyWith(
+                                  color: themeData
+                                      .colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                label,
+                                style: themeData.textTheme.titleSmall
+                                    ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          label,
-                          style: themeData.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        TextButton(
+                          onPressed: () => onReassignSeat(seat.userId),
+                          child: Text(lang.billingReassignSeat),
                         ),
                       ],
                     ),
@@ -715,15 +818,22 @@ class _LicenseCard extends StatelessWidget {
 
 /// Dialog to pick a user and assign one seat of [license] to them.
 /// Only users who do not yet have any license attributed are shown.
+///
+/// When [replaceSeatUserId] is set, that user is treated as no longer holding
+/// their seat for occupancy purposes, and the picker excludes them so the
+/// owner can choose another user; the selected seat row is updated in place.
 class _AssignSeatDialog extends StatefulWidget {
   final License license;
   /// User IDs that already have a license (any plan). Excluded from the list.
   final Set<String> allAttributedUserIds;
+  /// If non-empty, reassign this seat ([LicenseSeat.userId]) instead of adding a seat.
+  final String? replaceSeatUserId;
   final VoidCallback onAssigned;
 
   const _AssignSeatDialog({
     required this.license,
     required this.allAttributedUserIds,
+    this.replaceSeatUserId,
     required this.onAssigned,
   });
 
@@ -747,7 +857,26 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
       // The license's seats (with userId) are stored in the firm document (e.g. MongoDB).
       final billingClient = context.read<BillingServiceClientProvider>().billingServiceClient;
       final updated = License()..mergeFromMessage(widget.license);
-      updated.seats.add(LicenseSeat()..userId = user.userId);
+      final previous = widget.replaceSeatUserId?.trim() ?? '';
+      if (previous.isNotEmpty) {
+        final idx = updated.seats.indexWhere((s) => s.userId == previous);
+        if (idx < 0) {
+          if (mounted) {
+            setState(() {
+              _assigning = false;
+              _error = 'Seat not found; refresh the page and try again.';
+            });
+          }
+          return;
+        }
+        if (updated.seats[idx].userId == user.userId) {
+          if (mounted) Navigator.of(context).pop();
+          return;
+        }
+        updated.seats[idx].userId = user.userId;
+      } else {
+        updated.seats.add(LicenseSeat()..userId = user.userId);
+      }
 
       await billingClient.updateLicense(
         UpdateLicenseRequest(
@@ -778,8 +907,16 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
     final themeData = Theme.of(context);
     final lang = Lang.of(context);
 
+    final isReassign =
+        widget.replaceSeatUserId != null &&
+            widget.replaceSeatUserId!.trim().isNotEmpty;
+
     return AlertDialog(
-      title: Text(lang.billingAssignSeatDialogTitle),
+      title: Text(
+        isReassign
+            ? lang.billingReassignSeatDialogTitle
+            : lang.billingAssignSeatDialogTitle,
+      ),
       content: SizedBox(
         width: double.maxFinite,
         child: FutureBuilder<UsersPublic>(
@@ -803,17 +940,25 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
             if (response == null || response.users.isEmpty) {
               return Text(lang.billingNoUsersAvailable);
             }
-            // Only users who do not have any license attributed yet
+            final blocked = Set<String>.from(widget.allAttributedUserIds);
+            final releasing = widget.replaceSeatUserId?.trim() ?? '';
+            if (releasing.isNotEmpty) {
+              blocked.remove(releasing);
+            }
+            // Assign: users without any seat. Reassign: same, but not the current holder.
             final available = response.users
-                .where((u) => !widget.allAttributedUserIds.contains(u.userId))
+                .where((u) => !blocked.contains(u.userId))
+                .where((u) => !isReassign || u.userId != releasing)
                 .toList();
             if (available.isEmpty) {
               return Text(
-                'All users already have a license attributed.',
+                isReassign
+                    ? lang.billingReassignNoOtherUser
+                    : lang.billingAllUsersAlreadyAssigned,
                 style: themeData.textTheme.bodyMedium,
               );
             }
-            if (_error != null)
+            if (_error != null) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -831,6 +976,7 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
                   ),
                 ],
               );
+            }
             return _UserListView(
               users: available,
               onTap: _assigning ? null : _assignSeatToUser,
