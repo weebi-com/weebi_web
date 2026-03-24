@@ -46,6 +46,9 @@ dependency_overrides:
   # Remove when protos_weebi 1.2.0+ is on pub.dev; keeps webapp aligned with server protos.
   protos_weebi:
     path: ../weebi_server/packages/protos/protos_weebi
+  # Until users_weebi >1.0.7 is published: FAB create-user uses [UserListWidget.onCreateUser].
+  users_weebi:
+    path: ../weebi/packages/users
 dev_dependencies:
   flutter_test:
     sdk: flutter

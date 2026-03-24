@@ -71,6 +71,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "请先接受条款和条件。",
     ),
+    "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
+      "所有用户都已分配许可证。",
+    ),
     "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
       "将许可证分配给用户",
     ),
@@ -96,6 +99,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage("购买许可证"),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
       "选择套餐以开始使用 Weebi。",
+    ),
+    "billingReassignNoOtherUser": MessageLookupByLibrary.simpleMessage(
+      "没有其他用户可接收此席位。请先添加用户或在其他位置释放一个席位。",
+    ),
+    "billingReassignSeat": MessageLookupByLibrary.simpleMessage("重新分配"),
+    "billingReassignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "将此许可证席位重新分配给其他用户",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("重试"),
     "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage("许可证已分配"),
@@ -221,11 +231,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "textTheme": MessageLookupByLibrary.simpleMessage("文字主题"),
     "ticketsLicenseOnlyMultiBoutiqueDetail":
         MessageLookupByLibrary.simpleMessage(
-          "按门店筛选和分组小票为 Weebi 许可证功能。请前往“计费”订阅以解锁。",
+          "按门店筛选和分组小票需要为您的用户分配有效的许可证席位。请前往「计费」订阅，或请管理员为您分配席位。",
         ),
     "ticketsLicenseOnlyMultiBoutiqueTitle":
         MessageLookupByLibrary.simpleMessage("按门店筛选与分组"),
-    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage("需要许可证"),
+    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage("需要许可证席位"),
     "todaySales": MessageLookupByLibrary.simpleMessage("今日销售额"),
     "typography": MessageLookupByLibrary.simpleMessage("排版"),
     "uiElements": m16,

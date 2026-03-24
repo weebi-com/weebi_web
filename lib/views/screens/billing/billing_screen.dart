@@ -307,6 +307,32 @@ class _BillingScreenState extends State<BillingScreen> {
     );
   }
 
+  void _showReassignSeatDialog(
+    BuildContext context,
+    License license,
+    String previousUserId,
+  ) {
+    if (previousUserId.isEmpty) return;
+    final allAttributedUserIds = <String>{
+      for (final lic in _licenses)
+        for (final seat in lic.seats)
+          if (seat.userId.isNotEmpty) seat.userId,
+    };
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => _AssignSeatDialog(
+        license: license,
+        allAttributedUserIds: allAttributedUserIds,
+        replaceSeatUserId: previousUserId,
+        onAssigned: () {
+          Navigator.of(ctx).pop();
+          _loadData();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -501,6 +527,9 @@ class _BillingScreenState extends State<BillingScreen> {
                               usersById: _usersById,
                               onAssignSeats: () =>
                                   _showAssignSeatDialog(context, license),
+                              onReassignSeat: (userId) =>
+                                  _showReassignSeatDialog(
+                                      context, license, userId),
                             ),
                           ),
                         ],
@@ -607,11 +636,14 @@ class _LicenseCard extends StatelessWidget {
   final License license;
   final Map<String, UserPublic>? usersById;
   final VoidCallback onAssignSeats;
+  /// Called with the current [LicenseSeat.userId] to open reassignment.
+  final void Function(String seatUserId) onReassignSeat;
 
   const _LicenseCard({
     required this.license,
     this.usersById,
     required this.onAssignSeats,
+    required this.onReassignSeat,
   });
 
   int get _attributedCount =>
@@ -700,21 +732,34 @@ class _LicenseCard extends StatelessWidget {
                       : seat.userId;
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Column(
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          lang.billingAttributedTo,
-                          style: themeData.textTheme.bodyMedium?.copyWith(
-                            color: themeData.colorScheme.onSurfaceVariant,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                lang.billingAttributedTo,
+                                style: themeData.textTheme.bodyMedium?.copyWith(
+                                  color: themeData
+                                      .colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                label,
+                                style: themeData.textTheme.titleSmall
+                                    ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          label,
-                          style: themeData.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        TextButton(
+                          onPressed: () => onReassignSeat(seat.userId),
+                          child: Text(lang.billingReassignSeat),
                         ),
                       ],
                     ),
@@ -773,15 +818,22 @@ class _LicenseCard extends StatelessWidget {
 
 /// Dialog to pick a user and assign one seat of [license] to them.
 /// Only users who do not yet have any license attributed are shown.
+///
+/// When [replaceSeatUserId] is set, that user is treated as no longer holding
+/// their seat for occupancy purposes, and the picker excludes them so the
+/// owner can choose another user; the selected seat row is updated in place.
 class _AssignSeatDialog extends StatefulWidget {
   final License license;
   /// User IDs that already have a license (any plan). Excluded from the list.
   final Set<String> allAttributedUserIds;
+  /// If non-empty, reassign this seat ([LicenseSeat.userId]) instead of adding a seat.
+  final String? replaceSeatUserId;
   final VoidCallback onAssigned;
 
   const _AssignSeatDialog({
     required this.license,
     required this.allAttributedUserIds,
+    this.replaceSeatUserId,
     required this.onAssigned,
   });
 
@@ -805,7 +857,26 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
       // The license's seats (with userId) are stored in the firm document (e.g. MongoDB).
       final billingClient = context.read<BillingServiceClientProvider>().billingServiceClient;
       final updated = License()..mergeFromMessage(widget.license);
-      updated.seats.add(LicenseSeat()..userId = user.userId);
+      final previous = widget.replaceSeatUserId?.trim() ?? '';
+      if (previous.isNotEmpty) {
+        final idx = updated.seats.indexWhere((s) => s.userId == previous);
+        if (idx < 0) {
+          if (mounted) {
+            setState(() {
+              _assigning = false;
+              _error = 'Seat not found; refresh the page and try again.';
+            });
+          }
+          return;
+        }
+        if (updated.seats[idx].userId == user.userId) {
+          if (mounted) Navigator.of(context).pop();
+          return;
+        }
+        updated.seats[idx].userId = user.userId;
+      } else {
+        updated.seats.add(LicenseSeat()..userId = user.userId);
+      }
 
       await billingClient.updateLicense(
         UpdateLicenseRequest(
@@ -836,8 +907,16 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
     final themeData = Theme.of(context);
     final lang = Lang.of(context);
 
+    final isReassign =
+        widget.replaceSeatUserId != null &&
+            widget.replaceSeatUserId!.trim().isNotEmpty;
+
     return AlertDialog(
-      title: Text(lang.billingAssignSeatDialogTitle),
+      title: Text(
+        isReassign
+            ? lang.billingReassignSeatDialogTitle
+            : lang.billingAssignSeatDialogTitle,
+      ),
       content: SizedBox(
         width: double.maxFinite,
         child: FutureBuilder<UsersPublic>(
@@ -861,17 +940,25 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
             if (response == null || response.users.isEmpty) {
               return Text(lang.billingNoUsersAvailable);
             }
-            // Only users who do not have any license attributed yet
+            final blocked = Set<String>.from(widget.allAttributedUserIds);
+            final releasing = widget.replaceSeatUserId?.trim() ?? '';
+            if (releasing.isNotEmpty) {
+              blocked.remove(releasing);
+            }
+            // Assign: users without any seat. Reassign: same, but not the current holder.
             final available = response.users
-                .where((u) => !widget.allAttributedUserIds.contains(u.userId))
+                .where((u) => !blocked.contains(u.userId))
+                .where((u) => !isReassign || u.userId != releasing)
                 .toList();
             if (available.isEmpty) {
               return Text(
-                'All users already have a license attributed.',
+                isReassign
+                    ? lang.billingReassignNoOtherUser
+                    : lang.billingAllUsersAlreadyAssigned,
                 style: themeData.textTheme.bodyMedium,
               );
             }
-            if (_error != null)
+            if (_error != null) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -889,6 +976,7 @@ class _AssignSeatDialogState extends State<_AssignSeatDialog> {
                   ),
                 ],
               );
+            }
             return _UserListView(
               users: available,
               onTap: _assigning ? null : _assignSeatToUser,

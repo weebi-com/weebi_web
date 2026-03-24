@@ -89,6 +89,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "Veuillez accepter les conditions générales pour continuer.",
     ),
+    "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
+      "Tous les utilisateurs ont déjà une licence attribuée.",
+    ),
     "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
       "Attribuer la licence à un utilisateur",
     ),
@@ -120,6 +123,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
       "Choisissez une licence pour utiliser les fonctions avancées de Weebi.",
+    ),
+    "billingReassignNoOtherUser": MessageLookupByLibrary.simpleMessage(
+      "Aucun autre utilisateur ne peut recevoir ce siège. Ajoutez un utilisateur ou libérez un siège ailleurs d’abord.",
+    ),
+    "billingReassignSeat": MessageLookupByLibrary.simpleMessage("Réattribuer"),
+    "billingReassignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Réattribuer ce siège de licence à un autre utilisateur",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Réessayer"),
     "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
@@ -307,14 +317,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "textTheme": MessageLookupByLibrary.simpleMessage("Thème du Texte"),
     "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
-      "Le filtre et le groupement des tickets par boutique sont réservés aux comptes avec licence Weebi. Ouvrez Facturation pour vous abonner.",
+      "Le filtre et le groupement des tickets par boutique nécessitent un siège de licence actif attribué à votre utilisateur. Ouvrez Facturation pour vous abonner ou demandez à l’administrateur de vous attribuer un siège.",
     ),
     "ticketsLicenseOnlyMultiBoutiqueTitle":
         MessageLookupByLibrary.simpleMessage(
           "Filtre et groupement par boutique",
         ),
     "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage(
-      "Licence requise",
+      "Siège de licence requis",
     ),
     "todaySales": MessageLookupByLibrary.simpleMessage(
       "Ventes d\'Aujourd\'hui",

@@ -121,7 +121,7 @@ class TicketsFilterBar extends StatelessWidget {
   final TicketsFilterState filter;
   final ValueChanged<TicketsFilterState> onFilterChanged;
   final List<BoutiqueOption> availableBoutiques;
-  /// When false, boutique filter and "group by boutique" are replaced by a license notice.
+  /// When false, boutique filter and "group by boutique" are replaced by a license-seat notice.
   final bool multiBoutiqueFeaturesUnlocked;
 
   const TicketsFilterBar({

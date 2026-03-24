@@ -5,23 +5,30 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:protos_weebi/protos_weebi_io.dart' show FenceServiceClient;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:users_weebi/users_weebi.dart' show FenceServiceClientProviderV2;
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/grpc/auth_interceptor.dart';
 import 'package:web_admin/grpc/log_interceptor.dart';
 import 'package:web_admin/grpc/server.dart';
 import 'package:web_admin/providers/app_preferences_provider.dart';
+import 'package:web_admin/providers/shared_prefs_auth_service.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/utils/app_focus_helper.dart';
 
 import 'package:accesses_weebi/accesses_weebi.dart' show AccessProvider;
-import 'package:auth_weebi/auth_weebi.dart' show AccessTokenObject, AccessTokenProvider, PermissionProvider;
+import 'package:auth_weebi/auth_weebi.dart'
+    show
+        AccessTokenObject,
+        AccessTokenProvider,
+        AuthServiceAbstract,
+        PermissionProvider,
+        PersistedTokenProvider;
 import 'package:boutiques_weebi/boutiques_weebi.dart' show BoutiqueProvider;
 import 'package:devices_weebi/devices_weebi.dart' show DeviceProvider;
-import 'package:users_weebi/users_weebi.dart' show FenceServiceClientProviderV2, UserProvider;
+import 'package:users_weebi/users_weebi.dart'
+    show FenceServiceClientProviderV2, UserProvider;
 
 import 'core/theme/themes.dart';
 
@@ -67,6 +74,13 @@ class _RootAppState extends State<RootApp> {
 
         /// locale and dark mode
         ChangeNotifierProvider(create: (context) => AppPreferencesProvider()),
+
+        Provider<AuthServiceAbstract>(create: (_) => SharedPrefsAuthService()),
+        ProxyProvider<AuthServiceAbstract,
+            PersistedTokenProvider<AuthServiceAbstract>>(
+          update: (context, auth, previous) =>
+              previous ?? PersistedTokenProvider(auth),
+        ),
 
         Provider<AccessTokenObject>(create: (_) => AccessTokenObject()),
         ChangeNotifierProxyProvider<AccessTokenObject, AccessTokenProvider>(

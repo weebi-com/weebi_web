@@ -1,5 +1,5 @@
-import 'package:auth_weebi/auth_weebi.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:users_weebi/users_weebi.dart';
 import 'package:web_admin/app_router.dart';
@@ -21,6 +21,7 @@ class UsersPackageScreen extends StatelessWidget {
         appBar: null, // PortalMasterLayout provides the AppBar
         drawer: null,
         endDrawer: null,
+        onCreateUser: () => context.push(RouteUri.createUser),
       ),
     );
   }

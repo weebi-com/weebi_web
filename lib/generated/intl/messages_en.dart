@@ -85,6 +85,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "Please accept the terms and conditions to continue.",
     ),
+    "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
+      "All users already have a license assigned.",
+    ),
     "billingAssignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
       "Assign the license to a user",
     ),
@@ -118,6 +121,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
       "Choose a license to use the advanced features of Weebi.",
+    ),
+    "billingReassignNoOtherUser": MessageLookupByLibrary.simpleMessage(
+      "No other user can receive this seat. Add a user or free a license seat elsewhere first.",
+    ),
+    "billingReassignSeat": MessageLookupByLibrary.simpleMessage("Reassign"),
+    "billingReassignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Reassign this license seat to another user",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Retry"),
     "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
@@ -283,12 +293,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "textEmphasis": MessageLookupByLibrary.simpleMessage("Text Emphasis"),
     "textTheme": MessageLookupByLibrary.simpleMessage("Text Theme"),
     "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
-      "Filtering and grouping tickets by store are available with a Weebi license. Open Billing to subscribe.",
+      "Filtering tickets by store require an active license seat assigned to your user. Open Billing to subscribe or ask your administrator to assign you a seat.",
     ),
     "ticketsLicenseOnlyMultiBoutiqueTitle":
         MessageLookupByLibrary.simpleMessage("Store filter & grouping"),
     "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage(
-      "License required",
+      "License seat required",
     ),
     "todaySales": MessageLookupByLibrary.simpleMessage("Today Sales"),
     "typography": MessageLookupByLibrary.simpleMessage("Typography"),

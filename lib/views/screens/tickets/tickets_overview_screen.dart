@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:protos_weebi/protos_weebi_io.dart'
     show Empty, ReadAllTicketsRequest, TicketPb;
 import 'package:web_admin/app_router.dart';
+import 'package:web_admin/billing/license_seat_client.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
 import 'package:web_admin/views/screens/tickets/ticket_glimpse_widget.dart';
@@ -45,11 +46,12 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   TicketsFilterState _filter = const TicketsFilterState();
   final _tableScrollController = ScrollController();
   bool _licenseGateResolved = false;
-  bool _hasActiveFirmLicense = false;
+  /// Same notion as ticket service: multi-boutique read needs an active seat on a valid license.
+  bool _hasLicensedSeat = false;
 
-  /// Until billing responds, allow controls (optimistic). Then require a firm license.
+  /// Until billing responds, allow controls (optimistic). Then require a seat for this user.
   bool get _multiBoutiqueFeaturesUnlocked =>
-      !_licenseGateResolved || _hasActiveFirmLicense;
+      !_licenseGateResolved || _hasLicensedSeat;
 
   @override
   void initState() {
@@ -78,11 +80,15 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
           context.read<BillingServiceClientProvider>().billingServiceClient;
       final res = await billing.readLicenses(Empty());
       if (!mounted) return;
-      final has = res.licenses.isNotEmpty;
+      final userId = context.read<AccessTokenProvider>().permissions.userId;
+      final hasSeat = LicenseSeatClient.userHasActiveLicensedSeat(
+        userId,
+        res.licenses,
+      );
       setState(() {
         _licenseGateResolved = true;
-        _hasActiveFirmLicense = has;
-        if (!has) {
+        _hasLicensedSeat = hasSeat;
+        if (!hasSeat) {
           _filter = _withoutMultiBoutiqueFilters(_filter);
         }
       });
@@ -90,7 +96,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       if (!mounted) return;
       setState(() {
         _licenseGateResolved = true;
-        _hasActiveFirmLicense = false;
+        _hasLicensedSeat = false;
         _filter = _withoutMultiBoutiqueFilters(_filter);
       });
     }
@@ -494,7 +500,12 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.refresh),
-                        onPressed: _isLoading ? null : _loadTickets,
+                        onPressed: _isLoading
+                            ? null
+                            : () async {
+                                await _loadLicenseGate();
+                                await _loadTickets();
+                              },
                         tooltip: 'Actualiser',
                       ),
                     ],

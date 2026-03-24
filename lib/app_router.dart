@@ -24,6 +24,7 @@ import 'package:protos_weebi/protos_weebi_io.dart' show TicketPb;
 import 'package:web_admin/views/screens/devices/devices_package_screen.dart';
 import 'package:web_admin/views/screens/tickets/ticket_detail_screen.dart';
 import 'package:web_admin/views/screens/tickets/tickets_overview_screen.dart';
+import 'package:web_admin/views/screens/users/create_user_screen.dart';
 import 'package:web_admin/views/screens/users/users_package_screen.dart';
 import 'package:web_admin/views/screens/help/help_screen.dart';
 import 'package:web_admin/views/screens/support/support_screen.dart';
@@ -238,6 +239,15 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
           return NoTransitionPage<void>(
             key: state.pageKey,
             child: const UsersPackageScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteUri.createUser,
+        pageBuilder: (context, state) {
+          return NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const CreateUserScreen(),
           );
         },
       ),
