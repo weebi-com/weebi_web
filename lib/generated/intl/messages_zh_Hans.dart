@@ -207,7 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "maxErrorText": m6,
     "maxLengthErrorText": m7,
     "menuAccesses": MessageLookupByLibrary.simpleMessage("访问"),
-    "menuBilling": MessageLookupByLibrary.simpleMessage("计费"),
+    "menuBilling": MessageLookupByLibrary.simpleMessage("Weebi 许可证"),
     "menuBoutiques": MessageLookupByLibrary.simpleMessage("店铺"),
     "menuDevices": MessageLookupByLibrary.simpleMessage("设备"),
     "menuFirm": MessageLookupByLibrary.simpleMessage("我的公司"),
@@ -224,6 +224,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "notEqualErrorText": m12,
     "numericErrorText": MessageLookupByLibrary.simpleMessage("此字段必须是数字。"),
     "openInNewTab": MessageLookupByLibrary.simpleMessage("在新标签打开"),
+    "operationalLicenseBlockedBody": MessageLookupByLibrary.simpleMessage(
+      "请让公司管理员为您分配有效的许可证席位，或使用公司创建者账号登录，然后才能使用小票、文章与联系人。若您负责许可证与计费，请前往「计费」。",
+    ),
+    "operationalLicenseBlockedTitle": MessageLookupByLibrary.simpleMessage(
+      "需要有效的许可证席位",
+    ),
+    "operationalLicenseOpenBilling": MessageLookupByLibrary.simpleMessage("计费"),
+    "operationalLicenseRetry": MessageLookupByLibrary.simpleMessage("重试"),
     "pages": m13,
     "password": MessageLookupByLibrary.simpleMessage("密码"),
     "passwordNotMatch": MessageLookupByLibrary.simpleMessage("密码不匹配。"),
@@ -275,7 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ticketsGroupByBoutique": MessageLookupByLibrary.simpleMessage("按门店分组"),
     "ticketsLicenseOnlyMultiBoutiqueDetail":
         MessageLookupByLibrary.simpleMessage(
-          "按门店筛选和分组小票需要为您的用户分配有效的许可证席位。请前往「计费」订阅，或请管理员为您分配席位。",
+          "按门店筛选与分组与小票等产品功能一样，需要有效的许可证席位。请前往「计费」或请管理员为您分配席位。",
         ),
     "ticketsLicenseOnlyMultiBoutiqueTitle":
         MessageLookupByLibrary.simpleMessage("按门店筛选与分组"),

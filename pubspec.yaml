@@ -30,7 +30,7 @@ dependencies:
 
   protobuf: ^4.0.0
 
-  protos_weebi: ^1.2.1 # billing: legalTermsVersionDate on checkout / license
+  protos_weebi: ^1.2.3 # currency: firm/chain/boutique + ticket FX snapshot
   models_weebi: any
   auth_weebi: ^1.0.6
   boutiques_weebi: ^1.0.6
@@ -39,8 +39,11 @@ dependencies:
   accesses_weebi: ^1.0.6
   gatekeeper_weebi: ^1.0.6
   design_weebi: ^0.1.2
+  charts_weebi:
+    path: packages/charts_weebi
   flutter_markdown: ^0.7.7+1
   aptabase_flutter: ^0.4.1
+  currency_picker: ^2.0.21
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +51,7 @@ dev_dependencies:
 
 
   flutter_lints: ^3.0.0
+
 
 flutter:
 

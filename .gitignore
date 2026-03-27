@@ -61,3 +61,5 @@ s/docs/IMPLEMENTATION_STATUS.md
 /doc/STRIPE_INTEGRATION.md
 pubspec.lock
 /_testme.md
+/doc/currency_and_migration.md
+/packages/charts_weebi/example/windows

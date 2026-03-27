@@ -143,7 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingUsers": MessageLookupByLibrary.simpleMessage("users"),
     "billingValidUntil": MessageLookupByLibrary.simpleMessage("Valid until"),
     "billingViewFullTerms": MessageLookupByLibrary.simpleMessage(
-      "View full document (new tab)",
+      "Terms and Conditions of Sale",
     ),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage("Button Emphasis"),
     "buttons": m0,
@@ -271,7 +271,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "maxErrorText": m6,
     "maxLengthErrorText": m7,
     "menuAccesses": MessageLookupByLibrary.simpleMessage("Accesses"),
-    "menuBilling": MessageLookupByLibrary.simpleMessage("Billing"),
+    "menuBilling": MessageLookupByLibrary.simpleMessage("Weebi licenses"),
     "menuBoutiques": MessageLookupByLibrary.simpleMessage("My Boutiques"),
     "menuDevices": MessageLookupByLibrary.simpleMessage("Devices"),
     "menuFirm": MessageLookupByLibrary.simpleMessage("My Firm"),
@@ -290,6 +290,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Value must be numeric.",
     ),
     "openInNewTab": MessageLookupByLibrary.simpleMessage("Open in new tab"),
+    "operationalLicenseBlockedBody": MessageLookupByLibrary.simpleMessage(
+      "Your firm administrator must assign you an active license seat, or you need to sign in as the firm creator, before you can use tickets, articles, or contacts. Open Billing if you manage licenses.",
+    ),
+    "operationalLicenseBlockedTitle": MessageLookupByLibrary.simpleMessage(
+      "Active license required",
+    ),
+    "operationalLicenseOpenBilling": MessageLookupByLibrary.simpleMessage(
+      "Billing",
+    ),
+    "operationalLicenseRetry": MessageLookupByLibrary.simpleMessage(
+      "Try again",
+    ),
     "pages": m13,
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "passwordNotMatch": MessageLookupByLibrary.simpleMessage(
@@ -358,7 +370,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Group by store",
     ),
     "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
-      "Filtering tickets by store require an active license seat assigned to your user. Open Billing to subscribe or ask your administrator to assign you a seat.",
+      "Store filter and grouping need a license seat the same way the rest of the product does (tickets, articles, contacts). Open Billing or ask your administrator to assign you a seat.",
     ),
     "ticketsLicenseOnlyMultiBoutiqueTitle":
         MessageLookupByLibrary.simpleMessage("Store filter & grouping"),

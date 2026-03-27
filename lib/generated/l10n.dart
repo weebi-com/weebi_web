@@ -329,10 +329,10 @@ class Lang {
     );
   }
 
-  /// `View full document (new tab)`
+  /// `Terms and Conditions of Sale`
   String get billingViewFullTerms {
     return Intl.message(
-      'View full document (new tab)',
+      'Terms and Conditions of Sale',
       name: 'billingViewFullTerms',
       desc: '',
       args: [],
@@ -483,6 +483,76 @@ class Lang {
     return Intl.message('Dashboard', name: 'dashboard', desc: '', args: []);
   }
 
+  /// `My stores`
+  String get dashboardCardBoutiquesValue {
+    return Intl.message(
+      'My stores',
+      name: 'dashboardCardBoutiquesValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devices`
+  String get dashboardCardDevicesValue {
+    return Intl.message(
+      'Devices',
+      name: 'dashboardCardDevicesValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My firm`
+  String get dashboardCardMyFirmValue {
+    return Intl.message(
+      'My firm',
+      name: 'dashboardCardMyFirmValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tickets`
+  String get dashboardCardTicketsShort {
+    return Intl.message(
+      'Tickets',
+      name: 'dashboardCardTicketsShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today's tickets`
+  String get dashboardCardTicketsToday {
+    return Intl.message(
+      'Today\'s tickets',
+      name: 'dashboardCardTicketsToday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User access`
+  String get dashboardCardUserAccess {
+    return Intl.message(
+      'User access',
+      name: 'dashboardCardUserAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users`
+  String get dashboardCardUsersValue {
+    return Intl.message(
+      'Users',
+      name: 'dashboardCardUsersValue',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `This field requires a valid date string.`
   String get dateStringErrorText {
     return Intl.message(
@@ -580,6 +650,41 @@ class Lang {
       desc: '',
       args: [count],
     );
+  }
+
+  /// `The firm represents your company; it groups your users and your chains/stores.`
+  String get firmCardDescription {
+    return Intl.message(
+      'The firm represents your company; it groups your users and your chains/stores.',
+      name: 'firmCardDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please create a new firm by clicking the "Add a firm" button.`
+  String get firmErrorCreateHint {
+    return Intl.message(
+      'Please create a new firm by clicking the "Add a firm" button.',
+      name: 'firmErrorCreateHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred.`
+  String get firmErrorUnexpected {
+    return Intl.message(
+      'An unexpected error occurred.',
+      name: 'firmErrorUnexpected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My firm`
+  String get firmPageTitle {
+    return Intl.message('My firm', name: 'firmPageTitle', desc: '', args: []);
   }
 
   /// `First Name`
@@ -834,9 +939,14 @@ class Lang {
     return Intl.message('Accesses', name: 'menuAccesses', desc: '', args: []);
   }
 
-  /// `Billing`
+  /// `Weebi licenses`
   String get menuBilling {
-    return Intl.message('Billing', name: 'menuBilling', desc: '', args: []);
+    return Intl.message(
+      'Weebi licenses',
+      name: 'menuBilling',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `My Boutiques`
@@ -958,6 +1068,46 @@ class Lang {
     );
   }
 
+  /// `Your firm administrator must assign you an active license seat, or you need to sign in as the firm creator, before you can use tickets, articles, or contacts. Open Billing if you manage licenses.`
+  String get operationalLicenseBlockedBody {
+    return Intl.message(
+      'Your firm administrator must assign you an active license seat, or you need to sign in as the firm creator, before you can use tickets, articles, or contacts. Open Billing if you manage licenses.',
+      name: 'operationalLicenseBlockedBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Active license required`
+  String get operationalLicenseBlockedTitle {
+    return Intl.message(
+      'Active license required',
+      name: 'operationalLicenseBlockedTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Billing`
+  String get operationalLicenseOpenBilling {
+    return Intl.message(
+      'Billing',
+      name: 'operationalLicenseOpenBilling',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get operationalLicenseRetry {
+    return Intl.message(
+      'Try again',
+      name: 'operationalLicenseRetry',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{count, plural, one{Page} other{Pages}}`
   String pages(num count) {
     return Intl.plural(
@@ -1037,6 +1187,11 @@ class Lang {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Refresh`
+  String get refreshAction {
+    return Intl.message('Refresh', name: 'refreshAction', desc: '', args: []);
   }
 
   /// `Register`
@@ -1144,188 +1299,6 @@ class Lang {
     return Intl.message('Text Theme', name: 'textTheme', desc: '', args: []);
   }
 
-  /// `Filtering tickets by store require an active license seat assigned to your user. Open Billing to subscribe or ask your administrator to assign you a seat.`
-  String get ticketsLicenseOnlyMultiBoutiqueDetail {
-    return Intl.message(
-      'Filtering tickets by store require an active license seat assigned to your user. Open Billing to subscribe or ask your administrator to assign you a seat.',
-      name: 'ticketsLicenseOnlyMultiBoutiqueDetail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Store filter & grouping`
-  String get ticketsLicenseOnlyMultiBoutiqueTitle {
-    return Intl.message(
-      'Store filter & grouping',
-      name: 'ticketsLicenseOnlyMultiBoutiqueTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `License seat required`
-  String get ticketsLicenseOnlyShort {
-    return Intl.message(
-      'License seat required',
-      name: 'ticketsLicenseOnlyShort',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Today Sales`
-  String get todaySales {
-    return Intl.message('Today Sales', name: 'todaySales', desc: '', args: []);
-  }
-
-  /// `Typography`
-  String get typography {
-    return Intl.message('Typography', name: 'typography', desc: '', args: []);
-  }
-
-  /// `{count, plural, one{UI Element} other{UI Elements}}`
-  String uiElements(num count) {
-    return Intl.plural(
-      count,
-      one: 'UI Element',
-      other: 'UI Elements',
-      name: 'uiElements',
-      desc: '',
-      args: [count],
-    );
-  }
-
-  /// `This field requires a valid URL address.`
-  String get urlErrorText {
-    return Intl.message(
-      'This field requires a valid URL address.',
-      name: 'urlErrorText',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Username`
-  String get username {
-    return Intl.message('Username', name: 'username', desc: '', args: []);
-  }
-
-  /// `Yes`
-  String get yes {
-    return Intl.message('Yes', name: 'yes', desc: '', args: []);
-  }
-
-  /// `Refresh`
-  String get refreshAction {
-    return Intl.message('Refresh', name: 'refreshAction', desc: '', args: []);
-  }
-
-  /// `My firm`
-  String get dashboardCardMyFirmValue {
-    return Intl.message(
-      'My firm',
-      name: 'dashboardCardMyFirmValue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `My stores`
-  String get dashboardCardBoutiquesValue {
-    return Intl.message(
-      'My stores',
-      name: 'dashboardCardBoutiquesValue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Users`
-  String get dashboardCardUsersValue {
-    return Intl.message(
-      'Users',
-      name: 'dashboardCardUsersValue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `User access`
-  String get dashboardCardUserAccess {
-    return Intl.message(
-      'User access',
-      name: 'dashboardCardUserAccess',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Devices`
-  String get dashboardCardDevicesValue {
-    return Intl.message(
-      'Devices',
-      name: 'dashboardCardDevicesValue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Today's tickets`
-  String get dashboardCardTicketsToday {
-    return Intl.message(
-      'Today\'s tickets',
-      name: 'dashboardCardTicketsToday',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Tickets`
-  String get dashboardCardTicketsShort {
-    return Intl.message(
-      'Tickets',
-      name: 'dashboardCardTicketsShort',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `My firm`
-  String get firmPageTitle {
-    return Intl.message('My firm', name: 'firmPageTitle', desc: '', args: []);
-  }
-
-  /// `The firm represents your company; it groups your users and your chains/stores.`
-  String get firmCardDescription {
-    return Intl.message(
-      'The firm represents your company; it groups your users and your chains/stores.',
-      name: 'firmCardDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please create a new firm by clicking the "Add a firm" button.`
-  String get firmErrorCreateHint {
-    return Intl.message(
-      'Please create a new firm by clicking the "Add a firm" button.',
-      name: 'firmErrorCreateHint',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `An unexpected error occurred.`
-  String get firmErrorUnexpected {
-    return Intl.message(
-      'An unexpected error occurred.',
-      name: 'firmErrorUnexpected',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Ticket detail #{ticketId}`
   String ticketDetailTitle(String ticketId) {
     return Intl.message(
@@ -1336,26 +1309,6 @@ class Lang {
     );
   }
 
-  /// `No ticket provided`
-  String get ticketNotProvided {
-    return Intl.message(
-      'No ticket provided',
-      name: 'ticketNotProvided',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Ticket`
-  String get ticketTypeDefault {
-    return Intl.message(
-      'Ticket',
-      name: 'ticketTypeDefault',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `{count} items`
   String ticketItemsShort(num count) {
     return Intl.message(
@@ -1363,6 +1316,16 @@ class Lang {
       name: 'ticketItemsShort',
       desc: '',
       args: [count],
+    );
+  }
+
+  /// `No ticket provided`
+  String get ticketNotProvided {
+    return Intl.message(
+      'No ticket provided',
+      name: 'ticketNotProvided',
+      desc: '',
+      args: [],
     );
   }
 
@@ -1518,6 +1481,36 @@ class Lang {
     );
   }
 
+  /// `Store filter and grouping need a license seat the same way the rest of the product does (tickets, articles, contacts). Open Billing or ask your administrator to assign you a seat.`
+  String get ticketsLicenseOnlyMultiBoutiqueDetail {
+    return Intl.message(
+      'Store filter and grouping need a license seat the same way the rest of the product does (tickets, articles, contacts). Open Billing or ask your administrator to assign you a seat.',
+      name: 'ticketsLicenseOnlyMultiBoutiqueDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store filter & grouping`
+  String get ticketsLicenseOnlyMultiBoutiqueTitle {
+    return Intl.message(
+      'Store filter & grouping',
+      name: 'ticketsLicenseOnlyMultiBoutiqueTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License seat required`
+  String get ticketsLicenseOnlyShort {
+    return Intl.message(
+      'License seat required',
+      name: 'ticketsLicenseOnlyShort',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Card`
   String get ticketsPaymentCard {
     return Intl.message('Card', name: 'ticketsPaymentCard', desc: '', args: []);
@@ -1656,6 +1649,58 @@ class Lang {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Ticket`
+  String get ticketTypeDefault {
+    return Intl.message(
+      'Ticket',
+      name: 'ticketTypeDefault',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today Sales`
+  String get todaySales {
+    return Intl.message('Today Sales', name: 'todaySales', desc: '', args: []);
+  }
+
+  /// `Typography`
+  String get typography {
+    return Intl.message('Typography', name: 'typography', desc: '', args: []);
+  }
+
+  /// `{count, plural, one{UI Element} other{UI Elements}}`
+  String uiElements(num count) {
+    return Intl.plural(
+      count,
+      one: 'UI Element',
+      other: 'UI Elements',
+      name: 'uiElements',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `This field requires a valid URL address.`
+  String get urlErrorText {
+    return Intl.message(
+      'This field requires a valid URL address.',
+      name: 'urlErrorText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username`
+  String get username {
+    return Intl.message('Username', name: 'username', desc: '', args: []);
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message('Yes', name: 'yes', desc: '', args: []);
   }
 }
 

@@ -1,19 +1,31 @@
 import 'dart:math';
 
 import 'package:auth_weebi/auth_weebi.dart' show AccessTokenProvider;
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:boutiques_weebi/boutiques_weebi.dart' show BoutiqueProvider;
 import 'package:design_weebi/design_weebi.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models_weebi/models.dart' show TicketType;
 import 'package:provider/provider.dart';
 import 'package:protos_weebi/protos_weebi_io.dart'
-    show Empty, ReadAllTicketsRequest, TicketPb;
+    show
+        ArticleUncountableOnTicketPb,
+        Counterfoil,
+        ItemCartPb,
+        ReadAllTicketsRequest,
+        TaxPb,
+        TicketPb,
+        TicketPb_PaymentTypePb,
+        Empty;
+import 'package:protos_weebi/src/generated/ticket/ticket_type.pb.dart'
+    show TicketTypePb;
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
+import 'package:web_admin/environment.dart' show Config;
 import 'package:web_admin/billing/license_seat_client.dart';
 import 'package:web_admin/providers/server.dart';
+import 'package:web_admin/core/money/money_formatting.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
 import 'package:web_admin/views/screens/tickets/ticket_glimpse_widget.dart';
 import 'package:web_admin/views/screens/tickets/ticket_pb_to_weebi.dart';
@@ -53,6 +65,76 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   /// Until billing responds, allow controls (optimistic). Then require a seat for this user.
   bool get _multiBoutiqueFeaturesUnlocked =>
       !_licenseGateResolved || _hasLicensedSeat;
+
+  bool get _showCurrencyDemoHack {
+    if (!kDebugMode) return false;
+    // Dev-only hack: show when running against local dev or dev envoy proxy.
+    final apiUrl = Config.apiUrl;
+    return apiUrl.contains('localhost') || apiUrl.contains('weebi-envoyproxy-dev');
+  }
+
+  TicketPb _createCurrencyDemoTicket({
+    required String boutiqueId,
+  }) {
+    final now = DateTime.now().toUtc().toIso8601String();
+
+    final item = ItemCartPb.create()
+      ..quantity = 2
+      ..articleUncountable = (ArticleUncountableOnTicketPb.create()
+        ..calibreId = 1
+        ..id = 1
+        ..designation = 'sac de sucre'
+        ..price = 25000
+        ..cost = 0);
+
+    return TicketPb.create()
+      ..nonUniqueId = 1
+      ..date = now
+      ..statusUpdateDate = now
+      ..status = true
+      ..items.add(item)
+      ..ticketType = TicketTypePb.sell
+      ..paymentType = TicketPb_PaymentTypePb.cash
+      ..contactId = 0
+      ..taxe = (TaxPb.create()
+        ..id = 'tax0'
+        ..name = 'HT 0%'
+        ..percentage = 0.0)
+      ..promo = 0
+      ..received = 50000
+      ..discountAmount = 0
+      ..comment = ''
+      ..creationDate = now
+      ..snapshotSecondaryCurrency = 'USD'
+      ..snapshotLocalPerSecondary = 2000.0
+      ..counterfoil = (Counterfoil.create()
+        ..firmId = 'demo_firm'
+        ..firmName = 'Demo firm'
+        ..chainId = 'demo_chain'
+        ..chainName = 'Demo chain'
+        ..boutiqueId = boutiqueId
+        ..boutiqueName = ''
+        ..deviceId = ''
+        ..deviceName = ''
+        ..userId = 'demo_user'
+        ..userName = 'demo_user');
+  }
+
+  void _openCurrencyDemoTicket() {
+    final cache = context.read<TicketsBoutiqueCache>();
+    const boutiqueId = 'demo_boutique_cdf';
+    cache.upsertDemoBoutique(
+      boutiqueId: boutiqueId,
+      name: 'Demo boutique',
+      billingCurrency: 'CDF',
+    );
+
+    final ticket = _createCurrencyDemoTicket(boutiqueId: boutiqueId);
+    context.push(
+      RouteUri.ticketDetail,
+      extra: ticket,
+    );
+  }
 
   @override
   void initState() {
@@ -357,6 +439,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       cache: cache,
       onTap: _openTicketDetail,
       lang: lang,
+      locale: Localizations.localeOf(context),
     );
 
     return LayoutBuilder(
@@ -427,6 +510,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       cache: cache,
       onTap: _openTicketDetail,
       lang: lang,
+      locale: Localizations.localeOf(context),
     );
 
     return LayoutBuilder(
@@ -508,6 +592,15 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                           style: themeData.textTheme.titleMedium,
                         ),
                       ),
+                      if (_showCurrencyDemoHack)
+                        Padding(
+                          padding: const EdgeInsets.only(right: kDefaultPadding * 0.5),
+                          child: ElevatedButton.icon(
+                            onPressed: _openCurrencyDemoTicket,
+                            icon: const Icon(Icons.monetization_on_outlined),
+                            label: const Text('Currency demo'),
+                          ),
+                        ),
                       IconButton(
                         icon: const Icon(Icons.refresh),
                         onPressed: _isLoading
@@ -572,18 +665,18 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
 
 /// DataTableSource for tickets on large screens.
 class _TicketsTableSource extends DataTableSource {
-  static final _numFormat = NumberFormat.decimalPattern();
-
   final List<_TicketWithMeta> tickets;
   final TicketsBoutiqueCache cache;
   final void Function(TicketPb) onTap;
   final Lang lang;
+  final Locale locale;
 
   _TicketsTableSource({
     required this.tickets,
     required this.cache,
     required this.onTap,
     required this.lang,
+    required this.locale,
   });
 
   TicketType _toTicketType(dynamic pbType) =>
@@ -600,14 +693,25 @@ class _TicketsTableSource extends DataTableSource {
       return lang.ticketsPaymentUnknown;
     }
     final type = _toTicketType(meta.ticket.ticketType);
+    final iso = cache.getBillingCurrency(meta.ticket.counterfoil.boutiqueId);
     if (meta.ticket.received > 0) {
-      return _numFormat.format(meta.ticket.received);
+      return MoneyFormatting.formatTicketAmountLine(
+        localAmount: meta.ticket.received,
+        boutiqueIso4217: iso,
+        ticket: meta.ticket,
+        locale: locale,
+      );
     }
     // For deferred (sellDeferred, spendDeferred) received is 0; use total from items
     if (type.isFinancial && meta.ticket.items.isNotEmpty) {
       try {
         final ticketW = ticketPbToWeebi(meta.ticket);
-        return _numFormat.format(ticketW.total);
+        return MoneyFormatting.formatTicketAmountLine(
+          localAmount: ticketW.total.toDouble(),
+          boutiqueIso4217: iso,
+          ticket: meta.ticket,
+          locale: locale,
+        );
       } catch (_) {
         return lang.ticketItemsShort(meta.ticket.items.length);
       }

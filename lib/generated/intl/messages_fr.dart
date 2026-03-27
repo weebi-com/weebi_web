@@ -147,7 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Valide jusqu\'au",
     ),
     "billingViewFullTerms": MessageLookupByLibrary.simpleMessage(
-      "Voir le document complet (nouvel onglet)",
+      "Conditions Générales de Vente",
     ),
     "buttonEmphasis": MessageLookupByLibrary.simpleMessage(
       "Accentuation du Bouton",
@@ -245,7 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "helpReadFaq": MessageLookupByLibrary.simpleMessage("Lire la FAQ"),
     "helpResourcesTitle": MessageLookupByLibrary.simpleMessage("Ressources"),
     "helpScopeBody": MessageLookupByLibrary.simpleMessage(
-      "La console web permet de gérer les tickets (consultation, filtres, recherche). Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l\'application mobile pour l\'instant.",
+      "La console web permet de gérer les tickets (consultation, filtres, recherche). Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l\'application de caisse pour l\'instant.",
     ),
     "helpScopeTitle": MessageLookupByLibrary.simpleMessage(
       "Que puis-je faire depuis la console web ?",
@@ -289,12 +289,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "maxErrorText": m6,
     "maxLengthErrorText": m7,
     "menuAccesses": MessageLookupByLibrary.simpleMessage("Accès"),
-    "menuBilling": MessageLookupByLibrary.simpleMessage("Facturation"),
+    "menuBilling": MessageLookupByLibrary.simpleMessage("Licences Weebi"),
     "menuBoutiques": MessageLookupByLibrary.simpleMessage("Mes Boutiques"),
     "menuDevices": MessageLookupByLibrary.simpleMessage("Appareils"),
     "menuFirm": MessageLookupByLibrary.simpleMessage("Ma Firme"),
     "menuScopeDisclaimer": MessageLookupByLibrary.simpleMessage(
-      "Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l\'application mobile pour l\'instant.",
+      "Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l\'application de caisse pour l\'instant.",
     ),
     "menuTickets": MessageLookupByLibrary.simpleMessage("Tickets"),
     "menuUsers": MessageLookupByLibrary.simpleMessage("Utilisateurs"),
@@ -309,6 +309,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "openInNewTab": MessageLookupByLibrary.simpleMessage(
       "Ouvrir dans un nouvel onglet",
+    ),
+    "operationalLicenseBlockedBody": MessageLookupByLibrary.simpleMessage(
+      "Votre administrateur doit vous attribuer un siège de licence actif, ou vous devez vous connecter avec le compte créateur de l\'entreprise, avant d\'accéder aux tickets, articles et contacts. Ouvrez Facturation si vous gérez les licences.",
+    ),
+    "operationalLicenseBlockedTitle": MessageLookupByLibrary.simpleMessage(
+      "Licence active requise",
+    ),
+    "operationalLicenseOpenBilling": MessageLookupByLibrary.simpleMessage(
+      "Facturation",
+    ),
+    "operationalLicenseRetry": MessageLookupByLibrary.simpleMessage(
+      "Réessayer",
     ),
     "pages": m13,
     "password": MessageLookupByLibrary.simpleMessage("Mot de Passe"),
@@ -390,7 +402,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Grouper par boutique",
     ),
     "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
-      "Le filtre et le groupement des tickets par boutique nécessitent un siège de licence actif attribué à votre utilisateur. Ouvrez Facturation pour vous abonner ou demandez à l’administrateur de vous attribuer un siège.",
+      "Le filtre et le groupement par boutique nécessitent un siège de licence comme le reste du produit (tickets, articles, contacts). Ouvrez Facturation ou demandez à l’administrateur de vous attribuer un siège.",
     ),
     "ticketsLicenseOnlyMultiBoutiqueTitle":
         MessageLookupByLibrary.simpleMessage(

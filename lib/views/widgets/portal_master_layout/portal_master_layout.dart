@@ -5,6 +5,7 @@ import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/master_layout_config.dart';
 import 'package:web_admin/providers/app_preferences_provider.dart';
+import 'package:web_admin/views/widgets/operational_license_overlay.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/sidebar.dart';
 
 import '../../../core/constants/dimens.dart';
@@ -85,8 +86,9 @@ class PortalMasterLayout extends StatelessWidget {
   }
 
   Widget _responsiveBody(BuildContext context) {
+    final framed = OperationalLicenseOverlay(child: body);
     if (MediaQuery.of(context).size.width <= kScreenWidthLg) {
-      return body;
+      return framed;
     } else {
       return Row(
         children: [
@@ -94,7 +96,7 @@ class PortalMasterLayout extends StatelessWidget {
             width: Theme.of(context).extension<AppSidebarTheme>()!.sidebarWidth,
             child: _sidebar(context),
           ),
-          Expanded(child: body),
+          Expanded(child: framed),
         ],
       );
     }

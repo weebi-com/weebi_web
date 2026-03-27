@@ -5,6 +5,7 @@ import 'package:grpc/grpc_web.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:web_admin/grpc/auth_interceptor.dart';
 import 'package:web_admin/grpc/log_interceptor.dart';
+import 'package:web_admin/grpc/operational_license_grpc_interceptor.dart';
 import 'package:web_admin/grpc/server.dart';
 
 class ArticleServiceClientProvider extends ChangeNotifier {
@@ -16,6 +17,7 @@ class ArticleServiceClientProvider extends ChangeNotifier {
           options: callOptions,
           interceptors: [
             AuthInterceptor(accessToken),
+            OperationalLicenseGrpcInterceptor(),
             RequestLogInterceptor(),
           ],
         );
@@ -28,6 +30,7 @@ class ArticleServiceClientProvider extends ChangeNotifier {
       options: callOptions,
       interceptors: [
         AuthInterceptor(value),
+        OperationalLicenseGrpcInterceptor(),
         RequestLogInterceptor(),
       ],
     );
@@ -50,6 +53,7 @@ class ContactServiceClientProvider extends ChangeNotifier {
           options: callOptions,
           interceptors: [
             AuthInterceptor(_accessToken),
+            OperationalLicenseGrpcInterceptor(),
             RequestLogInterceptor(),
           ],
         );
@@ -60,6 +64,7 @@ class ContactServiceClientProvider extends ChangeNotifier {
       options: callOptions,
       interceptors: [
         AuthInterceptor(value),
+        OperationalLicenseGrpcInterceptor(),
         RequestLogInterceptor(),
       ],
     );
@@ -79,6 +84,7 @@ class TicketServiceClientProvider extends ChangeNotifier {
           options: callOptions,
           interceptors: [
             AuthInterceptor(_accessToken),
+            OperationalLicenseGrpcInterceptor(),
             RequestLogInterceptor(),
           ],
         );
@@ -89,6 +95,7 @@ class TicketServiceClientProvider extends ChangeNotifier {
       options: callOptions,
       interceptors: [
         AuthInterceptor(_accessToken),
+        OperationalLicenseGrpcInterceptor(),
         RequestLogInterceptor(),
       ],
     );

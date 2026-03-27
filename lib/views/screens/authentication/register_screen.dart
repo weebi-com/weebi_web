@@ -148,7 +148,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: FormBuilderTextField(
                               name: 'firmName',
                               decoration: const InputDecoration(
-                                icon: Icon(Icons.business),
                                 labelText: 'Firme',
                                 hintText: 'Nom de la firme',
                                 border: OutlineInputBorder(),
@@ -170,7 +169,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               decoration: InputDecoration(
                                 labelText: lang.firstName,
                                 hintText: lang.firstName,
-                                helperText: '',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -190,7 +188,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               decoration: InputDecoration(
                                 labelText: lang.lastName,
                                 hintText: lang.lastName,
-                                helperText: '',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,

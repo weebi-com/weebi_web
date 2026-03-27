@@ -173,6 +173,13 @@ class _BillingScreenState extends State<BillingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        TextButton(
+          onPressed: _openLegalDocumentInNewTab,
+          child: Text(lang.billingViewFullTerms, 
+          style: TextStyle(color: theme.colorScheme.primary, 
+          fontWeight: FontWeight.bold, fontSize: 16, decoration: TextDecoration.underline)),
+        ),
+                const SizedBox(height: kDefaultPadding),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -197,10 +204,7 @@ class _BillingScreenState extends State<BillingScreen> {
             ),
           ],
         ),
-        TextButton(
-          onPressed: _openLegalDocumentInNewTab,
-          child: Text(lang.billingViewFullTerms),
-        ),
+
       ],
     );
   }
