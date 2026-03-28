@@ -499,6 +499,11 @@ class _BillingScreenState extends State<BillingScreen> {
                               lang.billingPurchaseLicense,
                               style: themeData.textTheme.titleMedium,
                             ),
+                            const SizedBox(height: kDefaultPadding * 0.75),
+                            Text(
+                              lang.billingPurchaseLicenseDescription,
+                              style: themeData.textTheme.bodyMedium,
+                            ),
                             const SizedBox(height: kDefaultPadding),
                             _enterpriseTermsAcceptanceBlock(themeData, lang),
                             const SizedBox(height: kDefaultPadding),

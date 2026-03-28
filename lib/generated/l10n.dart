@@ -259,10 +259,10 @@ class Lang {
     );
   }
 
-  /// `Choose a license to use the advanced features of Weebi.`
+  /// `Choose a license to unlock Weebi's advanced features. Each seat is a one-time purchase: it does not expire, and this is not a subscription—no renewals, no ticking clock.`
   String get billingPurchaseLicenseDescription {
     return Intl.message(
-      'Choose a license to use the advanced features of Weebi.',
+      'Choose a license to unlock Weebi\'s advanced features. Each seat is a one-time purchase: it does not expire, and this is not a subscription—no renewals, no ticking clock.',
       name: 'billingPurchaseLicenseDescription',
       desc: '',
       args: [],
@@ -443,6 +443,36 @@ class Lang {
     return Intl.message('Copy', name: 'copy', desc: '', args: []);
   }
 
+  /// `Error while creating the enterprise: `
+  String get createEnterpriseErrorPrefix {
+    return Intl.message(
+      'Error while creating the enterprise: ',
+      name: 'createEnterpriseErrorPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create an enterprise`
+  String get createEnterprisePageTitle {
+    return Intl.message(
+      'Create an enterprise',
+      name: 'createEnterprisePageTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The enterprise "{name}" was created successfully.`
+  String createEnterpriseSuccessTitle(String name) {
+    return Intl.message(
+      'The enterprise "$name" was created successfully.',
+      name: 'createEnterpriseSuccessTitle',
+      desc: '',
+      args: [name],
+    );
+  }
+
   /// `This field requires a valid credit card number.`
   String get creditCardErrorText {
     return Intl.message(
@@ -503,10 +533,10 @@ class Lang {
     );
   }
 
-  /// `My firm`
+  /// `My enterprise`
   String get dashboardCardMyFirmValue {
     return Intl.message(
-      'My firm',
+      'My enterprise',
       name: 'dashboardCardMyFirmValue',
       desc: '',
       args: [],
@@ -600,6 +630,26 @@ class Lang {
     );
   }
 
+  /// `Enterprise name`
+  String get enterpriseNameFieldHint {
+    return Intl.message(
+      'Enterprise name',
+      name: 'enterpriseNameFieldHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enterprise`
+  String get enterpriseNameFieldLabel {
+    return Intl.message(
+      'Enterprise',
+      name: 'enterpriseNameFieldLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `This field value must be equal to {value}.`
   String equalErrorText(Object value) {
     return Intl.message(
@@ -652,20 +702,20 @@ class Lang {
     );
   }
 
-  /// `The firm represents your company; it groups your users and your chains/stores.`
+  /// `Your enterprise groups your users and your store chains.`
   String get firmCardDescription {
     return Intl.message(
-      'The firm represents your company; it groups your users and your chains/stores.',
+      'Your enterprise groups your users and your store chains.',
       name: 'firmCardDescription',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please create a new firm by clicking the "Add a firm" button.`
+  /// `Please create a new enterprise by clicking the "Add an enterprise" button.`
   String get firmErrorCreateHint {
     return Intl.message(
-      'Please create a new firm by clicking the "Add a firm" button.',
+      'Please create a new enterprise by clicking the "Add an enterprise" button.',
       name: 'firmErrorCreateHint',
       desc: '',
       args: [],
@@ -682,9 +732,14 @@ class Lang {
     );
   }
 
-  /// `My firm`
+  /// `My enterprise`
   String get firmPageTitle {
-    return Intl.message('My firm', name: 'firmPageTitle', desc: '', args: []);
+    return Intl.message(
+      'My enterprise',
+      name: 'firmPageTitle',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `First Name`
@@ -964,9 +1019,9 @@ class Lang {
     return Intl.message('Devices', name: 'menuDevices', desc: '', args: []);
   }
 
-  /// `My Firm`
+  /// `My enterprise`
   String get menuFirm {
-    return Intl.message('My Firm', name: 'menuFirm', desc: '', args: []);
+    return Intl.message('My enterprise', name: 'menuFirm', desc: '', args: []);
   }
 
   /// `Articles, contacts and operations (sales, purchases, stock movements, etc.) are available in the mobile app for now.`
@@ -1068,10 +1123,10 @@ class Lang {
     );
   }
 
-  /// `Your firm administrator must assign you an active license seat, or you need to sign in as the firm creator, before you can use tickets, articles, or contacts. Open Billing if you manage licenses.`
+  /// `Your enterprise administrator must assign you an active license seat, or you need to sign in as the user who created the enterprise, before you can use tickets, articles, or contacts. Open Billing if you manage licenses.`
   String get operationalLicenseBlockedBody {
     return Intl.message(
-      'Your firm administrator must assign you an active license seat, or you need to sign in as the firm creator, before you can use tickets, articles, or contacts. Open Billing if you manage licenses.',
+      'Your enterprise administrator must assign you an active license seat, or you need to sign in as the user who created the enterprise, before you can use tickets, articles, or contacts. Open Billing if you manage licenses.',
       name: 'operationalLicenseBlockedBody',
       desc: '',
       args: [],
@@ -1481,31 +1536,31 @@ class Lang {
     );
   }
 
-  /// `Store filter and grouping need a license seat the same way the rest of the product does (tickets, articles, contacts). Open Billing or ask your administrator to assign you a seat.`
-  String get ticketsLicenseOnlyMultiBoutiqueDetail {
+  /// `Store filter and grouping require an active license seat. The firm creator can use core sync without a seat; these views are for seated team members. Open Billing or ask your administrator to assign you a seat.`
+  String get ticketsSeatGatedBoutiqueViewsDetail {
     return Intl.message(
-      'Store filter and grouping need a license seat the same way the rest of the product does (tickets, articles, contacts). Open Billing or ask your administrator to assign you a seat.',
-      name: 'ticketsLicenseOnlyMultiBoutiqueDetail',
+      'Store filter and grouping require an active license seat. The firm creator can use core sync without a seat; these views are for seated team members. Open Billing or ask your administrator to assign you a seat.',
+      name: 'ticketsSeatGatedBoutiqueViewsDetail',
       desc: '',
       args: [],
     );
   }
 
   /// `Store filter & grouping`
-  String get ticketsLicenseOnlyMultiBoutiqueTitle {
+  String get ticketsSeatGatedBoutiqueViewsTitle {
     return Intl.message(
       'Store filter & grouping',
-      name: 'ticketsLicenseOnlyMultiBoutiqueTitle',
+      name: 'ticketsSeatGatedBoutiqueViewsTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `License seat required`
-  String get ticketsLicenseOnlyShort {
+  /// `Active license seat required`
+  String get ticketsSeatEntitlementSubtitle {
     return Intl.message(
-      'License seat required',
-      name: 'ticketsLicenseOnlyShort',
+      'Active license seat required',
+      name: 'ticketsSeatEntitlementSubtitle',
       desc: '',
       args: [],
     );

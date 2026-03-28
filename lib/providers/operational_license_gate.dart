@@ -5,9 +5,10 @@ import '../core/grpc/firm_product_access.dart';
 /// Static hook so gRPC interceptors can signal the UI without a [BuildContext].
 ///
 /// Server: [fence_service] emits `FAILED_PRECONDITION` whose message contains
-/// [kOperationalLicenseRequired] when the signed-in user is neither the firm
-/// creator (JWT `isFirmCreator`) nor on an active license seat (see
-/// `assertUserHasOperationalLicense` on the server).
+/// [kOperationalLicenseRequired] when the signed-in user has neither the **firm
+/// creator operational joker** (JWT `isFirmCreator`) nor an active license seat
+/// (see `assertUserHasOperationalLicense`). Seat-only UI gates are separate;
+/// see `docs/entitlements.md`.
 class OperationalLicenseGateBinding {
   OperationalLicenseGateBinding._();
   static final instance = OperationalLicenseGateBinding._();

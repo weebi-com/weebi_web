@@ -9,10 +9,11 @@ import '../providers/operational_license_gate.dart';
 /// server rejects the call for missing **operational license**.
 ///
 /// Today, [fence_service] returns `FAILED_PRECONDITION` with a message containing
-/// [kOperationalLicenseRequired] when the user is neither the firm creator (JWT
-/// `isFirmCreator`) nor assigned an active license seat (see server-side
-/// `assertUserHasOperationalLicense`). Other services (ticket, article, contact)
-/// surface the same error to the client.
+/// [kOperationalLicenseRequired] when the user has neither the **firm creator
+/// operational joker** (JWT `isFirmCreator`) nor an active license seat (see
+/// server-side `assertUserHasOperationalLicense`). Other services (ticket, article,
+/// contact) surface the same error to the client. Seat-gated portal features
+/// (e.g. ticket store views) are separate; see `docs/entitlements.md`.
 ///
 /// The binding drives [OperationalLicenseOverlay] so the user sees billing / retry
 /// without coupling interceptors to [BuildContext].

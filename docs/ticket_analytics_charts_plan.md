@@ -1,5 +1,9 @@
 # Ticket analytics & charts (webapp home tile)
 
+
+TODO first look at the object called CLOSING which is already an aggregation of tickets
+IMPLEMENTING AUTO aggregations of ticket using this is possible and probably the safest way to do this without computing too much
+
 Plan for adding a **home dashboard tile** that opens **charts / analytics**, with **server-driven aggregates** instead of loading large ticket lists into the client.
 
 Today the webapp loads tickets via **`TicketService.readAll`** (with filters). **`charts_weebi`** expects structured report-style data, not tens of thousands of raw `TicketPb` messages. Analytics should use **dedicated, bounded RPCs** that return pre-aggregated series for a **time range** and **scope**.

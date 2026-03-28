@@ -26,54 +26,56 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(count) =>
       "${Intl.plural(count, one: 'Couleur', other: 'Couleurs')}";
 
-  static String m2(count) =>
+  static String m2(name) => "L\'entreprise « ${name} » a bien été créée.";
+
+  static String m3(count) =>
       "${Intl.plural(count, one: 'Dialogue', other: 'Dialogues')}";
 
-  static String m3(value) =>
+  static String m4(value) =>
       "La valeur de ce champ doit être égale à ${value}.";
 
-  static String m4(count) =>
+  static String m5(count) =>
       "${Intl.plural(count, one: 'Extension', other: 'Extensions')}";
 
-  static String m5(count) =>
+  static String m6(count) =>
       "${Intl.plural(count, one: 'Formulaire', other: 'Formulaires')}";
 
-  static String m6(max) => "La valeur doit être inférieure ou égale à ${max}.";
+  static String m7(max) => "La valeur doit être inférieure ou égale à ${max}.";
 
-  static String m7(maxLength) =>
+  static String m8(maxLength) =>
       "La longueur doit être inférieure ou égale à ${maxLength}.";
 
-  static String m8(min) => "La valeur doit être supérieure ou égale à ${min}.";
+  static String m9(min) => "La valeur doit être supérieure ou égale à ${min}.";
 
-  static String m9(minLength) =>
+  static String m10(minLength) =>
       "La longueur doit être supérieure ou égale à ${minLength}.";
 
-  static String m10(count) =>
+  static String m11(count) =>
       "${Intl.plural(count, one: 'Nouvelle Commande', other: 'Nouvelles Commandes')}";
 
-  static String m11(count) =>
+  static String m12(count) =>
       "${Intl.plural(count, one: 'Nouvel Utilisateur', other: 'Nouveaux Utilisateurs')}";
 
-  static String m12(value) =>
+  static String m13(value) =>
       "La valeur de ce champ ne doit pas être égale à ${value}.";
 
-  static String m13(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, one: 'Page', other: 'Pages')}";
 
-  static String m14(count) =>
+  static String m15(count) =>
       "${Intl.plural(count, one: 'Problème en Attente', other: 'Problèmes en Attente')}";
 
-  static String m15(count) =>
+  static String m16(count) =>
       "${Intl.plural(count, one: 'Commande Récente', other: 'Commandes Récentes')}";
 
-  static String m16(ticketId) => "Détail du ticket n°${ticketId}";
+  static String m17(ticketId) => "Détail du ticket n°${ticketId}";
 
-  static String m17(count) => "${count} art.";
-
-  static String m18(count) =>
-      "${Intl.plural(count, one: '# ticket', other: '# tickets')}";
+  static String m18(count) => "${count} art.";
 
   static String m19(count) =>
+      "${Intl.plural(count, one: '# ticket', other: '# tickets')}";
+
+  static String m20(count) =>
       "${Intl.plural(count, one: 'Élément UI', other: 'Éléments UI')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -129,14 +131,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Acheter une licence",
     ),
     "billingPurchaseLicenseDescription": MessageLookupByLibrary.simpleMessage(
-      "Choisissez une licence pour utiliser les fonctions avancées de Weebi.",
+      "Choisissez une licence pour débloquer les fonctions avancées de Weebi. Chaque license est un achat unique : il n\'expire pas, et ce n\'est pas un abonnement — pas de renouvellement, pas de date limite.",
     ),
     "billingReassignNoOtherUser": MessageLookupByLibrary.simpleMessage(
-      "Aucun autre utilisateur ne peut recevoir ce siège. Ajoutez un utilisateur ou libérez un siège ailleurs d’abord.",
+      "Aucun autre utilisateur ne peut recevoir cette license. Ajoutez un utilisateur ou libérez une license ailleurs d’abord.",
     ),
     "billingReassignSeat": MessageLookupByLibrary.simpleMessage("Réattribuer"),
     "billingReassignSeatDialogTitle": MessageLookupByLibrary.simpleMessage(
-      "Réattribuer ce siège de licence à un autre utilisateur",
+      "Réattribuer cette license à un autre utilisateur",
     ),
     "billingRetry": MessageLookupByLibrary.simpleMessage("Réessayer"),
     "billingSeatsAttributed": MessageLookupByLibrary.simpleMessage(
@@ -170,6 +172,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirmer la soumission de cet enregistrement?",
     ),
     "copy": MessageLookupByLibrary.simpleMessage("Copier"),
+    "createEnterpriseErrorPrefix": MessageLookupByLibrary.simpleMessage(
+      "Erreur lors de la création de l\'entreprise : ",
+    ),
+    "createEnterprisePageTitle": MessageLookupByLibrary.simpleMessage(
+      "Créer une entreprise",
+    ),
+    "createEnterpriseSuccessTitle": m2,
     "creditCardErrorText": MessageLookupByLibrary.simpleMessage(
       "Ce champ nécessite un numéro de carte de crédit valide.",
     ),
@@ -186,7 +195,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Appareils",
     ),
     "dashboardCardMyFirmValue": MessageLookupByLibrary.simpleMessage(
-      "Ma firme",
+      "Mon entreprise",
     ),
     "dashboardCardTicketsShort": MessageLookupByLibrary.simpleMessage(
       "Tickets",
@@ -203,7 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateStringErrorText": MessageLookupByLibrary.simpleMessage(
       "Ce champ nécessite une chaîne de date valide.",
     ),
-    "dialogs": m2,
+    "dialogs": m3,
     "dontHaveAnAccount": MessageLookupByLibrary.simpleMessage(
       "Vous n\'avez pas de compte?",
     ),
@@ -211,24 +220,30 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailErrorText": MessageLookupByLibrary.simpleMessage(
       "Ce champ nécessite une adresse e-mail valide.",
     ),
-    "equalErrorText": m3,
+    "enterpriseNameFieldHint": MessageLookupByLibrary.simpleMessage(
+      "Nom de l\'entreprise",
+    ),
+    "enterpriseNameFieldLabel": MessageLookupByLibrary.simpleMessage(
+      "Entreprise",
+    ),
+    "equalErrorText": m4,
     "error404": MessageLookupByLibrary.simpleMessage("Erreur 404"),
     "error404Message": MessageLookupByLibrary.simpleMessage(
       "Désolé, la page que vous recherchez a été supprimée ou n\'existe pas.",
     ),
     "error404Title": MessageLookupByLibrary.simpleMessage("Page non trouvée"),
     "example": MessageLookupByLibrary.simpleMessage("Exemple"),
-    "extensions": m4,
+    "extensions": m5,
     "firmCardDescription": MessageLookupByLibrary.simpleMessage(
-      "La firme représente votre entreprise, elle regroupe vos utilisateurs et vos chaînes/boutiques",
+      "Votre entreprise regroupe vos utilisateurs et vos chaînes ou boutiques.",
     ),
     "firmErrorCreateHint": MessageLookupByLibrary.simpleMessage(
-      "Veuillez créer une nouvelle firme en cliquant sur le bouton « Ajouter une firme ».",
+      "Veuillez créer une nouvelle entreprise en cliquant sur le bouton « Ajouter une entreprise ».",
     ),
     "firmErrorUnexpected": MessageLookupByLibrary.simpleMessage(
       "Une erreur inattendue est survenue.",
     ),
-    "firmPageTitle": MessageLookupByLibrary.simpleMessage("Ma firme"),
+    "firmPageTitle": MessageLookupByLibrary.simpleMessage("Mon entreprise"),
     "firstName": MessageLookupByLibrary.simpleMessage("Prénom"),
     "forgotPassword": MessageLookupByLibrary.simpleMessage(
       "Mot de passe oublié ?",
@@ -239,7 +254,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPasswordTitle": MessageLookupByLibrary.simpleMessage(
       "Mot de passe oublié",
     ),
-    "forms": m5,
+    "forms": m6,
     "generalUi": MessageLookupByLibrary.simpleMessage("UI Générale"),
     "help": MessageLookupByLibrary.simpleMessage("Aide"),
     "helpReadFaq": MessageLookupByLibrary.simpleMessage("Lire la FAQ"),
@@ -286,24 +301,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "matchErrorText": MessageLookupByLibrary.simpleMessage(
       "La valeur ne correspond pas au motif.",
     ),
-    "maxErrorText": m6,
-    "maxLengthErrorText": m7,
+    "maxErrorText": m7,
+    "maxLengthErrorText": m8,
     "menuAccesses": MessageLookupByLibrary.simpleMessage("Accès"),
     "menuBilling": MessageLookupByLibrary.simpleMessage("Licences Weebi"),
     "menuBoutiques": MessageLookupByLibrary.simpleMessage("Mes Boutiques"),
     "menuDevices": MessageLookupByLibrary.simpleMessage("Appareils"),
-    "menuFirm": MessageLookupByLibrary.simpleMessage("Ma Firme"),
+    "menuFirm": MessageLookupByLibrary.simpleMessage("Mon entreprise"),
     "menuScopeDisclaimer": MessageLookupByLibrary.simpleMessage(
       "Les articles, contacts et opérations (ventes, achats, mouvements de stock, etc.) sont disponibles sur l\'application de caisse pour l\'instant.",
     ),
     "menuTickets": MessageLookupByLibrary.simpleMessage("Tickets"),
     "menuUsers": MessageLookupByLibrary.simpleMessage("Utilisateurs"),
-    "minErrorText": m8,
-    "minLengthErrorText": m9,
+    "minErrorText": m9,
+    "minLengthErrorText": m10,
     "myProfile": MessageLookupByLibrary.simpleMessage("Mon Profil"),
-    "newOrders": m10,
-    "newUsers": m11,
-    "notEqualErrorText": m12,
+    "newOrders": m11,
+    "newUsers": m12,
+    "notEqualErrorText": m13,
     "numericErrorText": MessageLookupByLibrary.simpleMessage(
       "La valeur doit être numérique.",
     ),
@@ -311,7 +326,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ouvrir dans un nouvel onglet",
     ),
     "operationalLicenseBlockedBody": MessageLookupByLibrary.simpleMessage(
-      "Votre administrateur doit vous attribuer un siège de licence actif, ou vous devez vous connecter avec le compte créateur de l\'entreprise, avant d\'accéder aux tickets, articles et contacts. Ouvrez Facturation si vous gérez les licences.",
+      "L\'administrateur de votre entreprise doit vous attribuer une license active, ou vous devez vous connecter avec le compte créateur de l\'entreprise, avant d\'accéder aux tickets, articles et contacts. Ouvrez Facturation si vous gérez les licences.",
     ),
     "operationalLicenseBlockedTitle": MessageLookupByLibrary.simpleMessage(
       "Licence active requise",
@@ -322,13 +337,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "operationalLicenseRetry": MessageLookupByLibrary.simpleMessage(
       "Réessayer",
     ),
-    "pages": m13,
+    "pages": m14,
     "password": MessageLookupByLibrary.simpleMessage("Mot de Passe"),
     "passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "Les mots de passe ne correspondent pas.",
     ),
-    "pendingIssues": m14,
-    "recentOrders": m15,
+    "pendingIssues": m15,
+    "recentOrders": m16,
     "recordDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Enregistrement supprimé avec succès.",
     ),
@@ -367,8 +382,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Accentuation du Texte",
     ),
     "textTheme": MessageLookupByLibrary.simpleMessage("Thème du Texte"),
-    "ticketDetailTitle": m16,
-    "ticketItemsShort": m17,
+    "ticketDetailTitle": m17,
+    "ticketItemsShort": m18,
     "ticketNotProvided": MessageLookupByLibrary.simpleMessage(
       "Ticket non fourni",
     ),
@@ -387,7 +402,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Date · n°",
     ),
     "ticketsColumnType": MessageLookupByLibrary.simpleMessage("Type"),
-    "ticketsCount": m18,
+    "ticketsCount": m19,
     "ticketsDateAll": MessageLookupByLibrary.simpleMessage("Toutes les dates"),
     "ticketsDeletedChip": MessageLookupByLibrary.simpleMessage("Supprimés"),
     "ticketsDeletedExclude": MessageLookupByLibrary.simpleMessage(
@@ -401,16 +416,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "ticketsGroupByBoutique": MessageLookupByLibrary.simpleMessage(
       "Grouper par boutique",
     ),
-    "ticketsLicenseOnlyMultiBoutiqueDetail": MessageLookupByLibrary.simpleMessage(
-      "Le filtre et le groupement par boutique nécessitent un siège de licence comme le reste du produit (tickets, articles, contacts). Ouvrez Facturation ou demandez à l’administrateur de vous attribuer un siège.",
-    ),
-    "ticketsLicenseOnlyMultiBoutiqueTitle":
-        MessageLookupByLibrary.simpleMessage(
-          "Filtre et groupement par boutique",
-        ),
-    "ticketsLicenseOnlyShort": MessageLookupByLibrary.simpleMessage(
-      "Siège de licence requis",
-    ),
     "ticketsPaymentCard": MessageLookupByLibrary.simpleMessage("Carte"),
     "ticketsPaymentCash": MessageLookupByLibrary.simpleMessage("Espèces"),
     "ticketsPaymentCheque": MessageLookupByLibrary.simpleMessage("Chèque"),
@@ -420,6 +425,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Mobile Money",
     ),
     "ticketsPaymentUnknown": MessageLookupByLibrary.simpleMessage("—"),
+    "ticketsSeatEntitlementSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Siège de licence actif requis",
+    ),
+    "ticketsSeatGatedBoutiqueViewsDetail": MessageLookupByLibrary.simpleMessage(
+      "Le filtre et le groupement par boutique exigent un siège de licence actif. Le créateur de l’entreprise peut synchroniser sans siège (aperçu) ; ces vues sont réservées aux membres avec siège. Ouvrez Facturation ou demandez à l’administrateur de vous attribuer un siège.",
+    ),
+    "ticketsSeatGatedBoutiqueViewsTitle": MessageLookupByLibrary.simpleMessage(
+      "Filtre et groupement par boutique",
+    ),
     "ticketsSortChronological": MessageLookupByLibrary.simpleMessage(
       "Ordre chronologique",
     ),
@@ -443,7 +457,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ventes d\'Aujourd\'hui",
     ),
     "typography": MessageLookupByLibrary.simpleMessage("Typographie"),
-    "uiElements": m19,
+    "uiElements": m20,
     "urlErrorText": MessageLookupByLibrary.simpleMessage(
       "Ce champ nécessite une adresse URL valide.",
     ),

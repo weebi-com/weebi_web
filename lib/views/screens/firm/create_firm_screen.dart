@@ -43,27 +43,29 @@ class _CreateFirmScreenState extends State<CreateFirmScreen> {
           defaultCurrency: _formData.defaultCurrency,
         );
         if (!context.mounted) return;
+        final lang = Lang.of(context);
         setState(() {
           _isLoading = false;
         });
         AwesomeDialog(
           context: context,
           dialogType: DialogType.success,
-          title: "La firme  ${response.firm.name} à bien été crée.",
+          title: lang.createEnterpriseSuccessTitle(response.firm.name),
           width: kDialogWidth,
           btnOkText: 'OK',
           btnOkOnPress: () => (GoRouter.of(context).go(RouteUri.firmDetail)),
         ).show();
       } catch (e) {
         if (!context.mounted) return;
+        final lang = Lang.of(context);
         setState(() {
           _isLoading = false;
         });
         AwesomeDialog(
           context: context,
           dialogType: DialogType.error,
-          title: "Lang.of(context).error",
-          desc: 'Erreur lors de la création de la firme: ${e.toString()}',
+          title: lang.createEnterprisePageTitle,
+          desc: '${lang.createEnterpriseErrorPrefix}${e.toString()}',
           btnOkText: 'OK',
           btnOkOnPress: () {},
         ).show();
@@ -75,7 +77,7 @@ class _CreateFirmScreenState extends State<CreateFirmScreen> {
   Widget build(BuildContext context) {
     final lang = Lang.of(context);
     final themeData = Theme.of(context);
-    const pageTitle = 'Crée une firme';
+    final pageTitle = lang.createEnterprisePageTitle;
 
     return PortalMasterLayout(
       selectedMenuUri: RouteUri.crud,
@@ -93,7 +95,7 @@ class _CreateFirmScreenState extends State<CreateFirmScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CardHeader(
+                  CardHeader(
                     title: pageTitle,
                   ),
                   CardBody(

@@ -48,7 +48,10 @@ class ChainService {
       String? firmId,
       String? name,
       List<BoutiquePb>? boutiques,
-      Timestamp? lastUpdateTimestampUTC}) async {
+      Timestamp? lastUpdateTimestampUTC,
+      String? currency,
+      bool? dualCurrencyEnabled,
+      String? secondaryDisplayCurrency}) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
     try {
@@ -56,8 +59,19 @@ class ChainService {
       final token = prefs.getString(StorageKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
+      final req = ChainRequest(chainId: chainId, name: name);
+      if (currency != null) {
+        req.currency = currency;
+      }
+      if (dualCurrencyEnabled != null) {
+        req.dualCurrencyEnabled = dualCurrencyEnabled;
+      }
+      if (secondaryDisplayCurrency != null && secondaryDisplayCurrency.isNotEmpty ) {
+        req.secondaryDisplayCurrency = secondaryDisplayCurrency;
+      }
+
       final response = await stub.updateOneChain(
-        ChainRequest(chainId: chainId, name: name),
+        req,
         options: options,
       );
 

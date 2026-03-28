@@ -30,7 +30,7 @@ dependencies:
 
   protobuf: ^4.0.0
 
-  protos_weebi: ^1.2.3 # currency: firm/chain/boutique + ticket FX snapshot
+  protos_weebi: ^1.2.5 # ChainRequest currency + DeleteChainRequest
   models_weebi: any
   auth_weebi: ^1.0.6
   boutiques_weebi: ^1.0.6

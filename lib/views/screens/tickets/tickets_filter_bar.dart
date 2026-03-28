@@ -66,9 +66,9 @@ class TicketsFilterState {
   }
 }
 
-/// Explains that filtering / grouping tickets by store requires a firm license.
-class TicketsMultiBoutiqueLicenseGateButton extends StatelessWidget {
-  const TicketsMultiBoutiqueLicenseGateButton({super.key});
+/// Explains that filtering / grouping tickets by store requires an active license seat.
+class TicketsSeatGatedBoutiqueViewsButton extends StatelessWidget {
+  const TicketsSeatGatedBoutiqueViewsButton({super.key});
 
   void _showHint(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -80,7 +80,7 @@ class TicketsMultiBoutiqueLicenseGateButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final lang = Lang.of(context);
-    final detail = lang.ticketsLicenseOnlyMultiBoutiqueDetail;
+    final detail = lang.ticketsSeatGatedBoutiqueViewsDetail;
 
     return Tooltip(
       message: detail,
@@ -96,11 +96,11 @@ class TicketsMultiBoutiqueLicenseGateButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              lang.ticketsLicenseOnlyMultiBoutiqueTitle,
+              lang.ticketsSeatGatedBoutiqueViewsTitle,
               style: theme.textTheme.labelLarge,
             ),
             Text(
-              lang.ticketsLicenseOnlyShort,
+              lang.ticketsSeatEntitlementSubtitle,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -121,15 +121,15 @@ class TicketsFilterBar extends StatelessWidget {
   final TicketsFilterState filter;
   final ValueChanged<TicketsFilterState> onFilterChanged;
   final List<BoutiqueOption> availableBoutiques;
-  /// When false, boutique filter and "group by boutique" are replaced by a license-seat notice.
-  final bool multiBoutiqueFeaturesUnlocked;
+  /// When false, store filter and "group by store" are replaced by a seat-entitlement notice.
+  final bool ticketBoutiqueViewsUnlocked;
 
   const TicketsFilterBar({
     super.key,
     required this.filter,
     required this.onFilterChanged,
     this.availableBoutiques = const [],
-    this.multiBoutiqueFeaturesUnlocked = true,
+    this.ticketBoutiqueViewsUnlocked = true,
   });
 
   @override
@@ -168,7 +168,7 @@ class TicketsFilterBar extends StatelessWidget {
                   onChanged: (v) =>
                       onFilterChanged(filter.copyWith(deletedFilter: v)),
                 ),
-                if (multiBoutiqueFeaturesUnlocked) ...[
+                if (ticketBoutiqueViewsUnlocked) ...[
                   _BoutiqueFilterChip(
                     boutiqueId: filter.boutiqueId,
                     availableBoutiques: availableBoutiques,
@@ -191,7 +191,7 @@ class TicketsFilterBar extends StatelessWidget {
                         onFilterChanged(filter.copyWith(groupByBoutique: v)),
                   ),
                 ] else
-                  const TicketsMultiBoutiqueLicenseGateButton(),
+                  const TicketsSeatGatedBoutiqueViewsButton(),
               ],
             ),
           ],

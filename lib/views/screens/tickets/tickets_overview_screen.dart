@@ -23,7 +23,7 @@ import 'package:protos_weebi/src/generated/ticket/ticket_type.pb.dart'
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/environment.dart' show Config;
-import 'package:web_admin/billing/license_seat_client.dart';
+import 'package:web_admin/billing/seat_capability.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/core/money/money_formatting.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
@@ -58,13 +58,13 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   String? _errorMessage;
   TicketsFilterState _filter = const TicketsFilterState();
   final _tableScrollController = ScrollController();
-  bool _licenseGateResolved = false;
-  /// Same notion as ticket service: multi-boutique read needs an active seat on a valid license.
-  bool _hasLicensedSeat = false;
+  bool _seatCheckResolved = false;
+  /// Active license seat for subscription-backed ticket views (no firm-creator joker).
+  bool _hasSeatForBoutiqueViews = false;
 
-  /// Until billing responds, allow controls (optimistic). Then require a seat for this user.
-  bool get _multiBoutiqueFeaturesUnlocked =>
-      !_licenseGateResolved || _hasLicensedSeat;
+  /// Until billing responds, allow controls (optimistic). Then require a seat for store filter/group.
+  bool get _ticketBoutiqueViewsUnlocked =>
+      !_seatCheckResolved || _hasSeatForBoutiqueViews;
 
   bool get _showCurrencyDemoHack {
     if (!kDebugMode) return false;
@@ -146,7 +146,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
     });
   }
 
-  TicketsFilterState _withoutMultiBoutiqueFilters(TicketsFilterState f) {
+  TicketsFilterState _withoutBoutiqueViewFilters(TicketsFilterState f) {
     return TicketsFilterState(
       dateFrom: f.dateFrom,
       dateTo: f.dateTo,
@@ -164,23 +164,23 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       final res = await billing.readLicenses(Empty());
       if (!mounted) return;
       final userId = context.read<AccessTokenProvider>().permissions.userId;
-      final hasSeat = LicenseSeatClient.userHasActiveLicensedSeat(
+      final hasSeat = SeatCapability.ticketsBoutiqueViewsUnlocked(
         userId,
         res.licenses,
       );
       setState(() {
-        _licenseGateResolved = true;
-        _hasLicensedSeat = hasSeat;
+        _seatCheckResolved = true;
+        _hasSeatForBoutiqueViews = hasSeat;
         if (!hasSeat) {
-          _filter = _withoutMultiBoutiqueFilters(_filter);
+          _filter = _withoutBoutiqueViewFilters(_filter);
         }
       });
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _licenseGateResolved = true;
-        _hasLicensedSeat = false;
-        _filter = _withoutMultiBoutiqueFilters(_filter);
+        _seatCheckResolved = true;
+        _hasSeatForBoutiqueViews = false;
+        _filter = _withoutBoutiqueViewFilters(_filter);
       });
     }
   }
@@ -484,9 +484,9 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
 
   void _onFilterChanged(TicketsFilterState filter) {
     final prevDeleted = _filter.deletedFilter;
-    final next = _multiBoutiqueFeaturesUnlocked
+    final next = _ticketBoutiqueViewsUnlocked
         ? filter
-        : _withoutMultiBoutiqueFilters(filter);
+        : _withoutBoutiqueViewFilters(filter);
     setState(() => _filter = next);
     if (next.deletedFilter != prevDeleted) {
       _loadTickets();
@@ -574,7 +574,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
               filter: _filter,
               onFilterChanged: _onFilterChanged,
               availableBoutiques: _extractBoutiques(_allTickets, cache),
-              multiBoutiqueFeaturesUnlocked: _multiBoutiqueFeaturesUnlocked,
+              ticketBoutiqueViewsUnlocked: _ticketBoutiqueViewsUnlocked,
             ),
           ),
           Card(
