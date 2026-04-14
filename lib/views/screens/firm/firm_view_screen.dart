@@ -1,4 +1,3 @@
-import 'package:boutiques_weebi/boutiques_weebi.dart' show BoutiqueDynamicBody;
 import 'package:flutter/material.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
@@ -6,6 +5,7 @@ import 'package:web_admin/core/services/firm_service.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/widgets/card_elements.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
+import 'firm_dynamic_body.dart';
 
 import '../../../core/constants/dimens.dart';
 import '../../../core/theme/theme_extensions/app_color_scheme.dart';
@@ -102,8 +102,7 @@ class _FirmListScreenState extends State<FirmListScreen> {
                                   ),
                                 )
                               else if (currentFirm != null)
-                                BoutiqueDynamicBody<Firm>(
-                                    pbObject: currentFirm!),
+                                FirmDynamicBody(firm: currentFirm!),
                             ],
                           ),
                         ),

@@ -59,82 +59,13 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   TicketsFilterState _filter = const TicketsFilterState();
   final _tableScrollController = ScrollController();
   bool _seatCheckResolved = false;
+
   /// Active license seat for subscription-backed ticket views (no firm-creator joker).
   bool _hasSeatForBoutiqueViews = false;
 
   /// Until billing responds, allow controls (optimistic). Then require a seat for store filter/group.
   bool get _ticketBoutiqueViewsUnlocked =>
       !_seatCheckResolved || _hasSeatForBoutiqueViews;
-
-  bool get _showCurrencyDemoHack {
-    if (!kDebugMode) return false;
-    // Dev-only hack: show when running against local dev or dev envoy proxy.
-    final apiUrl = Config.apiUrl;
-    return apiUrl.contains('localhost') || apiUrl.contains('weebi-envoyproxy-dev');
-  }
-
-  TicketPb _createCurrencyDemoTicket({
-    required String boutiqueId,
-  }) {
-    final now = DateTime.now().toUtc().toIso8601String();
-
-    final item = ItemCartPb.create()
-      ..quantity = 2
-      ..articleUncountable = (ArticleUncountableOnTicketPb.create()
-        ..calibreId = 1
-        ..id = 1
-        ..designation = 'sac de sucre'
-        ..price = 25000
-        ..cost = 0);
-
-    return TicketPb.create()
-      ..nonUniqueId = 1
-      ..date = now
-      ..statusUpdateDate = now
-      ..status = true
-      ..items.add(item)
-      ..ticketType = TicketTypePb.sell
-      ..paymentType = TicketPb_PaymentTypePb.cash
-      ..contactId = 0
-      ..taxe = (TaxPb.create()
-        ..id = 'tax0'
-        ..name = 'HT 0%'
-        ..percentage = 0.0)
-      ..promo = 0
-      ..received = 50000
-      ..discountAmount = 0
-      ..comment = ''
-      ..creationDate = now
-      ..snapshotSecondaryCurrency = 'USD'
-      ..snapshotLocalPerSecondary = 2000.0
-      ..counterfoil = (Counterfoil.create()
-        ..firmId = 'demo_firm'
-        ..firmName = 'Demo firm'
-        ..chainId = 'demo_chain'
-        ..chainName = 'Demo chain'
-        ..boutiqueId = boutiqueId
-        ..boutiqueName = ''
-        ..deviceId = ''
-        ..deviceName = ''
-        ..userId = 'demo_user'
-        ..userName = 'demo_user');
-  }
-
-  void _openCurrencyDemoTicket() {
-    final cache = context.read<TicketsBoutiqueCache>();
-    const boutiqueId = 'demo_boutique_cdf';
-    cache.upsertDemoBoutique(
-      boutiqueId: boutiqueId,
-      name: 'Demo boutique',
-      billingCurrency: 'CDF',
-    );
-
-    final ticket = _createCurrencyDemoTicket(boutiqueId: boutiqueId);
-    context.push(
-      RouteUri.ticketDetail,
-      extra: ticket,
-    );
-  }
 
   @override
   void initState() {
@@ -235,19 +166,24 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       switch (_filter.deletedFilter) {
         case DeletedFilter.exclude:
           final res = await stub.readAll(
-            ReadAllTicketsRequest()..chainId = chainId..isDeleted = false,
+            ReadAllTicketsRequest()
+              ..chainId = chainId
+              ..isDeleted = false,
           );
           all.addAll(res.tickets.map((t) => _TicketWithMeta(t, false)));
           break;
         case DeletedFilter.only:
           final res = await stub.readAll(
-            ReadAllTicketsRequest()..chainId = chainId..isDeleted = true,
+            ReadAllTicketsRequest()
+              ..chainId = chainId
+              ..isDeleted = true,
           );
           all.addAll(res.tickets.map((t) => _TicketWithMeta(t, true)));
           break;
       }
 
-      all.sort((a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
+      all.sort(
+          (a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
 
       setState(() {
         _allTickets = all;
@@ -273,9 +209,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       if (seen.contains(id)) continue;
       seen.add(id);
       final fromTicket = m.ticket.counterfoil.boutiqueName.trim();
-      final name = fromTicket.isNotEmpty
-          ? fromTicket
-          : cache.getName(id);
+      final name = fromTicket.isNotEmpty ? fromTicket : cache.getName(id);
       final logo = cache.getLogo(id);
       final logoExt = cache.getLogoExtension(id);
       list.add(BoutiqueOption(
@@ -298,13 +232,13 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
         final date = _parseCreationDate(m.ticket.creationDate);
         if (date == null) return false;
         if (_filter.dateFrom != null) {
-          final fromStart = DateTime(
-              _filter.dateFrom!.year, _filter.dateFrom!.month, _filter.dateFrom!.day);
+          final fromStart = DateTime(_filter.dateFrom!.year,
+              _filter.dateFrom!.month, _filter.dateFrom!.day);
           if (date.isBefore(fromStart)) return false;
         }
         if (_filter.dateTo != null) {
-          final toEnd = DateTime(
-              _filter.dateTo!.year, _filter.dateTo!.month, _filter.dateTo!.day, 23, 59, 59);
+          final toEnd = DateTime(_filter.dateTo!.year, _filter.dateTo!.month,
+              _filter.dateTo!.day, 23, 59, 59);
           if (date.isAfter(toEnd)) return false;
         }
         return true;
@@ -313,9 +247,8 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
 
     // Status filter (active/inactive)
     if (_filter.statusActive != null) {
-      result = result
-          .where((m) => m.ticket.status == _filter.statusActive)
-          .toList();
+      result =
+          result.where((m) => m.ticket.status == _filter.statusActive).toList();
     }
 
     // Boutique filter
@@ -332,13 +265,15 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
           final aName = a.ticket.counterfoil.boutiqueName.trim();
           final bName = b.ticket.counterfoil.boutiqueName.trim();
           final cmp = (aName.isEmpty ? a.ticket.counterfoil.boutiqueId : aName)
-              .compareTo(bName.isEmpty ? b.ticket.counterfoil.boutiqueId : bName);
+              .compareTo(
+                  bName.isEmpty ? b.ticket.counterfoil.boutiqueId : bName);
           if (cmp != 0) return cmp;
           return b.ticket.creationDate.compareTo(a.ticket.creationDate);
         });
     } else {
       result = List.from(result)
-        ..sort((a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
+        ..sort(
+            (a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
     }
 
     return result;
@@ -359,7 +294,8 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       final name = meta.ticket.counterfoil.boutiqueName.trim();
       final id = meta.ticket.counterfoil.boutiqueId.trim();
       final displayName = name.isNotEmpty ? name : cache.getName(id);
-      final boutiqueKey = displayName.isNotEmpty ? displayName : (id.isNotEmpty ? id : '—');
+      final boutiqueKey =
+          displayName.isNotEmpty ? displayName : (id.isNotEmpty ? id : '—');
       groups.putIfAbsent(boutiqueKey, () => []).add(meta);
     }
     return groups;
@@ -388,7 +324,8 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
           ),
           childrenPadding: EdgeInsets.zero,
           backgroundColor: themeData.colorScheme.surfaceContainerHighest,
-          collapsedBackgroundColor: themeData.colorScheme.surfaceContainerHighest,
+          collapsedBackgroundColor:
+              themeData.colorScheme.surfaceContainerHighest,
           title: Row(
             children: [
               Text(
@@ -411,16 +348,18 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
             if (isLargeScreen)
               _buildTicketsTableForGroup(tickets, cache, lang)
             else
-              ...tickets.expand((meta) => [
-                    TicketGlimpseWidget(
-                      ticket: meta.ticket,
-                      onTap: () => _openTicketDetail(meta.ticket),
-                      isSoftDeleted: meta.isSoftDeleted,
-                      boutiqueCache: cache,
-                    ),
-                    const Divider(height: 1),
-                  ]).toList()
-                  ..removeLast(),
+              ...tickets
+                  .expand((meta) => [
+                        TicketGlimpseWidget(
+                          ticket: meta.ticket,
+                          onTap: () => _openTicketDetail(meta.ticket),
+                          isSoftDeleted: meta.isSoftDeleted,
+                          boutiqueCache: cache,
+                        ),
+                        const Divider(height: 1),
+                      ])
+                  .toList()
+                ..removeLast(),
           ],
         );
       }).toList(),
@@ -592,15 +531,6 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
                           style: themeData.textTheme.titleMedium,
                         ),
                       ),
-                      if (_showCurrencyDemoHack)
-                        Padding(
-                          padding: const EdgeInsets.only(right: kDefaultPadding * 0.5),
-                          child: ElevatedButton.icon(
-                            onPressed: _openCurrencyDemoTicket,
-                            icon: const Icon(Icons.monetization_on_outlined),
-                            label: const Text('Currency demo'),
-                          ),
-                        ),
                       IconButton(
                         icon: const Icon(Icons.refresh),
                         onPressed: _isLoading
@@ -808,7 +738,10 @@ class _TicketsTableSource extends DataTableSource {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (boutiqueIcon != null) ...[boutiqueIcon, const SizedBox(width: 6)],
+              if (boutiqueIcon != null) ...[
+                boutiqueIcon,
+                const SizedBox(width: 6)
+              ],
               Text(
                 boutiqueName.isEmpty
                     ? lang.ticketsPaymentUnknown

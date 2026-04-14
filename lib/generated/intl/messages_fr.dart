@@ -98,6 +98,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "Veuillez accepter les conditions générales pour continuer.",
     ),
+    "billingActionNotPermitted": MessageLookupByLibrary.simpleMessage(
+      "Vous n\'avez pas l\'autorisation d\'effectuer cette action.",
+    ),
     "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
       "Tous les utilisateurs ont déjà une licence attribuée.",
     ),
@@ -114,6 +117,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingLicenses": MessageLookupByLibrary.simpleMessage("Licence(s)"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("À vie"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("Mes licences"),
+    "billingNoAccess": MessageLookupByLibrary.simpleMessage(
+      "Vous n\'avez pas l\'autorisation de gérer les licences. Demandez à l\'administrateur de votre entreprise de vous accorder l\'accès.",
+    ),
     "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
       "Aucun utilisateur à attribuer. Ajoutez des utilisateurs dans Utilisateurs d\'abord.",
     ),
@@ -121,10 +127,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pas encore attribuée(s)",
     ),
     "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
-      "Paiement reçu. Nous confirmons avec Stripe — votre licence apparaîtra sous peu. Sinon, vérifiez la configuration du webhook.",
+      "Paiement reçu. Votre ou vos licences apparaîtront sous peu ; vous pourrez ensuite attribuer les places aux utilisateurs.",
     ),
     "billingPaymentSuccess": MessageLookupByLibrary.simpleMessage(
-      "Votre paiement a été accepté. Vous avez maintenant une licence active.",
+      "Paiement accepté. Une ou plusieurs licences ont bien été achetées : vous pouvez les attribuer aux utilisateurs concernés.",
     ),
     "billingPurchase": MessageLookupByLibrary.simpleMessage("Acheter"),
     "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage(
@@ -429,7 +435,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Siège de licence actif requis",
     ),
     "ticketsSeatGatedBoutiqueViewsDetail": MessageLookupByLibrary.simpleMessage(
-      "Le filtre et le groupement par boutique exigent un siège de licence actif. Le créateur de l’entreprise peut synchroniser sans siège (aperçu) ; ces vues sont réservées aux membres avec siège. Ouvrez Facturation ou demandez à l’administrateur de vous attribuer un siège.",
+      "Le filtre et le groupement par boutique exigent une licence.",
     ),
     "ticketsSeatGatedBoutiqueViewsTitle": MessageLookupByLibrary.simpleMessage(
       "Filtre et groupement par boutique",

@@ -26,19 +26,24 @@ dependencies:
 
   grpc: ^4.0.1 # grpc_web not exported from protos_weebi
 
+  http: ^1.2.0
+
   package_info_plus: ^8.3.1
 
   protobuf: ^4.0.0
 
-  protos_weebi: ^1.2.5 # ChainRequest currency + DeleteChainRequest
+  # >=1.2.6: BoutiquePb dualCurrencyEnabled / secondaryDisplayCurrency (wire + JSON)
+  protos_weebi: ^1.2.9
   models_weebi: any
-  auth_weebi: ^1.0.6
-  boutiques_weebi: ^1.0.6
-  devices_weebi: ^1.0.6
-  users_weebi: ^1.0.8
-  accesses_weebi: ^1.0.6
-  gatekeeper_weebi: ^1.0.6
-  design_weebi: ^0.1.2
+  auth_weebi: ^1.0.7
+  boutiques_weebi: ^1.1.2
+    #path: ../weebi/packages/boutiques
+  users_weebi: ^1.0.9
+    # path: ../weebi/packages/users
+  accesses_weebi: ^1.0.7
+  devices_weebi: ^1.0.7
+  gatekeeper_weebi: ^1.0.7
+  design_weebi: ^0.1.3
   charts_weebi:
     path: packages/charts_weebi
   flutter_markdown: ^0.7.7+1

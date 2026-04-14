@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:models_weebi/reports.dart';
 import 'package:models_weebi/utils.dart';
@@ -213,7 +212,7 @@ class _HeaderState extends State<_Header> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            const Expanded(
               child: Text(
                 'suiviParTypeDeTicket',
                 style: TextStyleWeebi.blackBoldBig,
@@ -226,12 +225,12 @@ class _HeaderState extends State<_Header> {
                     backgroundColor:
                         WidgetStateProperty.all<Color>(ColorsWeebi.green)),
                 icon: const Icon(
-                  FontAwesomeIcons.fileCsv,
+                  Icons.save_alt,
                   color: Colors.white,
                 ),
-                label: Text(
+                label: const Text(
                   'sauvegarder',
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
                   setState(() => isLoading = true);

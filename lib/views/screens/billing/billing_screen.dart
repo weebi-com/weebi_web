@@ -2,6 +2,7 @@
 import 'dart:html' as html;
 
 import 'package:aptabase_flutter/aptabase_flutter.dart';
+import 'package:auth_weebi/auth_weebi.dart' show PermissionProvider;
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart' hide ConnectionState;
 import 'package:provider/provider.dart';
@@ -50,38 +51,45 @@ class _BillingScreenState extends State<BillingScreen> {
   @override
   void initState() {
     super.initState();
-    Aptabase.instance.trackEvent('billing_screen_opened', {});
-    _loadData();
-    // If returning from Stripe success with session_id, sync license (webhook may have failed)
-    final params = _billingQueryParams();
-    final sessionId = params['session_id'];
-    if (params['success'] == 'true' && sessionId != null && sessionId.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        if (!mounted) return;
-        final provider = context.read<BillingServiceClientProvider>();
-        try {
-          await provider.billingServiceClient.fulfillFromStripeCheckoutSession(
-            FulfillFromStripeCheckoutSessionRequest(
-              checkoutSessionId: sessionId,
-              legalTermsVersionDate: kEnterpriseTermsVersionId,
-            ),
-          );
-        } catch (_) {
-          // Idempotent: already fulfilled or not paid yet; loadData will show current state
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (!context.read<PermissionProvider>().canReadBilling) return;
+
+      Aptabase.instance.trackEvent('billing_screen_opened', {});
+      _loadData();
+      // If returning from Stripe success with session_id, sync license (webhook may have failed)
+      final params = _billingQueryParams();
+      final sessionId = params['session_id'];
+      if (params['success'] == 'true' &&
+          sessionId != null &&
+          sessionId.isNotEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          if (!mounted) return;
+          final provider = context.read<BillingServiceClientProvider>();
+          try {
+            await provider.billingServiceClient.fulfillFromStripeCheckoutSession(
+              FulfillFromStripeCheckoutSessionRequest(
+                checkoutSessionId: sessionId,
+                legalTermsVersionDate: kEnterpriseTermsVersionId,
+              ),
+            );
+          } catch (_) {
+            // Idempotent: already fulfilled or not paid yet; loadData will show current state
+          }
+          if (mounted) _loadData();
+        });
+      } else if (params['canceled'] == 'true') {
+        if (!_checkoutCanceledLogged) {
+          _checkoutCanceledLogged = true;
+          Aptabase.instance.trackEvent('billing_subscription_process_failed', {
+            'reason': 'checkout_canceled',
+          });
         }
-        if (mounted) _loadData();
-      });
-    } else if (params['canceled'] == 'true') {
-      if (!_checkoutCanceledLogged) {
-        _checkoutCanceledLogged = true;
-        Aptabase.instance.trackEvent('billing_subscription_process_failed', {
-          'reason': 'checkout_canceled',
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _loadData();
         });
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _loadData();
-      });
-    }
+    });
   }
 
   void _maybeTrackSubscriptionConfirmed(List<License> licenses) {
@@ -96,6 +104,7 @@ class _BillingScreenState extends State<BillingScreen> {
 
   Future<void> _loadData() async {
     if (!mounted) return;
+    if (!context.read<PermissionProvider>().canReadBilling) return;
     final provider = context.read<BillingServiceClientProvider>();
     setState(() {
       _loading = true;
@@ -218,6 +227,12 @@ class _BillingScreenState extends State<BillingScreen> {
 
   Future<void> _purchaseProduct(BillingProduct product) async {
     if (!mounted) return;
+    if (!context.read<PermissionProvider>().canCreateBilling) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(Lang.of(context).billingActionNotPermitted)),
+      );
+      return;
+    }
     if (!_acceptedEnterpriseTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(Lang.of(context).billingAcceptTermsToContinue)),
@@ -288,6 +303,12 @@ class _BillingScreenState extends State<BillingScreen> {
   }
 
   void _showAssignSeatDialog(BuildContext context, License license) {
+    if (!context.read<PermissionProvider>().canUpdateBilling) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(Lang.of(context).billingActionNotPermitted)),
+      );
+      return;
+    }
     final attributed = license.seats.where((s) => s.userId.isNotEmpty).length;
     if (attributed >= license.maxUsers) return;
 
@@ -316,6 +337,12 @@ class _BillingScreenState extends State<BillingScreen> {
     License license,
     String previousUserId,
   ) {
+    if (!context.read<PermissionProvider>().canUpdateBilling) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(Lang.of(context).billingActionNotPermitted)),
+      );
+      return;
+    }
     if (previousUserId.isEmpty) return;
     final allAttributedUserIds = <String>{
       for (final lic in _licenses)
@@ -342,6 +369,26 @@ class _BillingScreenState extends State<BillingScreen> {
     final themeData = Theme.of(context);
     final appColorScheme = themeData.extension<AppColorScheme>()!;
     final lang = Lang.of(context);
+    final perms = context.watch<PermissionProvider>();
+    if (!perms.canReadBilling) {
+      return PortalMasterLayout(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 440),
+            child: Padding(
+              padding: const EdgeInsets.all(kDefaultPadding * 2),
+              child: Text(
+                lang.billingNoAccess,
+                style: themeData.textTheme.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    final canPurchase = perms.canCreateBilling;
+    final canManageSeats = perms.canUpdateBilling;
     final totalSeats = _licenses.fold<int>(0, (sum, l) => sum + l.maxUsers);
     final returnedFromSuccess =
         _billingQueryParams()['success'] == 'true' && !_loading;
@@ -481,7 +528,8 @@ class _BillingScreenState extends State<BillingScreen> {
                                       product: p,
                                       onPurchase: () => _onLicensePurchaseTapped(p),
                                       isLoading: _checkoutProductId == p.productId,
-                                      purchaseEnabled: _acceptedEnterpriseTerms,
+                                      purchaseEnabled:
+                                          canPurchase && _acceptedEnterpriseTerms,
                                     ))
                                 .toList(),
                           ),
@@ -516,7 +564,8 @@ class _BillingScreenState extends State<BillingScreen> {
                                         onPurchase: () =>
                                             _onLicensePurchaseTapped(p),
                                         isLoading: _checkoutProductId == p.productId,
-                                        purchaseEnabled: _acceptedEnterpriseTerms,
+                                        purchaseEnabled: canPurchase &&
+                                            _acceptedEnterpriseTerms,
                                       ))
                                   .toList(),
                             ),
@@ -534,6 +583,7 @@ class _BillingScreenState extends State<BillingScreen> {
                             (license) => _LicenseCard(
                               license: license,
                               usersById: _usersById,
+                              canManageSeats: canManageSeats,
                               onAssignSeats: () =>
                                   _showAssignSeatDialog(context, license),
                               onReassignSeat: (userId) =>
@@ -644,6 +694,7 @@ class _ProductOfferCard extends StatelessWidget {
 class _LicenseCard extends StatelessWidget {
   final License license;
   final Map<String, UserPublic>? usersById;
+  final bool canManageSeats;
   final VoidCallback onAssignSeats;
   /// Called with the current [LicenseSeat.userId] to open reassignment.
   final void Function(String seatUserId) onReassignSeat;
@@ -651,6 +702,7 @@ class _LicenseCard extends StatelessWidget {
   const _LicenseCard({
     required this.license,
     this.usersById,
+    this.canManageSeats = true,
     required this.onAssignSeats,
     required this.onReassignSeat,
   });
@@ -711,7 +763,7 @@ class _LicenseCard extends StatelessWidget {
                       '$attributed / $total ${lang.billingSeatsAttributed}',
                       style: themeData.textTheme.bodyMedium,
                     ),
-                  if (attributed < total) ...[
+                  if (canManageSeats && attributed < total) ...[
                     const SizedBox(width: kDefaultPadding),
                     FilledButton(
                       onPressed: onAssignSeats,
@@ -766,10 +818,11 @@ class _LicenseCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        TextButton(
-                          onPressed: () => onReassignSeat(seat.userId),
-                          child: Text(lang.billingReassignSeat),
-                        ),
+                        if (canManageSeats)
+                          TextButton(
+                            onPressed: () => onReassignSeat(seat.userId),
+                            child: Text(lang.billingReassignSeat),
+                          ),
                       ],
                     ),
                   );

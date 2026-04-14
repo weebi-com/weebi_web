@@ -79,6 +79,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "请先接受条款和条件。",
     ),
+    "billingActionNotPermitted": MessageLookupByLibrary.simpleMessage(
+      "您没有执行此操作的权限。",
+    ),
     "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
       "所有用户都已分配许可证。",
     ),
@@ -93,6 +96,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingLicenses": MessageLookupByLibrary.simpleMessage("许可证"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("终身"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("我的许可证"),
+    "billingNoAccess": MessageLookupByLibrary.simpleMessage(
+      "您没有管理许可证的权限。请联系企业管理员为您开通账单相关权限。",
+    ),
     "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
       "没有可分配的用户。请先在「用户」中添加用户。",
     ),

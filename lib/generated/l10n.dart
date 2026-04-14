@@ -219,20 +219,20 @@ class Lang {
     );
   }
 
-  /// `Payment received. We're confirming with Stripe — your license will appear shortly. If it doesn't, check your webhook configuration.`
+  /// `Payment received. We're confirming with Stripe — your license(s) will appear shortly; you can then assign seats to users. If they don't appear, check your webhook configuration.`
   String get billingPaymentProcessing {
     return Intl.message(
-      'Payment received. We\'re confirming with Stripe — your license will appear shortly. If it doesn\'t, check your webhook configuration.',
+      'Payment received. We\'re confirming with Stripe — your license(s) will appear shortly; you can then assign seats to users. If they don\'t appear, check your webhook configuration.',
       name: 'billingPaymentProcessing',
       desc: '',
       args: [],
     );
   }
 
-  /// `Your payment was accepted. You now have an active license.`
+  /// `Payment accepted. One or more licenses were purchased successfully: you can assign seats to the relevant users.`
   String get billingPaymentSuccess {
     return Intl.message(
-      'Your payment was accepted. You now have an active license.',
+      'Payment accepted. One or more licenses were purchased successfully: you can assign seats to the relevant users.',
       name: 'billingPaymentSuccess',
       desc: '',
       args: [],
@@ -334,6 +334,26 @@ class Lang {
     return Intl.message(
       'Terms and Conditions of Sale',
       name: 'billingViewFullTerms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have permission to manage licenses. Ask your enterprise administrator to grant you billing access.`
+  String get billingNoAccess {
+    return Intl.message(
+      'You don\'t have permission to manage licenses. Ask your enterprise administrator to grant you billing access.',
+      name: 'billingNoAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have permission for this action.`
+  String get billingActionNotPermitted {
+    return Intl.message(
+      'You don\'t have permission for this action.',
+      name: 'billingActionNotPermitted',
       desc: '',
       args: [],
     );

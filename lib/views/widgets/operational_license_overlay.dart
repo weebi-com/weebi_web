@@ -1,3 +1,4 @@
+import 'package:auth_weebi/auth_weebi.dart' show PermissionProvider;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ class OperationalLicenseOverlay extends StatelessWidget {
 
         final lang = Lang.of(context);
         final theme = Theme.of(context);
+
+        final canOpenBilling =
+            context.watch<PermissionProvider>().canReadBilling;
 
         return Stack(
           fit: StackFit.expand,
@@ -53,10 +57,18 @@ class OperationalLicenseOverlay extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 24),
-                        FilledButton(
-                          onPressed: () => GoRouter.of(context).go(RouteUri.billing),
-                          child: Text(lang.operationalLicenseOpenBilling),
-                        ),
+                        if (canOpenBilling)
+                          FilledButton(
+                            onPressed: () =>
+                                GoRouter.of(context).go(RouteUri.billing),
+                            child: Text(lang.operationalLicenseOpenBilling),
+                          )
+                        else
+                          Text(
+                            lang.billingNoAccess,
+                            style: theme.textTheme.bodySmall,
+                            textAlign: TextAlign.center,
+                          ),
                         const SizedBox(height: 8),
                         OutlinedButton(
                           onPressed: () =>

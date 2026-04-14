@@ -95,6 +95,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingAcceptTermsToContinue": MessageLookupByLibrary.simpleMessage(
       "Please accept the terms and conditions to continue.",
     ),
+    "billingActionNotPermitted": MessageLookupByLibrary.simpleMessage(
+      "You don\'t have permission for this action.",
+    ),
     "billingAllUsersAlreadyAssigned": MessageLookupByLibrary.simpleMessage(
       "All users already have a license assigned.",
     ),
@@ -113,6 +116,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "billingLicenses": MessageLookupByLibrary.simpleMessage("License(s)"),
     "billingLifetime": MessageLookupByLibrary.simpleMessage("Lifetime"),
     "billingMyLicenses": MessageLookupByLibrary.simpleMessage("My licenses"),
+    "billingNoAccess": MessageLookupByLibrary.simpleMessage(
+      "You don\'t have permission to manage licenses. Ask your enterprise administrator to grant you billing access.",
+    ),
     "billingNoUsersAvailable": MessageLookupByLibrary.simpleMessage(
       "No users to assign. Add users in Users first.",
     ),
@@ -120,10 +126,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Not yet attributed",
     ),
     "billingPaymentProcessing": MessageLookupByLibrary.simpleMessage(
-      "Payment received. We\'re confirming with Stripe — your license will appear shortly. If it doesn\'t, check your webhook configuration.",
+      "Payment received. We\'re confirming with Stripe — your license(s) will appear shortly; you can then assign seats to users. If they don\'t appear, check your webhook configuration.",
     ),
     "billingPaymentSuccess": MessageLookupByLibrary.simpleMessage(
-      "Your payment was accepted. You now have an active license.",
+      "Payment accepted. One or more licenses were purchased successfully: you can assign seats to the relevant users.",
     ),
     "billingPurchase": MessageLookupByLibrary.simpleMessage("Purchase"),
     "billingPurchaseLicense": MessageLookupByLibrary.simpleMessage(

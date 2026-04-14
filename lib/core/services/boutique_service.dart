@@ -20,17 +20,27 @@ class BoutiqueService {
     double? latitude,
     double? longitude,
     String? street,
+    String? mail,
+    Phone? phone,
+    String? currency,
+    bool? dualCurrencyEnabled,
+    String? secondaryDisplayCurrency,
   }) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final myBoutique = BoutiquePb(
         name: name,
         boutiqueId: boutiqueId,
+        mail: mail,
+        phone: phone,
+        currency: currency,
+        isDualCurrencyEnabled: dualCurrencyEnabled,
+        secondaryDisplayCurrency: secondaryDisplayCurrency,
         addressFull: Address(
           code: code,
           city: city,
@@ -68,18 +78,28 @@ class BoutiqueService {
     double? latitude,
     double? longitude,
     String? street,
+    String? mail,
+    Phone? phone,
+    String? currency,
+    bool? dualCurrencyEnabled,
+    String? secondaryDisplayCurrency,
   }) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
       final request = BoutiqueRequest(
         chainId: chainId,
         boutique: BoutiquePb(
           name: name,
           boutiqueId: boutiqueId,
+          mail: mail,
+          phone: phone,
+          currency: currency,
+          isDualCurrencyEnabled: dualCurrencyEnabled,
+          secondaryDisplayCurrency: secondaryDisplayCurrency,
           addressFull: Address(
             code: code,
             city: city,

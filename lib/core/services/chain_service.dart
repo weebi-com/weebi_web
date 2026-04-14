@@ -20,7 +20,7 @@ class ChainService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.createOneChain(
@@ -50,21 +50,21 @@ class ChainService {
       List<BoutiquePb>? boutiques,
       Timestamp? lastUpdateTimestampUTC,
       String? currency,
-      bool? dualCurrencyEnabled,
+      bool? isDualCurrencyEnabled,
       String? secondaryDisplayCurrency}) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final req = ChainRequest(chainId: chainId, name: name);
       if (currency != null) {
         req.currency = currency;
       }
-      if (dualCurrencyEnabled != null) {
-        req.dualCurrencyEnabled = dualCurrencyEnabled;
+      if (isDualCurrencyEnabled != null) {
+        req.isDualCurrencyEnabled = isDualCurrencyEnabled;
       }
       if (secondaryDisplayCurrency != null && secondaryDisplayCurrency.isNotEmpty ) {
         req.secondaryDisplayCurrency = secondaryDisplayCurrency;
@@ -87,7 +87,7 @@ class ChainService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.readAllChains(
