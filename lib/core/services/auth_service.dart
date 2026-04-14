@@ -28,8 +28,8 @@ class AuthService {
 
   Future<void> _saveTokens(String accessToken, String refreshToken) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(StorageKeys.accessToken, accessToken);
-    await prefs.setString(StorageKeys.refreshToken, refreshToken);
+    await prefs.setString(SharePrefKeys.accessToken, accessToken);
+    await prefs.setString(SharePrefKeys.refreshToken, refreshToken);
   }
 
   Future<SignInResult> signIn({
@@ -143,14 +143,14 @@ class AuthService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final accessToken = prefs.getString(StorageKeys.accessToken);
-      final refreshToken = prefs.getString(StorageKeys.refreshToken);
+      final accessToken = prefs.getString(SharePrefKeys.accessToken);
+      final refreshToken = prefs.getString(SharePrefKeys.refreshToken);
 
       final options = CallOptions(metadata: {'authorization': '$accessToken'});
 
       final response = await stub.authenticateWithRefreshToken(
-        options: options,
         RefreshToken(refreshToken: refreshToken),
+        options: options,
       );
 
       return response;

@@ -257,7 +257,7 @@ class _RootAppState extends State<RootApp> {
                   return Consumer<AppPreferencesProvider>(
                     builder: (context, provider, child) {
                       _appRouter ??=
-                          appRouter(context.read<UserDataProvider>());
+                          appRouter(context.read<UserDataProvider>(), context.read<PermissionProvider>());
 
                       return MaterialApp.router(
                         debugShowCheckedModeBanner: false,
