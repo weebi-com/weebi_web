@@ -147,11 +147,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 const EdgeInsets.only(bottom: kDefaultPadding),
                             child: FormBuilderTextField(
                               name: 'firmName',
-                              decoration: const InputDecoration(
-                                icon: Icon(Icons.business),
-                                labelText: 'Firme',
-                                hintText: 'Nom de la firme',
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.business),
+                                labelText: lang.enterpriseNameFieldLabel,
+                                hintText: lang.enterpriseNameFieldHint,
+                                border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                               ),
@@ -170,7 +170,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               decoration: InputDecoration(
                                 labelText: lang.firstName,
                                 hintText: lang.firstName,
-                                helperText: '',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -190,7 +189,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               decoration: InputDecoration(
                                 labelText: lang.lastName,
                                 hintText: lang.lastName,
-                                helperText: '',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,

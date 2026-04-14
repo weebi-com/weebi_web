@@ -28,8 +28,8 @@ class AuthService {
 
   Future<void> _saveTokens(String accessToken, String refreshToken) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(StorageKeys.accessToken, accessToken);
-    await prefs.setString(StorageKeys.refreshToken, refreshToken);
+    await prefs.setString(SharePrefKeys.accessToken, accessToken);
+    await prefs.setString(SharePrefKeys.refreshToken, refreshToken);
   }
 
   Future<SignInResult> signIn({
@@ -86,7 +86,6 @@ class AuthService {
 
       /// user will not be able to create the firm
       /// we exfiltrated it from signup lobby, now we also avoid them this trap
-      Firm firm = Firm.create();
       if (response.statusResponse.type != StatusResponse_Type.UPDATED) {
         try {
           final statusResponse =
@@ -95,7 +94,6 @@ class AuthService {
               StatusResponse_Type.CREATED) {
             throw statusResponse.toString();
           }
-          firm = statusResponse.firm;
         } on FormatException catch (e) {
           print('createFirmServer $e');
         } on GrpcError catch (e) {
@@ -109,7 +107,6 @@ class AuthService {
               : await stub2.authenticateWithCredentials(
                   Credentials(mail: mail, password: password),
                 );
-      ;
       if (responseTokens2.accessToken.isEmpty) {
         return _handleSignUpError('error responseTokens2.accessToken.isEmpty');
       }
@@ -146,14 +143,14 @@ class AuthService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final accessToken = prefs.getString(StorageKeys.accessToken);
-      final refreshToken = prefs.getString(StorageKeys.refreshToken);
+      final accessToken = prefs.getString(SharePrefKeys.accessToken);
+      final refreshToken = prefs.getString(SharePrefKeys.refreshToken);
 
       final options = CallOptions(metadata: {'authorization': '$accessToken'});
 
       final response = await stub.authenticateWithRefreshToken(
-        options: options,
         RefreshToken(refreshToken: refreshToken),
+        options: options,
       );
 
       return response;

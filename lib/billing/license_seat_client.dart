@@ -1,7 +1,8 @@
 import 'package:protos_weebi/protos_weebi_io.dart';
 
-/// Mirrors [LicenseEntitlement] in `weebi_server/packages/billing_service` so the
-/// webapp can match ticket read rules (multi-boutique UI vs default boutique only).
+/// Low-level seat validity (mirrors server [LicenseSeatEntitlement]).
+///
+/// For subscription-backed portal features, prefer `SeatCapability`.
 class LicenseSeatClient {
   static DateTime _toDateTime(Timestamp t) {
     final s = t.seconds.toInt();

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:auth_weebi/auth_weebi.dart' show PermissionProvider;
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/master_layout_config.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/utils/profile_image_provider.dart';
 
@@ -15,12 +15,15 @@ class SidebarMenuConfig {
   final IconData icon;
   final String Function(BuildContext context) title;
   final List<SidebarChildMenuConfig> children;
+  /// When non-null and returns false, the item is hidden (e.g. billing for users without [Right.read] on billing).
+  final bool Function(BuildContext context)? isVisible;
 
   const SidebarMenuConfig({
     required this.uri,
     required this.icon,
     required this.title,
     List<SidebarChildMenuConfig>? children,
+    this.isVisible,
   }) : children = children ?? const [];
 }
 
@@ -87,6 +90,7 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<PermissionProvider>();
     final lang = Lang.of(context);
     final mediaQueryData = MediaQuery.of(context);
     final themeData = Theme.of(context);
@@ -203,7 +207,10 @@ class _SidebarState extends State<Sidebar> {
     }
 
     return Column(
-      children: sidebarMenuConfigs.map<Widget>((menu) {
+      children: widget.sidebarConfigs.map<Widget>((menu) {
+          if (menu.isVisible != null && !menu.isVisible!(context)) {
+            return const SizedBox.shrink();
+          }
           if (menu.children.isEmpty) {
             return _sidebarMenu(
               context,

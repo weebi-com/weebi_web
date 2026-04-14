@@ -13,7 +13,7 @@ class AppPreferencesProvider extends ChangeNotifier {
   ThemeMode get themeMode => _themeMode;
 
   void loadAsync(SharedPreferences sharedPref) {
-    final langCode = (sharedPref.getString(StorageKeys.appLanguageCode) ??
+    final langCode = (sharedPref.getString(SharePrefKeys.appLanguageCode) ??
             Config.locale)
         .trim();
     final effectiveLangCode = langCode.isNotEmpty ? langCode : 'fr';
@@ -28,7 +28,7 @@ class AppPreferencesProvider extends ChangeNotifier {
     }
 
     _themeMode = ThemeMode.values.byName(
-        sharedPref.getString(StorageKeys.appThemeMode) ?? ThemeMode.light.name);
+        sharedPref.getString(SharePrefKeys.appThemeMode) ?? ThemeMode.light.name);
 
     // Defer to avoid "setState during build" - loadAsync can be called from a
     // Future that completes during the build phase (e.g. in RootApp)
@@ -50,7 +50,7 @@ class AppPreferencesProvider extends ChangeNotifier {
           langCode += '_${locale.scriptCode}';
         }
 
-        await sharedPref.setString(StorageKeys.appLanguageCode, langCode);
+        await sharedPref.setString(SharePrefKeys.appLanguageCode, langCode);
       }
 
       notifyListeners();
@@ -67,7 +67,7 @@ class AppPreferencesProvider extends ChangeNotifier {
       if (save) {
         final sharedPref = await SharedPreferences.getInstance();
 
-        await sharedPref.setString(StorageKeys.appThemeMode, themeMode.name);
+        await sharedPref.setString(SharePrefKeys.appThemeMode, themeMode.name);
       }
 
       notifyListeners();

@@ -40,8 +40,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
     // _formData.firstName = sharedPref.getString(StorageKeys.firstname)!;
     // _formData.lastName = sharedPref.getString(StorageKeys.lastname)!;
-    _formData.mail = sharedPref.getString(StorageKeys.mail)!;
-    _formData.userProfileImageUrl = sharedPref.getString(StorageKeys.userProfileImageUrl)!;
+    _formData.mail = sharedPref.getString(SharePrefKeys.mail)!;
+    _formData.userProfileImageUrl = sharedPref.getString(SharePrefKeys.userProfileImageUrl)!;
 
     return true;
   }
@@ -90,7 +90,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     _formData.userProfileImageUrl = dataUrl;
 
     final sharedPref = await SharedPreferences.getInstance();
-    await sharedPref.setString(StorageKeys.userProfileImageUrl, dataUrl);
+    await sharedPref.setString(SharePrefKeys.userProfileImageUrl, dataUrl);
 
     await context.read<UserDataProvider>().setUserDataAsync(
           userProfileImageUrl: dataUrl,

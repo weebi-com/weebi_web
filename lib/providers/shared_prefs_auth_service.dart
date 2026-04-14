@@ -22,7 +22,7 @@ class _UpsertRefreshPrefsRpc extends UpsertRefreshTokenAbstractRpc {
   @override
   Future<String> request(String data) async {
     final p = await SharedPreferences.getInstance();
-    await p.setString(StorageKeys.refreshToken, data);
+    await p.setString(SharePrefKeys.refreshToken, data);
     return data;
   }
 }
@@ -33,7 +33,7 @@ class _ReadRefreshPrefsRpc extends ReadRefreshTokenAbstractRpc {
   @override
   Future<String> request(void data) async {
     final p = await SharedPreferences.getInstance();
-    return p.getString(StorageKeys.refreshToken) ?? '';
+    return p.getString(SharePrefKeys.refreshToken) ?? '';
   }
 }
 
@@ -43,7 +43,7 @@ class _UpsertAccessPrefsRpc extends UpsertAccessTokenAbstractRpc {
   @override
   Future<String> request(String data) async {
     final p = await SharedPreferences.getInstance();
-    await p.setString(StorageKeys.accessToken, data);
+    await p.setString(SharePrefKeys.accessToken, data);
     return data;
   }
 }
@@ -54,6 +54,6 @@ class _ReadAccessPrefsRpc extends ReadAccessTokenAbstractRpc {
   @override
   Future<String> request(void data) async {
     final p = await SharedPreferences.getInstance();
-    return p.getString(StorageKeys.accessToken) ?? '';
+    return p.getString(SharePrefKeys.accessToken) ?? '';
   }
 }

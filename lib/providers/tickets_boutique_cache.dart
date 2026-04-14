@@ -38,6 +38,12 @@ class TicketsBoutiqueCache extends ChangeNotifier {
     return _cache?[boutiqueId]?.logoExtension;
   }
 
+  /// ISO 4217 from boutique proto when present (may be null for legacy data).
+  String? getBillingCurrency(String boutiqueId) {
+    if (boutiqueId.isEmpty) return null;
+    return _cache?[boutiqueId]?.billingCurrency;
+  }
+
   /// True if this boutique has a logo to display.
   bool hasLogo(String boutiqueId) {
     final info = _cache?[boutiqueId];
@@ -49,6 +55,23 @@ class TicketsBoutiqueCache extends ChangeNotifier {
 
   /// All boutique ids in the cache.
   Iterable<String> get allIds => _cache?.keys ?? const [];
+
+  /// Dirty-dev-only helper to inject a boutique currency for UI demos.
+  /// This avoids having to create real backend data just to "dazzle" in the webapp.
+  void upsertDemoBoutique({
+    required String boutiqueId,
+    required String name,
+    required String billingCurrency,
+  }) {
+    _cache ??= {};
+    _cache![boutiqueId] = _BoutiqueInfo(
+      name: name,
+      logo: null,
+      logoExtension: null,
+      billingCurrency: billingCurrency.trim().toUpperCase(),
+    );
+    notifyListeners();
+  }
 
   /// Loads boutiques from FenceService.readAllBoutiques.
   /// Idempotent: no-op if already loaded.
@@ -80,6 +103,9 @@ class TicketsBoutiqueCache extends ChangeNotifier {
         name: b.name.trim().isNotEmpty ? b.name.trim() : b.boutiqueId,
         logo: null,
         logoExtension: null,
+        billingCurrency: b.hasCurrency() && b.currency.trim().isNotEmpty
+            ? b.currency.trim().toUpperCase()
+            : null,
       );
     }
     return map;
@@ -98,20 +124,24 @@ class TicketsBoutiqueCache extends ChangeNotifier {
       final logo = _getLogo(b);
       final ext = _getLogoExtension(b);
       final hasLogo = logo != null && logo.isNotEmpty && (ext?.isNotEmpty ?? false);
+      final currency = _getCurrency(b);
       final info = _cache![id];
       final newName = (info?.name.isEmpty ?? true) && name.isNotEmpty
           ? name
           : (info?.name ?? id);
       final newLogo = (info?.logo == null && hasLogo) ? logo : info?.logo;
       final newExt = newLogo != null && hasLogo ? ext : info?.logoExtension;
+      final newCurrency = currency ?? info?.billingCurrency;
       if (info == null ||
           info.name != newName ||
           info.logo != newLogo ||
-          info.logoExtension != newExt) {
+          info.logoExtension != newExt ||
+          info.billingCurrency != newCurrency) {
         _cache![id] = _BoutiqueInfo(
           name: newName.isNotEmpty ? newName : id,
           logo: newLogo != null && newLogo.isNotEmpty ? newLogo : null,
           logoExtension: newExt,
+          billingCurrency: newCurrency,
         );
         changed = true;
       }
@@ -158,16 +188,33 @@ class TicketsBoutiqueCache extends ChangeNotifier {
       return null;
     }
   }
+
+  String? _getCurrency(dynamic b) {
+    try {
+      final dyn = b as dynamic;
+      if (dyn.hasCurrency() == true) {
+        final c = dyn.currency as String?;
+        if (c != null && c.trim().isNotEmpty) return c.trim().toUpperCase();
+      }
+    } catch (_) {}
+    try {
+      final inner = (b as dynamic).boutique;
+      if (inner != null) return _getCurrency(inner);
+    } catch (_) {}
+    return null;
+  }
 }
 
 class _BoutiqueInfo {
   final String name;
   final List<int>? logo;
   final String? logoExtension;
+  final String? billingCurrency;
 
   _BoutiqueInfo({
     required this.name,
     this.logo,
     this.logoExtension,
+    this.billingCurrency,
   });
 }

@@ -1,4 +1,7 @@
+import 'package:auth_weebi/auth_weebi.dart' show PermissionProvider;
+import 'package:flutter/foundation.dart' show Listenable;
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:web_admin/contacts/view/contacts_page.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 import 'package:web_admin/views/screens/buttons_screen.dart';
@@ -11,7 +14,6 @@ import 'package:web_admin/views/screens/dialogs_screen.dart';
 import 'package:web_admin/views/screens/error_screen.dart';
 import 'package:web_admin/views/screens/firm/create_firm_screen.dart';
 import 'package:web_admin/views/screens/firm/firm_view_screen.dart';
-import 'package:web_admin/views/screens/form_screen.dart';
 import 'package:web_admin/views/screens/general_ui_screen.dart';
 import 'package:web_admin/views/screens/iframe_demo_screen.dart';
 import 'package:web_admin/views/screens/authentication/login_screen.dart';
@@ -93,8 +95,13 @@ const List<String> publicRoutes = [
   // RouteUri.register, // Enable this line for actual authentication flow.
 ];
 
-GoRouter appRouter(UserDataProvider userDataProvider) {
+GoRouter appRouter(
+  UserDataProvider userDataProvider,
+  PermissionProvider permissionProvider,
+) {
   return GoRouter(
+    refreshListenable:
+        Listenable.merge([permissionProvider, userDataProvider]),
     initialLocation: RouteUri.home,
     errorPageBuilder: (context, state) => NoTransitionPage<void>(
       key: state.pageKey,
@@ -401,6 +408,21 @@ GoRouter appRouter(UserDataProvider userDataProvider) {
         if (!userDataProvider.isUserLoggedIn()) {
           // User is not logged in, redirect to login page.
           return RouteUri.login;
+        }
+      }
+
+      if (state.matchedLocation == RouteUri.billing &&
+          userDataProvider.isUserLoggedIn()) {
+        final perm = Provider.of<PermissionProvider>(context, listen: false);
+        if (!perm.hasToken) {
+          // Avoid deciding from empty JWT until prefs token is copied to
+          // AccessTokenProvider (root_app post-frame). If there is no token at
+          // all, sending users away from billing is reasonable.
+          if (userDataProvider.accessToken.isEmpty) {
+            return RouteUri.dashboard;
+          }
+        } else if (!perm.canReadBilling) {
+          return RouteUri.dashboard;
         }
       }
 

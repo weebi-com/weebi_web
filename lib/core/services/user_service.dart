@@ -21,7 +21,7 @@ class UserService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       if (token != null && token.isNotEmpty) {
         print(JsonWebToken.parse(token).toString());
         print(JsonWebToken.parse(token).permissions);
@@ -73,7 +73,7 @@ class UserService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       if (token == null || token.isEmpty) return null;
 
       final options = CallOptions(metadata: {'authorization': token});
@@ -94,7 +94,7 @@ class UserService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.readAllUsers(options: options, Empty());
@@ -113,7 +113,7 @@ class UserService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response =

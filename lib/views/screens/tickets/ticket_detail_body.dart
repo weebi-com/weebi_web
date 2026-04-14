@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat, NumberFormat;
 import 'package:models_weebi/models.dart';
 import 'package:protos_weebi/protos_weebi_io.dart' show TicketPb;
+import 'package:web_admin/core/money/money_formatting.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
 import 'package:web_admin/views/screens/tickets/ticket_pb_to_weebi.dart';
 
 const _rowPadding = SizedBox(width: 28);
+
+String _formatLineQuantity(double q, Locale locale) {
+  final nf = NumberFormat.decimalPattern(locale.toString());
+  nf.minimumFractionDigits = 0;
+  nf.maximumFractionDigits = q == q.roundToDouble() ? 0 : 4;
+  return nf.format(q);
+}
 
 /// Rich ticket detail view inspired by weebi_app TicketDetailWidget.
 /// Displays items with prices/costs, totals (HT, promo, taxes, TTC), contact, etc.
@@ -23,7 +31,21 @@ class TicketDetailBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ticketW = ticketPbToWeebi(ticket);
-    final numFormat = NumberFormat.decimalPattern();
+    final locale = Localizations.localeOf(context);
+    final billingIso =
+        boutiqueCache?.getBillingCurrency(ticket.counterfoil.boutiqueId);
+    final effectiveIso = (billingIso != null && billingIso.length == 3)
+        ? billingIso
+        : MoneyFormatting.fallbackIso;
+    final numFormat = NumberFormat.currency(
+      locale: locale.toString(),
+      name: effectiveIso,
+    );
+    final fxRateCaption = MoneyFormatting.formatFxSnapshotCaption(
+      ticket: ticket,
+      boutiqueIso4217: effectiveIso,
+      locale: locale,
+    );
     final dateFormat = DateFormat('dd/MM/yyyy');
     final timeFormat = DateFormat('HH:mm');
     final cf = ticket.counterfoil;
@@ -89,6 +111,7 @@ class TicketDetailBody extends StatelessWidget {
             ticketType: ticketW.ticketType,
             item: item,
             numFormat: numFormat,
+            locale: locale,
           ),
         // Totals (non-stock types)
         if (!TicketType.stockTypes.contains(ticketW.ticketType)) ...[
@@ -131,9 +154,22 @@ class TicketDetailBody extends StatelessWidget {
             icon: Icons.text_fields,
             iconColor: ticketW.ticketType.iconColor,
             label: 'Total TTC',
-            value: _getTotalTTCFormatted(ticketW, numFormat),
+            value: MoneyFormatting.formatTicketAmountLine(
+              localAmount: ticketW.total.toDouble(),
+              boutiqueIso4217: effectiveIso,
+              ticket: ticket,
+              locale: locale,
+            ),
             bold: true,
           ),
+          if (fxRateCaption != null)
+            _InfoRow(
+              icon: Icons.currency_exchange,
+              iconColor: ticketW.ticketType.iconColor,
+              child: Text(
+                "À l'émission du ticket : $fxRateCaption",
+              ),
+            ),
           const Divider(),
           if (ticketW.ticketType.isFinancial) ...[
             _TotalRow(
@@ -142,7 +178,12 @@ class TicketDetailBody extends StatelessWidget {
               label: ticketW.ticketType.isPrice
                   ? 'Montant donné par le client'
                   : 'Donné au fournisseur',
-              value: numFormat.format(ticketW.received),
+              value: MoneyFormatting.formatTicketAmountLine(
+                localAmount: ticketW.received.toDouble(),
+                boutiqueIso4217: effectiveIso,
+                ticket: ticket,
+                locale: locale,
+              ),
               bold: true,
             ),
             _TotalRow(
@@ -299,10 +340,6 @@ class TicketDetailBody extends StatelessWidget {
     return '0';
   }
 
-  String _getTotalTTCFormatted(TicketWeebi t, NumberFormat nf) {
-    return nf.format(t.total);
-  }
-
   String _getChangeFormatted(TicketWeebi t, NumberFormat nf) {
     if (t.ticketType.isPrice) {
       return nf.format(t.received - t.totalPriceTaxAndPromoIncluded);
@@ -399,11 +436,13 @@ class _ItemRow extends StatelessWidget {
   final TicketType ticketType;
   final ItemCartWeebi item;
   final NumberFormat numFormat;
+  final Locale locale;
 
   const _ItemRow({
     required this.ticketType,
     required this.item,
     required this.numFormat,
+    required this.locale,
   });
 
   @override
@@ -412,6 +451,7 @@ class _ItemRow extends StatelessWidget {
     final designation = item.article.designation;
     final isPrice = ticketType.isPrice;
     final isStock = TicketType.stockTypes.contains(ticketType);
+    final qtyStr = _formatLineQuantity(item.quantity, locale);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -433,36 +473,58 @@ class _ItemRow extends StatelessWidget {
           fit: FlexFit.tight,
           child: Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: RichText(
-              softWrap: true,
-              overflow: TextOverflow.fade,
-              textAlign: TextAlign.start,
-              text: TextSpan(
-                style: const TextStyle(color: Colors.black),
-                children: [
-                  TextSpan(text: '$designation   '),
-                  if (!isStock) ...[
-                    TextSpan(
-                      text: isPrice
-                          ? numFormat.format(item.articlePrice)
-                          : numFormat.format(item.articleCost),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  designation,
+                  style: const TextStyle(color: Colors.black),
+                ),
+                if (!isStock) ...[
+                  const SizedBox(height: 2),
+                  RichText(
+                    softWrap: true,
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                      style: const TextStyle(color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: isPrice
+                              ? numFormat.format(item.articlePrice)
+                              : numFormat.format(item.articleCost),
+                        ),
+                        TextSpan(text: ' × $qtyStr => '),
+                      ],
                     ),
-                    TextSpan(text: ' x ${numFormat.format(item.quantity)}'),
-                  ] else
-                    TextSpan(text: ' x ${numFormat.format(item.quantity)}'),
-                  if (ticketType == TicketType.inventory &&
-                      item.inventoryAbsoluteQt != null)
-                    TextSpan(
-                      text: ' = ${numFormat.format(item.inventoryAbsoluteQt)}  ',
+                  ),
+                ] else ...[
+                  const SizedBox(height: 2),
+                  RichText(
+                    softWrap: true,
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                      style: const TextStyle(color: Colors.black),
+                      children: [
+                        TextSpan(text: '× $qtyStr'),
+                        if (ticketType == TicketType.inventory &&
+                            item.inventoryAbsoluteQt != null)
+                          TextSpan(
+                            text:
+                                ' = ${_formatLineQuantity(item.inventoryAbsoluteQt!, locale)}  ',
+                          ),
+                        if (ticketType == TicketType.inventory)
+                          TextSpan(
+                            text: item.quantity >= 0
+                                ? '(+${_formatLineQuantity(item.quantity, locale)})'
+                                : '(${_formatLineQuantity(item.quantity, locale)})',
+                          ),
+                      ],
                     ),
-                  if (ticketType == TicketType.inventory)
-                    TextSpan(
-                      text: item.quantity >= 0
-                          ? '(+${item.quantity})'
-                          : '(${item.quantity})',
-                    ),
+                  ),
                 ],
-              ),
+              ],
             ),
           ),
         ),

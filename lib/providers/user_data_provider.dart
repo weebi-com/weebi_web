@@ -22,13 +22,13 @@ class UserDataProvider extends ChangeNotifier {
   Future<void> loadAsync() async {
     final sharedPref = await SharedPreferences.getInstance();
 
-    _firstname = sharedPref.getString(StorageKeys.firstname) ?? '';
-    _lastname = sharedPref.getString(StorageKeys.lastname) ?? '';
-    _mail = sharedPref.getString(StorageKeys.mail) ?? '';
-    _accessToken = sharedPref.getString(StorageKeys.accessToken) ?? '';
-    _refreshToken = sharedPref.getString(StorageKeys.refreshToken) ?? '';
+    _firstname = sharedPref.getString(SharePrefKeys.firstname) ?? '';
+    _lastname = sharedPref.getString(SharePrefKeys.lastname) ?? '';
+    _mail = sharedPref.getString(SharePrefKeys.mail) ?? '';
+    _accessToken = sharedPref.getString(SharePrefKeys.accessToken) ?? '';
+    _refreshToken = sharedPref.getString(SharePrefKeys.refreshToken) ?? '';
     _userProfileImageUrl =
-        sharedPref.getString(StorageKeys.userProfileImageUrl) ?? '';
+        sharedPref.getString(SharePrefKeys.userProfileImageUrl) ?? '';
 
     notifyListeners();
   }
@@ -45,7 +45,7 @@ class UserDataProvider extends ChangeNotifier {
       _userProfileImageUrl = userProfileImageUrl;
 
       await sharedPref.setString(
-          StorageKeys.userProfileImageUrl, _userProfileImageUrl);
+          SharePrefKeys.userProfileImageUrl, _userProfileImageUrl);
 
       shouldNotify = true;
     }
@@ -53,7 +53,7 @@ class UserDataProvider extends ChangeNotifier {
     if (mail != null && mail != _mail) {
       _mail = mail;
 
-      await sharedPref.setString(StorageKeys.mail, _mail);
+      await sharedPref.setString(SharePrefKeys.mail, _mail);
 
       shouldNotify = true;
     }
@@ -66,8 +66,8 @@ class UserDataProvider extends ChangeNotifier {
   Future<void> clearUserDataAsync() async {
     final sharedPref = await SharedPreferences.getInstance();
 
-    await sharedPref.remove(StorageKeys.mail);
-    await sharedPref.remove(StorageKeys.userProfileImageUrl);
+    await sharedPref.remove(SharePrefKeys.mail);
+    await sharedPref.remove(SharePrefKeys.userProfileImageUrl);
 
     _mail = '';
     _userProfileImageUrl = '';

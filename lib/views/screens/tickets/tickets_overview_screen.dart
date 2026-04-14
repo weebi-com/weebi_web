@@ -1,19 +1,31 @@
 import 'dart:math';
 
 import 'package:auth_weebi/auth_weebi.dart' show AccessTokenProvider;
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:boutiques_weebi/boutiques_weebi.dart' show BoutiqueProvider;
 import 'package:design_weebi/design_weebi.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models_weebi/models.dart' show TicketType;
 import 'package:provider/provider.dart';
 import 'package:protos_weebi/protos_weebi_io.dart'
-    show Empty, ReadAllTicketsRequest, TicketPb;
+    show
+        ArticleUncountableOnTicketPb,
+        Counterfoil,
+        ItemCartPb,
+        ReadAllTicketsRequest,
+        TaxPb,
+        TicketPb,
+        TicketPb_PaymentTypePb,
+        Empty;
+import 'package:protos_weebi/src/generated/ticket/ticket_type.pb.dart'
+    show TicketTypePb;
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/generated/l10n.dart';
-import 'package:web_admin/billing/license_seat_client.dart';
+import 'package:web_admin/environment.dart' show Config;
+import 'package:web_admin/billing/seat_capability.dart';
 import 'package:web_admin/providers/server.dart';
+import 'package:web_admin/core/money/money_formatting.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
 import 'package:web_admin/views/screens/tickets/ticket_glimpse_widget.dart';
 import 'package:web_admin/views/screens/tickets/ticket_pb_to_weebi.dart';
@@ -46,13 +58,14 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
   String? _errorMessage;
   TicketsFilterState _filter = const TicketsFilterState();
   final _tableScrollController = ScrollController();
-  bool _licenseGateResolved = false;
-  /// Same notion as ticket service: multi-boutique read needs an active seat on a valid license.
-  bool _hasLicensedSeat = false;
+  bool _seatCheckResolved = false;
 
-  /// Until billing responds, allow controls (optimistic). Then require a seat for this user.
-  bool get _multiBoutiqueFeaturesUnlocked =>
-      !_licenseGateResolved || _hasLicensedSeat;
+  /// Active license seat for subscription-backed ticket views (no firm-creator joker).
+  bool _hasSeatForBoutiqueViews = false;
+
+  /// Until billing responds, allow controls (optimistic). Then require a seat for store filter/group.
+  bool get _ticketBoutiqueViewsUnlocked =>
+      !_seatCheckResolved || _hasSeatForBoutiqueViews;
 
   @override
   void initState() {
@@ -64,7 +77,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
     });
   }
 
-  TicketsFilterState _withoutMultiBoutiqueFilters(TicketsFilterState f) {
+  TicketsFilterState _withoutBoutiqueViewFilters(TicketsFilterState f) {
     return TicketsFilterState(
       dateFrom: f.dateFrom,
       dateTo: f.dateTo,
@@ -82,23 +95,23 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       final res = await billing.readLicenses(Empty());
       if (!mounted) return;
       final userId = context.read<AccessTokenProvider>().permissions.userId;
-      final hasSeat = LicenseSeatClient.userHasActiveLicensedSeat(
+      final hasSeat = SeatCapability.ticketsBoutiqueViewsUnlocked(
         userId,
         res.licenses,
       );
       setState(() {
-        _licenseGateResolved = true;
-        _hasLicensedSeat = hasSeat;
+        _seatCheckResolved = true;
+        _hasSeatForBoutiqueViews = hasSeat;
         if (!hasSeat) {
-          _filter = _withoutMultiBoutiqueFilters(_filter);
+          _filter = _withoutBoutiqueViewFilters(_filter);
         }
       });
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _licenseGateResolved = true;
-        _hasLicensedSeat = false;
-        _filter = _withoutMultiBoutiqueFilters(_filter);
+        _seatCheckResolved = true;
+        _hasSeatForBoutiqueViews = false;
+        _filter = _withoutBoutiqueViewFilters(_filter);
       });
     }
   }
@@ -153,19 +166,24 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       switch (_filter.deletedFilter) {
         case DeletedFilter.exclude:
           final res = await stub.readAll(
-            ReadAllTicketsRequest()..chainId = chainId..isDeleted = false,
+            ReadAllTicketsRequest()
+              ..chainId = chainId
+              ..isDeleted = false,
           );
           all.addAll(res.tickets.map((t) => _TicketWithMeta(t, false)));
           break;
         case DeletedFilter.only:
           final res = await stub.readAll(
-            ReadAllTicketsRequest()..chainId = chainId..isDeleted = true,
+            ReadAllTicketsRequest()
+              ..chainId = chainId
+              ..isDeleted = true,
           );
           all.addAll(res.tickets.map((t) => _TicketWithMeta(t, true)));
           break;
       }
 
-      all.sort((a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
+      all.sort(
+          (a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
 
       setState(() {
         _allTickets = all;
@@ -191,9 +209,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       if (seen.contains(id)) continue;
       seen.add(id);
       final fromTicket = m.ticket.counterfoil.boutiqueName.trim();
-      final name = fromTicket.isNotEmpty
-          ? fromTicket
-          : cache.getName(id);
+      final name = fromTicket.isNotEmpty ? fromTicket : cache.getName(id);
       final logo = cache.getLogo(id);
       final logoExt = cache.getLogoExtension(id);
       list.add(BoutiqueOption(
@@ -216,13 +232,13 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
         final date = _parseCreationDate(m.ticket.creationDate);
         if (date == null) return false;
         if (_filter.dateFrom != null) {
-          final fromStart = DateTime(
-              _filter.dateFrom!.year, _filter.dateFrom!.month, _filter.dateFrom!.day);
+          final fromStart = DateTime(_filter.dateFrom!.year,
+              _filter.dateFrom!.month, _filter.dateFrom!.day);
           if (date.isBefore(fromStart)) return false;
         }
         if (_filter.dateTo != null) {
-          final toEnd = DateTime(
-              _filter.dateTo!.year, _filter.dateTo!.month, _filter.dateTo!.day, 23, 59, 59);
+          final toEnd = DateTime(_filter.dateTo!.year, _filter.dateTo!.month,
+              _filter.dateTo!.day, 23, 59, 59);
           if (date.isAfter(toEnd)) return false;
         }
         return true;
@@ -231,9 +247,8 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
 
     // Status filter (active/inactive)
     if (_filter.statusActive != null) {
-      result = result
-          .where((m) => m.ticket.status == _filter.statusActive)
-          .toList();
+      result =
+          result.where((m) => m.ticket.status == _filter.statusActive).toList();
     }
 
     // Boutique filter
@@ -250,13 +265,15 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
           final aName = a.ticket.counterfoil.boutiqueName.trim();
           final bName = b.ticket.counterfoil.boutiqueName.trim();
           final cmp = (aName.isEmpty ? a.ticket.counterfoil.boutiqueId : aName)
-              .compareTo(bName.isEmpty ? b.ticket.counterfoil.boutiqueId : bName);
+              .compareTo(
+                  bName.isEmpty ? b.ticket.counterfoil.boutiqueId : bName);
           if (cmp != 0) return cmp;
           return b.ticket.creationDate.compareTo(a.ticket.creationDate);
         });
     } else {
       result = List.from(result)
-        ..sort((a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
+        ..sort(
+            (a, b) => b.ticket.creationDate.compareTo(a.ticket.creationDate));
     }
 
     return result;
@@ -277,7 +294,8 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       final name = meta.ticket.counterfoil.boutiqueName.trim();
       final id = meta.ticket.counterfoil.boutiqueId.trim();
       final displayName = name.isNotEmpty ? name : cache.getName(id);
-      final boutiqueKey = displayName.isNotEmpty ? displayName : (id.isNotEmpty ? id : '—');
+      final boutiqueKey =
+          displayName.isNotEmpty ? displayName : (id.isNotEmpty ? id : '—');
       groups.putIfAbsent(boutiqueKey, () => []).add(meta);
     }
     return groups;
@@ -306,7 +324,8 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
           ),
           childrenPadding: EdgeInsets.zero,
           backgroundColor: themeData.colorScheme.surfaceContainerHighest,
-          collapsedBackgroundColor: themeData.colorScheme.surfaceContainerHighest,
+          collapsedBackgroundColor:
+              themeData.colorScheme.surfaceContainerHighest,
           title: Row(
             children: [
               Text(
@@ -329,16 +348,18 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
             if (isLargeScreen)
               _buildTicketsTableForGroup(tickets, cache, lang)
             else
-              ...tickets.expand((meta) => [
-                    TicketGlimpseWidget(
-                      ticket: meta.ticket,
-                      onTap: () => _openTicketDetail(meta.ticket),
-                      isSoftDeleted: meta.isSoftDeleted,
-                      boutiqueCache: cache,
-                    ),
-                    const Divider(height: 1),
-                  ]).toList()
-                  ..removeLast(),
+              ...tickets
+                  .expand((meta) => [
+                        TicketGlimpseWidget(
+                          ticket: meta.ticket,
+                          onTap: () => _openTicketDetail(meta.ticket),
+                          isSoftDeleted: meta.isSoftDeleted,
+                          boutiqueCache: cache,
+                        ),
+                        const Divider(height: 1),
+                      ])
+                  .toList()
+                ..removeLast(),
           ],
         );
       }).toList(),
@@ -357,6 +378,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       cache: cache,
       onTap: _openTicketDetail,
       lang: lang,
+      locale: Localizations.localeOf(context),
     );
 
     return LayoutBuilder(
@@ -401,9 +423,9 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
 
   void _onFilterChanged(TicketsFilterState filter) {
     final prevDeleted = _filter.deletedFilter;
-    final next = _multiBoutiqueFeaturesUnlocked
+    final next = _ticketBoutiqueViewsUnlocked
         ? filter
-        : _withoutMultiBoutiqueFilters(filter);
+        : _withoutBoutiqueViewFilters(filter);
     setState(() => _filter = next);
     if (next.deletedFilter != prevDeleted) {
       _loadTickets();
@@ -427,6 +449,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
       cache: cache,
       onTap: _openTicketDetail,
       lang: lang,
+      locale: Localizations.localeOf(context),
     );
 
     return LayoutBuilder(
@@ -490,7 +513,7 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
               filter: _filter,
               onFilterChanged: _onFilterChanged,
               availableBoutiques: _extractBoutiques(_allTickets, cache),
-              multiBoutiqueFeaturesUnlocked: _multiBoutiqueFeaturesUnlocked,
+              ticketBoutiqueViewsUnlocked: _ticketBoutiqueViewsUnlocked,
             ),
           ),
           Card(
@@ -572,18 +595,18 @@ class _TicketsOverviewScreenState extends State<TicketsOverviewScreen> {
 
 /// DataTableSource for tickets on large screens.
 class _TicketsTableSource extends DataTableSource {
-  static final _numFormat = NumberFormat.decimalPattern();
-
   final List<_TicketWithMeta> tickets;
   final TicketsBoutiqueCache cache;
   final void Function(TicketPb) onTap;
   final Lang lang;
+  final Locale locale;
 
   _TicketsTableSource({
     required this.tickets,
     required this.cache,
     required this.onTap,
     required this.lang,
+    required this.locale,
   });
 
   TicketType _toTicketType(dynamic pbType) =>
@@ -600,14 +623,25 @@ class _TicketsTableSource extends DataTableSource {
       return lang.ticketsPaymentUnknown;
     }
     final type = _toTicketType(meta.ticket.ticketType);
+    final iso = cache.getBillingCurrency(meta.ticket.counterfoil.boutiqueId);
     if (meta.ticket.received > 0) {
-      return _numFormat.format(meta.ticket.received);
+      return MoneyFormatting.formatTicketAmountLine(
+        localAmount: meta.ticket.received,
+        boutiqueIso4217: iso,
+        ticket: meta.ticket,
+        locale: locale,
+      );
     }
     // For deferred (sellDeferred, spendDeferred) received is 0; use total from items
     if (type.isFinancial && meta.ticket.items.isNotEmpty) {
       try {
         final ticketW = ticketPbToWeebi(meta.ticket);
-        return _numFormat.format(ticketW.total);
+        return MoneyFormatting.formatTicketAmountLine(
+          localAmount: ticketW.total.toDouble(),
+          boutiqueIso4217: iso,
+          ticket: meta.ticket,
+          locale: locale,
+        );
       } catch (_) {
         return lang.ticketItemsShort(meta.ticket.items.length);
       }
@@ -704,7 +738,10 @@ class _TicketsTableSource extends DataTableSource {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (boutiqueIcon != null) ...[boutiqueIcon, const SizedBox(width: 6)],
+              if (boutiqueIcon != null) ...[
+                boutiqueIcon,
+                const SizedBox(width: 6)
+              ],
               Text(
                 boutiqueName.isEmpty
                     ? lang.ticketsPaymentUnknown

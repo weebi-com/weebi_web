@@ -10,16 +10,24 @@ class FirmService {
 
   Future<CreateFirmResponse> createFirm({
     required String name,
+    String? defaultCurrency,
   }) async {
     final stub = FenceServiceClient(_grpcClientService.channel);
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
+      final req = CreateFirmRequest(name: name);
+      if (defaultCurrency != null &&
+          defaultCurrency.trim().isNotEmpty &&
+          defaultCurrency.trim().length == 3) {
+        req.currency = defaultCurrency.trim().toUpperCase();
+      }
+
       final response = await stub.createFirm(
-        CreateFirmRequest(name: name),
+        req,
         options: options,
       );
 
@@ -36,7 +44,7 @@ class FirmService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(StorageKeys.accessToken);
+      final token = prefs.getString(SharePrefKeys.accessToken);
       final options = CallOptions(metadata: {'authorization': '$token'});
 
       final response = await stub.readOneFirm(Empty(), options: options);

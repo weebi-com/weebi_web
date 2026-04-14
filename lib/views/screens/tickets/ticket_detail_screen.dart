@@ -6,6 +6,7 @@ import 'package:protos_weebi/protos_weebi_io.dart'
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/providers/server.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
+import 'package:web_admin/core/money/money_formatting.dart';
 import 'package:web_admin/generated/l10n.dart';
 import 'package:web_admin/views/screens/tickets/ticket_detail_body.dart';
 import 'package:web_admin/views/widgets/portal_master_layout/portal_master_layout.dart';
@@ -46,6 +47,23 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
     });
   }
 
+  /// Keeps FX snapshot from the previous ticket when the server omits it (e.g.
+  /// legacy read path) so refresh does not hide the rate line.
+  TicketPb _mergeFxSnapshotIfLost({
+    required TicketPb previous,
+    required TicketPb fromServer,
+  }) {
+    if (MoneyFormatting.ticketHasFxSnapshot(fromServer) ||
+        !MoneyFormatting.ticketHasFxSnapshot(previous)) {
+      return fromServer;
+    }
+    fromServer.snapshotSecondaryCurrency =
+        previous.snapshotSecondaryCurrency;
+    fromServer.snapshotLocalPerSecondary =
+        previous.snapshotLocalPerSecondary;
+    return fromServer;
+  }
+
   Future<void> _refreshTicket() async {
     if (_ticket == null) return;
 
@@ -72,9 +90,10 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
         ..nonUniqueId = _ticket!.nonUniqueId;
 
       final ticket = await stub.readOne(request);
+      final merged = _mergeFxSnapshotIfLost(previous: _ticket!, fromServer: ticket);
 
       setState(() {
-        _ticket = ticket;
+        _ticket = merged;
         _isLoading = false;
       });
     } catch (e) {

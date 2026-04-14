@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
+import 'package:web_admin/providers/operational_license_gate.dart';
 import 'package:web_admin/providers/user_data_provider.dart';
 
 class LogoutScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _LogoutScreenState extends State<LogoutScreen> {
     required VoidCallback onSuccess,
   }) async {
     await userDataProvider.clearUserDataAsync();
+    OperationalLicenseGateBinding.instance.clear();
 
     onSuccess.call();
   }

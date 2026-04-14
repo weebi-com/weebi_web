@@ -143,7 +143,12 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Align(
           alignment: Alignment.topCenter,
           child: Container(
-            padding: const EdgeInsets.only(top: kDefaultPadding * 5.0),
+            padding: const EdgeInsets.fromLTRB(
+              kDefaultPadding,
+              kDefaultPadding * 5.0,
+              kDefaultPadding,
+              kDefaultPadding,
+            ),
             constraints: const BoxConstraints(maxWidth: 400.0),
             child: Card(
               clipBehavior: Clip.antiAlias,
@@ -254,7 +259,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 40.0,
                             width: double.infinity,
                             child: TextButton(
                               style: themeData
@@ -263,6 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () =>
                                   GoRouter.of(context).go(RouteUri.register),
                               child: RichText(
+                                textAlign: TextAlign.center,
                                 text: TextSpan(
                                   text: '${lang.dontHaveAnAccount} ',
                                   style: TextStyle(

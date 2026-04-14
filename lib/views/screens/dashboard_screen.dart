@@ -1,6 +1,8 @@
+import 'package:auth_weebi/auth_weebi.dart' show PermissionProvider;
 import 'package:design_weebi/design_weebi.dart' show IconsWeebi;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:web_admin/app_router.dart';
 import 'package:web_admin/core/constants/dimens.dart';
 import 'package:web_admin/core/theme/theme_extensions/app_color_scheme.dart';
@@ -80,7 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           GoRouter.of(context).go(RouteUri.listBoutique),
                       child: SummaryCard(
                         title: lang.pendingIssues(2),
-                        value: 'Mes boutiques',
+                        value: lang.dashboardCardBoutiquesValue,
                         icon: Icons.store,
                         backgroundColor: Colors.blue,
                         textColor: themeData.colorScheme.onPrimary,
@@ -139,18 +141,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: summaryCardWidth,
                       ),
                     ),
-                    _HoverableTile(
-                      onTap: () =>
-                          GoRouter.of(context).go(RouteUri.billing),
-                      child: SummaryCard(
-                        title: lang.menuBilling,
-                        value: lang.menuBilling,
-                        icon: Icons.credit_card_rounded,
-                        backgroundColor: Colors.indigo,
-                        textColor: themeData.colorScheme.onPrimary,
-                        iconColor: Colors.black12,
-                        width: summaryCardWidth,
-                      ),
+                    Selector<PermissionProvider, bool>(
+                      selector: (_, p) => p.canReadBilling,
+                      builder: (context, canReadBilling, _) {
+                        if (!canReadBilling) {
+                          return const SizedBox.shrink();
+                        }
+                        return _HoverableTile(
+                          onTap: () =>
+                              GoRouter.of(context).go(RouteUri.billing),
+                          child: SummaryCard(
+                            title: lang.menuBilling,
+                            value: lang.menuBilling,
+                            icon: Icons.credit_card_rounded,
+                            backgroundColor: Colors.indigo,
+                            textColor: themeData.colorScheme.onPrimary,
+                            iconColor: Colors.black12,
+                            width: summaryCardWidth,
+                          ),
+                        );
+                      },
                     ),
 
                     // NOT READY YET
@@ -405,52 +415,68 @@ class SummaryCard extends StatelessWidget {
     required this.width,
   });
 
+  static const double _minHeight = 118.0;
+  static const double _compactTileBreakpoint = 200.0;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final iconSize = width < _compactTileBreakpoint ? 64.0 : 80.0;
+    final tileHeight = width < _compactTileBreakpoint ? 128.0 : _minHeight;
+
+    // Use almost full card width so phrases like "Mes boutiques" stay on one
+    // line on phones; icon sits in the corner and rarely overlaps bottom text.
+    const horizontalInset = kDefaultPadding * 0.5;
+    final textStyle = _valueStyle(textTheme, width);
 
     return SizedBox(
-      height: 120.0,
+      height: tileHeight,
       width: width,
       child: Card(
         clipBehavior: Clip.antiAlias,
         color: backgroundColor,
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Positioned(
-              top: kDefaultPadding * 0.3,
-              right: kDefaultPadding * 0.5,
+              top: kDefaultPadding * 0.25,
+              right: horizontalInset * 0.75,
               child: Icon(
                 icon,
-                size: 80.0,
+                size: iconSize,
                 color: iconColor,
               ),
             ),
             Positioned(
-              bottom: kDefaultPadding * 0.2,
-              left: kDefaultPadding * 0.5,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: kDefaultPadding * 0.5),
-                child: SizedBox(
-                  width: width / 1.5,
-                  child: Text(
-                    value,
-                    style: textTheme.headlineSmall!.copyWith(
-                        color: textColor,
-                        fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.clip),
-                    //Text(
-                    //title,
-                    //style: textTheme.labelLarge!.copyWith(
-                    //  color: textColor,
-                    //),
-                  ),
-                ),
+              left: horizontalInset,
+              right: horizontalInset,
+              bottom: kDefaultPadding * 0.4,
+              child: Text(
+                value,
+                style: textStyle,
+                maxLines: 2,
+                softWrap: true,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  /// Smaller type on narrow dashboard tiles (typical two-column phone layout).
+  TextStyle _valueStyle(TextTheme textTheme, double tileWidth) {
+    final base = tileWidth < 170
+        ? textTheme.titleMedium
+        : tileWidth < 260
+            ? textTheme.titleLarge
+            : textTheme.headlineSmall;
+    return base!.copyWith(
+      color: textColor,
+      fontWeight: FontWeight.w600,
+      height: 1.2,
     );
   }
 }

@@ -2,7 +2,9 @@ import 'package:design_weebi/design_weebi.dart';
 import 'package:flutter/material.dart';
 import 'package:models_weebi/models.dart' show TicketType;
 import 'package:protos_weebi/protos_weebi_io.dart' show TicketPb;
+import 'package:web_admin/core/money/money_formatting.dart';
 import 'package:web_admin/providers/tickets_boutique_cache.dart';
+import 'package:web_admin/views/screens/tickets/ticket_pb_to_weebi.dart';
 
 /// Short abridged display of a ticket for list overview.
 /// Uses TicketType extension from design_weebi for icons/colors.
@@ -23,14 +25,40 @@ class TicketGlimpseWidget extends StatelessWidget {
   TicketType _toTicketType(dynamic pbType) =>
       TicketType.tryParse(pbType?.name ?? '');
 
-  String _getTicketSummary() {
+  String _getTicketSummary(BuildContext context) {
     if (isSoftDeleted) return 'Supprimé';
     if (!ticket.status) return 'Annulé';
 
     final typeLabel = _formatTicketType(_toTicketType(ticket.ticketType));
-    final amount = ticket.received > 0
-        ? ticket.received.toStringAsFixed(2)
-        : (ticket.items.isEmpty ? '—' : '${ticket.items.length} article(s)');
+    final type = _toTicketType(ticket.ticketType);
+    final locale = Localizations.localeOf(context);
+    final iso = boutiqueCache
+        ?.getBillingCurrency(ticket.counterfoil.boutiqueId);
+
+    String amount;
+    if (ticket.received > 0) {
+      amount = MoneyFormatting.formatTicketAmountLine(
+        localAmount: ticket.received,
+        boutiqueIso4217: iso,
+        ticket: ticket,
+        locale: locale,
+      );
+    } else if (type.isFinancial &&
+        ticket.items.isNotEmpty) {
+      try {
+        final total = ticketPbToWeebi(ticket).total.toDouble();
+        amount = MoneyFormatting.formatTicketAmountLine(
+          localAmount: total,
+          boutiqueIso4217: iso,
+          ticket: ticket,
+          locale: locale,
+        );
+      } catch (_) {
+        amount = ticket.items.isEmpty ? '—' : '${ticket.items.length} article(s)';
+      }
+    } else {
+      amount = ticket.items.isEmpty ? '—' : '${ticket.items.length} article(s)';
+    }
 
     return '$typeLabel : $amount';
   }
@@ -124,7 +152,7 @@ class TicketGlimpseWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _getTicketSummary(),
+                    _getTicketSummary(context),
                     style: themeData.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
